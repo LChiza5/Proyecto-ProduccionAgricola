@@ -15,4 +15,11 @@ public class Admin extends Persona{
         super(id, nombre, telefono, correo, rol);
         this.contraseña = contraseña;
     }
+
+    public String getContraseña() { 
+        return contraseña; 
+    }
+    public void setContraseña(String contraseña) { 
+        this.contraseña = contraseña; 
+    }
 }

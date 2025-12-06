@@ -9,7 +9,7 @@ package Modelo;
  * @author sebas
  */
 public class Trabajador extends Persona {
-    private String puesto;
+   private String puesto;
     private String horarios;
     private float salario;
 
@@ -20,11 +20,28 @@ public class Trabajador extends Persona {
         this.salario = salario;
     }
 
-    public String getPuesto() {return puesto;}
-    public String getHorarios() {return horarios;}
-    public float getSalario() {return salario;}
+    public String getPuesto() { 
+        return puesto; 
+    }
+    public String getHorarios() { 
+        return horarios; 
+    }
+    public float getSalario() { 
+        return salario; 
+    }
 
-    public void setPuesto(String puesto) {this.puesto = puesto;}
-    public void setHorarios(String horarios) {this.horarios = horarios;}
-    public void setSalario(float salario) {this.salario = salario;}
+    public void setPuesto(String puesto) { 
+        this.puesto = puesto; 
+    }
+    public void setHorarios(String horarios) { 
+        this.horarios = horarios; 
+    }
+    public void setSalario(float salario) { 
+        this.salario = salario; 
+    }
+
+    @Override
+    public String toString() {
+        return getNombre() + " - " + puesto;
+    }
 }

@@ -9,6 +9,6 @@ package Modelo;
  * @author sebas
  */
 public enum EnuRol {
-    Trabajador,
-    Admins
+    ADMIN,
+    TRABAJADOR
 }

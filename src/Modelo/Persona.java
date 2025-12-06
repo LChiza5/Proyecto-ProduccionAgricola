@@ -23,11 +23,34 @@ public class Persona {
         this.rol = rol;
     }
 
-    public String getId() {return id;}
-    public String getNombre() {return nombre;}
-    public String getTelefono() {return telefono;}
-    public String getCorreo() {return correo;}public EnuRol getRol() {return rol;}
+    public String getId() { 
+        return id; 
+    }
+    public String getNombre() { 
+        return nombre; 
+    }
+    public String getTelefono() { 
+        return telefono; 
+    }
+    public String getCorreo() { 
+        return correo; 
+    }
+    public EnuRol getRol() { 
+        return rol; 
+    }
 
-    public void setTelefono(String telefono) {this.telefono = telefono;}
-    public void setCorreo(String correo) {this.correo = correo;}
+    public void setTelefono(String telefono) { 
+        this.telefono = telefono; 
+    }
+    public void setCorreo(String correo) { 
+        this.correo = correo; 
+    }
+    public void setRol(EnuRol rol) { 
+        this.rol = rol; 
+    }
+
+    @Override
+    public String toString() {
+        return nombre + " (" + id + ")";
+    }
 }
