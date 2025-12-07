@@ -4,8 +4,9 @@ services:
   mariadb:
     image: mariadb:10.5
     container_name: mariadb
+    restart: always
     environment:
-      MYSQL_ROOT_PASSWORD: root
+      MYSQL_ROOT_PASSWORD: Admin123@
       MYSQL_DATABASE: agricola
       MYSQL_USER: Admin
       MYSQL_PASSWORD: Admin123@
@@ -15,16 +16,18 @@ services:
       - mariadb_data:/var/lib/mysql
 
   phpmyadmin:
-    image: phpmyadmin
+    image: phpmyadmin/phpmyadmin
     container_name: phpmyadmin
+    restart: always
     environment:
       PMA_HOST: mariadb
+      PMA_PORT: 3306
+      PMA_ARBITRARY: 1
       PMA_USER: Admin
       PMA_PASSWORD: Admin123@
+      UPLOAD_LIMIT: 1G
     ports:
       - "8080:80"
-    depends_on:
-      - mariadb
 
 volumes:
   mariadb_data:
