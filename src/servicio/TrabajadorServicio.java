@@ -85,7 +85,14 @@ public class TrabajadorServicio {
                 .map(TrabajadorMapper::toDTO)
                 .collect(Collectors.toList());
     }
-
+    public List<String> obtenerPuestosUnicos() throws DAOException {
+    return trabajadorDAO.listarTodos().stream()
+            .map(t -> t.getPuesto())
+            .filter(p -> p != null && !p.isBlank())
+            .distinct()
+            .sorted()
+            .collect(Collectors.toList());
+}
     // ================== Validaciones de negocio ==================
 
     private void validarTrabajador(TrabajadorDTO dto) throws ValidacionException {
