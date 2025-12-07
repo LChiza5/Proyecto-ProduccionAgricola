@@ -9,17 +9,18 @@ package Modelo;
  * @author sebas
  */
 public class Admin extends Persona{
-    private String contraseña;
+    private String contrasena;
 
-    public Admin(String contraseña, String id, String nombre, String telefono, String correo, EnuRol rol) {
+        public Admin(String contrasena, String id, String nombre,String telefono, String correo, EnuRol rol) {
         super(id, nombre, telefono, correo, rol);
-        this.contraseña = contraseña;
+        this.contrasena = contrasena;
     }
 
-    public String getContraseña() { 
-        return contraseña; 
+
+    public String getContrasena() { 
+        return contrasena; 
     }
-    public void setContraseña(String contraseña) { 
-        this.contraseña = contraseña; 
+    public void setContrasena(String contrasena) { 
+        this.contrasena = contrasena; 
     }
 }

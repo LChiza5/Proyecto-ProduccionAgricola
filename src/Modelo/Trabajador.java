@@ -11,9 +11,9 @@ package Modelo;
 public class Trabajador extends Persona {
    private String puesto;
     private String horarios;
-    private float salario;
+    private double salario;
 
-    public Trabajador(String puesto, String horarios, float salario, String id, String nombre, String telefono, String correo, EnuRol rol) {
+    public Trabajador(String puesto, String horarios, double salario, String id, String nombre, String telefono, String correo, EnuRol rol) {
         super(id, nombre, telefono, correo, rol);
         this.puesto = puesto;
         this.horarios = horarios;
@@ -26,7 +26,7 @@ public class Trabajador extends Persona {
     public String getHorarios() { 
         return horarios; 
     }
-    public float getSalario() { 
+    public double getSalario() { 
         return salario; 
     }
 
@@ -36,7 +36,7 @@ public class Trabajador extends Persona {
     public void setHorarios(String horarios) { 
         this.horarios = horarios; 
     }
-    public void setSalario(float salario) { 
+    public void setSalario(double salario) { 
         this.salario = salario; 
     }
 

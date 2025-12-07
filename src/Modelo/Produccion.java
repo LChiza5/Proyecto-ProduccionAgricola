@@ -11,7 +11,7 @@ import java.time.LocalDate;
  * @author sebas
  */
 public class Produccion {
-    private String id;
+    private int id;
     private LocalDate fecha;
     private int cantProducto;
     private int calidad;
@@ -19,7 +19,7 @@ public class Produccion {
     private String destino;
     private String idCultivo;
 
-    public Produccion(String id, LocalDate fecha, int cantProducto, int calidad, int productividad, String destino, String idCultivo) {
+    public Produccion(int id, LocalDate fecha, int cantProducto, int calidad, int productividad, String destino, String idCultivo) {
         this.id = id;
         this.fecha = fecha;
         this.cantProducto = cantProducto;
@@ -29,7 +29,7 @@ public class Produccion {
         this.idCultivo = idCultivo;
     }
 
-    public String getId() { 
+    public int getId() { 
         return id; 
     }
     public LocalDate getFecha() { 
