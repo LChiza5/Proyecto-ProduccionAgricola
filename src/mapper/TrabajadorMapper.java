@@ -5,6 +5,7 @@
 package mapper;
 
 import Modelo.Trabajador;
+import dto.TrabajadorDTO;
 
 /**
  *

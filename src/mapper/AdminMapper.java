@@ -5,6 +5,7 @@
 package mapper;
 
 import Modelo.Admin;
+import dto.AdminDTO;
 
 /**
  *

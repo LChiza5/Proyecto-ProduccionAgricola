@@ -5,6 +5,7 @@
 package mapper;
 
 import Modelo.Almacenamiento;
+import dto.AlmacenamientoDTO;
 
 /**
  *

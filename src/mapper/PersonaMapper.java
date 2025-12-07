@@ -5,6 +5,7 @@
 package mapper;
 
 import Modelo.Persona;
+import dto.PersonaDTO;
 
 /**
  *
