@@ -11,13 +11,13 @@ import java.time.LocalDate;
  * @author sebas
  */
 public class Almacenamiento {
-    private String id;
+    private int id;
     private String idProduccion; // o idCultivo, según el diseño
     private int cantidad;
     private LocalDate ingreso;
     private LocalDate egreso;
 
-    public Almacenamiento(String id, String idProduccion, int cantidad, LocalDate ingreso, LocalDate egreso) {
+    public Almacenamiento(int id, String idProduccion, int cantidad, LocalDate ingreso, LocalDate egreso) {
         this.id = id;
         this.idProduccion = idProduccion;
         this.cantidad = cantidad;
@@ -25,7 +25,7 @@ public class Almacenamiento {
         this.egreso = egreso;
     }
 
-    public String getId() { 
+    public int getId() { 
         return id; 
     }
     public String getIdProduccion() { 
