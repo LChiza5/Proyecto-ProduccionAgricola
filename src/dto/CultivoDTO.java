@@ -2,15 +2,16 @@
  * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
  * Click nbfs://nbhost/SystemFileSystem/Templates/Classes/Class.java to edit this template
  */
-package Modelo;
+package dto;
 
 import java.time.LocalDate;
 
 /**
  *
- * @author sebas
+ * @author ilope
  */
-public class Cultivo {
+public class CultivoDTO {
+    
     private String id;
     private String nombre;
     private String tipo;
@@ -19,7 +20,10 @@ public class Cultivo {
     private LocalDate fechaSiembra;
     private LocalDate fechaCosecha;
 
-    public Cultivo(String id, String nombre, String tipo, double areaSembrada, String estado, LocalDate fechaSiembra, LocalDate fechaCosecha) {
+    public CultivoDTO() {
+    }
+
+    public CultivoDTO(String id, String nombre, String tipo, double areaSembrada, String estado,LocalDate fechaSiembra, LocalDate fechaCosecha) {
         this.id = id;
         this.nombre = nombre;
         this.tipo = tipo;
@@ -29,61 +33,59 @@ public class Cultivo {
         this.fechaCosecha = fechaCosecha;
     }
 
-    public Cultivo(){
-    }
-
-    public String getId() { 
-        return id; 
-    }
-    public String getNombre() { 
-        return nombre; 
-    }
-    public String getTipo() { 
-        return tipo; 
-    }
-    public double getAreaSembrada() { 
-        return areaSembrada; 
-    }
-    public String getEstado() { 
-        return estado; 
-    }
-    public LocalDate getFechaSiembra() { 
-        return fechaSiembra; 
-    }
-    public LocalDate getFechaCosecha() { 
-        return fechaCosecha; 
+    public String getId() {
+        return id;
     }
 
     public void setId(String id) {
         this.id = id;
     }
 
+    public String getNombre() {
+        return nombre;
+    }
+
     public void setNombre(String nombre) {
         this.nombre = nombre;
+    }
+
+    public String getTipo() {
+        return tipo;
     }
 
     public void setTipo(String tipo) {
         this.tipo = tipo;
     }
 
+    public double getAreaSembrada() {
+        return areaSembrada;
+    }
+
     public void setAreaSembrada(double areaSembrada) {
         this.areaSembrada = areaSembrada;
+    }
+
+    public String getEstado() {
+        return estado;
+    }
+
+    public void setEstado(String estado) {
+        this.estado = estado;
+    }
+
+    public LocalDate getFechaSiembra() {
+        return fechaSiembra;
     }
 
     public void setFechaSiembra(LocalDate fechaSiembra) {
         this.fechaSiembra = fechaSiembra;
     }
 
+    public LocalDate getFechaCosecha() {
+        return fechaCosecha;
+    }
+
     public void setFechaCosecha(LocalDate fechaCosecha) {
         this.fechaCosecha = fechaCosecha;
     }
-
-    public void setEstado(String estado) { 
-        this.estado = estado; }
-
-    @Override
-    public String toString() {
-        return nombre + " (" + tipo + ")";
-    }
-    
 }
