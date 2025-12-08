@@ -17,57 +17,79 @@ import java.util.List;
  *
  * @author Luisk
  */
-public class ProduccionDAOImpl implements ProduccionDAO{
-    private static final String INSERT_PRODUCCION_SQL =
-            "INSERT INTO produccion (fecha, id_cultivo, cantidad, destino, calidad) " +
+public class ProduccionDAOImpl implements ProduccionDAO {
+
+    private static final String INSERT_SQL =
+            "INSERT INTO produccion (fecha, cant_producto, calidad, destino, id_cultivo) " +
             "VALUES (?, ?, ?, ?, ?)";
 
+    private static final String UPDATE_SQL =
+            "UPDATE produccion SET fecha=?, cant_producto=?, calidad=?, destino=?, id_cultivo=? WHERE id=?";
+
+    private static final String DELETE_SQL =
+            "DELETE FROM produccion WHERE id=?";
+
     private static final String SELECT_BY_ID_SQL =
-            "SELECT id, fecha, id_cultivo, cantidad, destino, calidad " +
-            "FROM produccion WHERE id = ?";
+            "SELECT * FROM produccion WHERE id=?";
 
     private static final String SELECT_ALL_SQL =
-            "SELECT id, fecha, id_cultivo, cantidad, destino, calidad FROM produccion";
-
-    private static final String UPDATE_PRODUCCION_SQL =
-            "UPDATE produccion SET fecha = ?, id_cultivo = ?, cantidad = ?, destino = ?, calidad = ? " +
-            "WHERE id = ?";
-
-    private static final String DELETE_PRODUCCION_SQL =
-            "DELETE FROM produccion WHERE id = ?";
-
+            "SELECT * FROM produccion";
 
     @Override
-    public void crear(Produccion produccion) throws DAOException {
-        Connection cn = null;
-        PreparedStatement ps = null;
+    public void crear(Produccion p) throws DAOException {
+        try (Connection cn = ConexionBD.getInstancia().obtenerConexion();
+             PreparedStatement ps = cn.prepareStatement(INSERT_SQL, Statement.RETURN_GENERATED_KEYS)) {
 
-        try {
-            cn = ConexionBD.getInstancia().obtenerConexion();
-            cn.setAutoCommit(false);
+            ps.setDate(1, Date.valueOf(p.getFecha()));
+            ps.setInt(2, p.getCantProducto());
+            ps.setInt(3, p.getCalidad());
+            ps.setString(4, p.getDestino());
+            ps.setInt(5, p.getIdCultivo());
 
-            ps = cn.prepareStatement(INSERT_PRODUCCION_SQL);
-            ps.setDate(1, java.sql.Date.valueOf(produccion.getFecha()));
-            ps.setString(2, produccion.getIdCultivo());
-            ps.setDouble(3, produccion.getCantidad());
-            ps.setString(4, produccion.getDestino().name());
-            ps.setInt(5, produccion.getCalidad());
             ps.executeUpdate();
 
-            cn.commit();
+            try (ResultSet rs = ps.getGeneratedKeys()) {
+                if (rs.next()) {
+                    p.setId(rs.getInt(1));
+                }
+            }
 
         } catch (SQLException ex) {
-            if (cn != null) {
-                try { cn.rollback(); } catch (SQLException e2) {}
-            }
-            throw new DAOException("Error al crear producción.", ex);
-        } finally {
-            cerrar(ps);
-            restaurarAutoCommit(cn);
-            cerrar(cn);
+            throw new DAOException("Error al insertar producción", ex);
         }
     }
 
+    @Override
+    public void actualizar(Produccion p) throws DAOException {
+        try (Connection cn = ConexionBD.getInstancia().obtenerConexion();
+             PreparedStatement ps = cn.prepareStatement(UPDATE_SQL)) {
+
+            ps.setDate(1, Date.valueOf(p.getFecha()));
+            ps.setInt(2, p.getCantProducto());
+            ps.setInt(3, p.getCalidad());
+            ps.setString(4, p.getDestino());
+            ps.setInt(5, p.getIdCultivo());
+            ps.setInt(6, p.getId());
+
+            ps.executeUpdate();
+
+        } catch (SQLException ex) {
+            throw new DAOException("Error al actualizar producción", ex);
+        }
+    }
+
+    @Override
+    public void eliminar(int id) throws DAOException {
+        try (Connection cn = ConexionBD.getInstancia().obtenerConexion();
+             PreparedStatement ps = cn.prepareStatement(DELETE_SQL)) {
+
+            ps.setInt(1, id);
+            ps.executeUpdate();
+
+        } catch (SQLException ex) {
+            throw new DAOException("Error al eliminar producción", ex);
+        }
+    }
 
     @Override
     public Produccion buscarPorId(int id) throws DAOException {
@@ -78,46 +100,54 @@ public class ProduccionDAOImpl implements ProduccionDAO{
 
             try (ResultSet rs = ps.executeQuery()) {
                 if (rs.next()) {
-                    return mapResultSetToProduccion(rs);
+                    return map(rs);
                 }
             }
 
             return null;
 
         } catch (SQLException ex) {
-            throw new DAOException("Error al buscar producción por ID.", ex);
+            throw new DAOException("Error al buscar producción", ex);
         }
     }
 
+    @Override
+    public List<Produccion> listarTodos() throws DAOException {
+        List<Produccion> lista = new ArrayList<>();
+
+        try (Connection cn = ConexionBD.getInstancia().obtenerConexion();
+             PreparedStatement ps = cn.prepareStatement(SELECT_ALL_SQL);
+             ResultSet rs = ps.executeQuery()) {
+
+            while (rs.next()) lista.add(map(rs));
+
+        } catch (SQLException ex) {
+            throw new DAOException("Error al listar producciones", ex);
+        }
+
+        return lista;
+    }
 
     @Override
-    public List<Produccion> buscarConFiltros(
-            LocalDate fechaDesde,
-            LocalDate fechaHasta,
-            String idCultivo,
-            String destino,
-            Integer calidadMinima,
-            Integer calidadMaxima
-    ) throws DAOException {
+    public List<Produccion> buscarConFiltros(LocalDate fechaDesde,
+                                             LocalDate fechaHasta,
+                                             Integer idCultivo,
+                                             String destino) throws DAOException {
 
-        StringBuilder sql = new StringBuilder(
-                "SELECT id, fecha, id_cultivo, cantidad, destino, calidad " +
-                "FROM produccion WHERE 1=1"
-        );
-
+        StringBuilder sql = new StringBuilder("SELECT * FROM produccion WHERE 1=1");
         List<Object> params = new ArrayList<>();
 
         if (fechaDesde != null) {
             sql.append(" AND fecha >= ?");
-            params.add(java.sql.Date.valueOf(fechaDesde));
+            params.add(Date.valueOf(fechaDesde));
         }
 
         if (fechaHasta != null) {
             sql.append(" AND fecha <= ?");
-            params.add(java.sql.Date.valueOf(fechaHasta));
+            params.add(Date.valueOf(fechaHasta));
         }
 
-        if (idCultivo != null && !idCultivo.isBlank()) {
+        if (idCultivo != null) {
             sql.append(" AND id_cultivo = ?");
             params.add(idCultivo);
         }
@@ -125,16 +155,6 @@ public class ProduccionDAOImpl implements ProduccionDAO{
         if (destino != null && !destino.isBlank()) {
             sql.append(" AND destino = ?");
             params.add(destino);
-        }
-
-        if (calidadMinima != null) {
-            sql.append(" AND calidad >= ?");
-            params.add(calidadMinima);
-        }
-
-        if (calidadMaxima != null) {
-            sql.append(" AND calidad <= ?");
-            params.add(calidadMaxima);
         }
 
         List<Produccion> lista = new ArrayList<>();
@@ -147,132 +167,30 @@ public class ProduccionDAOImpl implements ProduccionDAO{
             }
 
             try (ResultSet rs = ps.executeQuery()) {
-                while (rs.next()) {
-                    lista.add(mapResultSetToProduccion(rs));
-                }
+                while (rs.next()) lista.add(map(rs));
             }
 
         } catch (SQLException ex) {
-            throw new DAOException("Error al buscar producciones con filtros.", ex);
+            throw new DAOException("Error al filtrar producción", ex);
         }
 
         return lista;
     }
 
-
-    @Override
-    public List<Produccion> listarTodas() throws DAOException {
-        List<Produccion> lista = new ArrayList<>();
-
-        try (Connection cn = ConexionBD.getInstancia().obtenerConexion();
-             PreparedStatement ps = cn.prepareStatement(SELECT_ALL_SQL);
-             ResultSet rs = ps.executeQuery()) {
-
-            while (rs.next()) {
-                lista.add(mapResultSetToProduccion(rs));
-            }
-
-        } catch (SQLException ex) {
-            throw new DAOException("Error al listar todas las producciones.", ex);
-        }
-
-        return lista;
-    }
-
-
-    @Override
-    public void actualizar(Produccion produccion) throws DAOException {
-        Connection cn = null;
-        PreparedStatement ps = null;
-
-        try {
-            cn = ConexionBD.getInstancia().obtenerConexion();
-            cn.setAutoCommit(false);
-
-            ps = cn.prepareStatement(UPDATE_PRODUCCION_SQL);
-            ps.setDate(1, java.sql.Date.valueOf(produccion.getFecha()));
-            ps.setString(2, produccion.getIdCultivo());
-            ps.setDouble(3, produccion.getCantidad());
-            ps.setString(4, produccion.getDestino().name());
-            ps.setInt(5, produccion.getCalidad());
-            ps.setInt(6, produccion.getId());
-            ps.executeUpdate();
-
-            cn.commit();
-
-        } catch (SQLException ex) {
-            if (cn != null) {
-                try { cn.rollback(); } catch (SQLException e2) {}
-            }
-            throw new DAOException("Error al actualizar producción.", ex);
-        } finally {
-            cerrar(ps);
-            restaurarAutoCommit(cn);
-            cerrar(cn);
-        }
-    }
-
-
-    @Override
-    public void eliminar(int id) throws DAOException {
-        Connection cn = null;
-        PreparedStatement ps = null;
-
-        try {
-            cn = ConexionBD.getInstancia().obtenerConexion();
-            cn.setAutoCommit(false);
-
-            ps = cn.prepareStatement(DELETE_PRODUCCION_SQL);
-            ps.setInt(1, id);
-            ps.executeUpdate();
-
-            cn.commit();
-
-        } catch (SQLException ex) {
-            if (cn != null) {
-                try { cn.rollback(); } catch (SQLException e2) {}
-            }
-            throw new DAOException("Error al eliminar producción.", ex);
-        } finally {
-            cerrar(ps);
-            restaurarAutoCommit(cn);
-            cerrar(cn);
-        }
-    }
-
-
-    // =================== Métodos auxiliares ===================
-
-    private Produccion mapResultSetToProduccion(ResultSet rs) throws SQLException {
+    private Produccion map(ResultSet rs) throws SQLException {
         int id = rs.getInt("id");
         LocalDate fecha = rs.getDate("fecha").toLocalDate();
-        String idCultivo = rs.getString("id_cultivo");
-        double cantidad = rs.getDouble("cantidad");
-        String destinoStr = rs.getString("destino");
+        int cantProducto = rs.getInt("cant_producto");
         int calidad = rs.getInt("calidad");
+        String destino = rs.getString("destino");
+        int idCultivo = rs.getInt("id_cultivo");
 
-        EnuDestino destino = EnuDestino.valueOf(destinoStr);
+        int productividad = cantProducto > 0
+                ? (int) Math.round((double) calidad / cantProducto * 100)
+                : 0;
 
-        return new Produccion(
-                id,
-                fecha,
-                idCultivo,
-                cantidad,
-                destino,
-                calidad
-        );
-    }
-
-
-    private void cerrar(AutoCloseable c) {
-        if (c != null) {
-            try { c.close(); } catch (Exception e) {}
-        }
-    }
-
-    private void restaurarAutoCommit(Connection cn) {
-        if (cn != null) {
-            try { cn.setAutoCommit(true); } catch (SQLException e) {}
-        }
+        return new Produccion(id, fecha, cantProducto, calidad, productividad, destino, idCultivo);
     }
 }
+
+

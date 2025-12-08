@@ -11,18 +11,21 @@ import java.time.LocalDate;
  * @author Luisk
  */
 public class ProduccionDTO {
-    private int id;
+    
+    private Integer  id;
     private LocalDate fecha;
-    private int cantProducto;
-    private int calidad;
-    private int productividad; // No va en BD
-    private String destino;
-    private String idCultivo;
+    private int cantProducto;    
+    private int calidad;         
+    private int productividad;   
+    private String destino;      
+    private int idCultivo;    
 
     public ProduccionDTO() {
     }
 
-    public ProduccionDTO(int id, LocalDate fecha, int cantProducto, int calidad, int productividad, String destino, String idCultivo) {
+    public ProduccionDTO(int id, LocalDate fecha, int cantProducto,
+                         int calidad, int productividad, String destino,
+                         int idCultivo) {
         this.id = id;
         this.fecha = fecha;
         this.cantProducto = cantProducto;
@@ -31,6 +34,8 @@ public class ProduccionDTO {
         this.destino = destino;
         this.idCultivo = idCultivo;
     }
+
+    // =============== Getters y setters ===============
 
     public int getId() {
         return id;
@@ -80,11 +85,12 @@ public class ProduccionDTO {
         this.destino = destino;
     }
 
-    public String getIdCultivo() {
+    public int getIdCultivo() {
         return idCultivo;
     }
 
-    public void setIdCultivo(String idCultivo) {
+    public void setIdCultivo(int idCultivo) {
         this.idCultivo = idCultivo;
     }
+    
 }

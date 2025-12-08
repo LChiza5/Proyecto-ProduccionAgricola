@@ -17,9 +17,9 @@ public class Produccion {
     private int calidad;
     private int productividad; // No va en BD
     private String destino;
-    private String idCultivo;
+    private int idCultivo;
 
-    public Produccion(int id, LocalDate fecha, int cantProducto, int calidad, int productividad, String destino, String idCultivo) {
+    public Produccion(int id, LocalDate fecha, int cantProducto, int calidad, int productividad, String destino, int idCultivo) {
         this.id = id;
         this.fecha = fecha;
         this.cantProducto = cantProducto;
@@ -47,14 +47,35 @@ public class Produccion {
     public String getDestino() { 
         return destino; 
     }
-    public String getIdCultivo() { 
+    public int getIdCultivo() { 
         return idCultivo; 
     }
 
     public void setDestino(String destino) { 
         this.destino = destino; 
     }
-    public void setIdCultivo(String idCultivo) { 
+    public void setIdCultivo(int idCultivo) { 
         this.idCultivo = idCultivo; 
     }
+
+    public void setId(int id) {
+        this.id = id;
+    }
+
+    public void setFecha(LocalDate fecha) {
+        this.fecha = fecha;
+    }
+
+    public void setCantProducto(int cantProducto) {
+        this.cantProducto = cantProducto;
+    }
+
+    public void setCalidad(int calidad) {
+        this.calidad = calidad;
+    }
+
+    public void setProductividad(int productividad) {
+        this.productividad = productividad;
+    }
+    
 }

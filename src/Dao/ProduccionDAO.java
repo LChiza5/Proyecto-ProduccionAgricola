@@ -15,31 +15,26 @@ import java.util.List;
  * @author ilope
  */
 public interface ProduccionDAO {
-    void crear(Produccion produccion) throws DAOException;
-
-    Produccion buscarPorId(int id) throws DAOException;
-
-    /**
-     * Búsqueda con filtros combinados:
-     *  - Rango de fechas
-     *  - Cultivo
-     *  - Destino (VENTA / ALMACENAMIENTO)
-     *  - Rango de calidad
-     * 
-     * Los parámetros pueden ser null para ser ignorados.
-     */
-    List<Produccion> buscarConFiltros(
-            LocalDate fechaDesde,
-            LocalDate fechaHasta,
-            String idCultivo,
-            String destino,
-            Integer calidadMinima,
-            Integer calidadMaxima
-    ) throws DAOException;
-
-    List<Produccion> listarTodas() throws DAOException;
+void crear(Produccion produccion) throws DAOException;
 
     void actualizar(Produccion produccion) throws DAOException;
 
     void eliminar(int id) throws DAOException;
+
+    Produccion buscarPorId(int id) throws DAOException;
+
+    List<Produccion> listarTodos() throws DAOException;
+
+    /**
+     * Búsqueda con filtros:
+     *  - fechaDesde / fechaHasta: rango de fechas (pueden ser null)
+     *  - idCultivo: filtrar por cultivo (puede ser null)
+     *  - destino: "VENTA" / "ALMACENAMIENTO" (puede ser null)
+     */
+    List<Produccion> buscarConFiltros(
+            LocalDate fechaDesde,
+            LocalDate fechaHasta,
+            Integer idCultivo,
+            String destino
+    ) throws DAOException;
 }
