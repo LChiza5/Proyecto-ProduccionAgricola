@@ -22,7 +22,7 @@ public class AdminMapper {
         dto.setTelefono(entidad.getTelefono());
         dto.setCorreo(entidad.getCorreo());
         dto.setRol(entidad.getRol());
-        dto.setContrasena(entidad.getContrasena());
+        dto.setContrasena(entidad.getContrasenaHash());
         return dto;
     }
 
