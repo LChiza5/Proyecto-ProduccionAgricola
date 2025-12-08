@@ -11,7 +11,7 @@ package Modelo;
 public class Usuario extends Persona{
     private String contrasenaHash;
 
-        public Usuario(String contrasenaHash, String id, String nombre,String telefono, String correo, EnuRol rol) {
+        public Usuario( String id, String nombre, String contrasenaHash,String telefono, String correo, EnuRol rol) {
         super(id, nombre, telefono, correo, rol);
         this.contrasenaHash = contrasenaHash;
     }

@@ -5,12 +5,25 @@
 package Controlador;
 
 import Vista.FrmLogin;
+import servicio.ValidarLoginServicio;
 
 /**
  *
  * @author sebas
  */
 public class LoginControlador {
-    
+    private final ValidarLoginServicio servicio;
     private final FrmLogin vista;
+
+    public LoginControlador(ValidarLoginServicio servicio, FrmLogin vista) {
+        this.servicio = servicio;
+        this.vista = vista;
+    }
+    
+    public boolean verificarLogin(String usuario, String contra){
+        return servicio.validarLogIn(usuario, contra);
+    }
+    
+    
+    
 }

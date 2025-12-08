@@ -27,6 +27,9 @@ public class AdminDAOImpl implements AdminDAO {
 
     private static final String SELECT_BY_CORREO_SQL =
             "SELECT id, nombre, telefono, correo, rol FROM persona WHERE correo = ?";
+    
+    private static final String SELECT_BY_NOMBRE_SQL =
+            "SELECT id, nombre, telefono, correo, rol FROM persona WHERE nombre = ?";
 
     private static final String SELECT_ALL_SQL =
             "SELECT id, nombre, telefono, correo, rol FROM persona";
@@ -94,6 +97,26 @@ public class AdminDAOImpl implements AdminDAO {
              PreparedStatement ps = cn.prepareStatement(SELECT_BY_CORREO_SQL)) {
 
             ps.setString(1, correo);
+
+            try (ResultSet rs = ps.executeQuery()) {
+                if (rs.next()) {
+                    return mapResultSetToUsuario(rs);
+                }
+            }
+
+            return null;
+
+        } catch (SQLException ex) {
+            throw new DAOException("Error al buscar administrador por correo.", ex);
+        }
+    }
+    
+        @Override
+    public Usuario buscarPorNombre(String nombre) throws DAOException {
+        try (Connection cn = ConexionBD.getInstancia().obtenerConexion();
+             PreparedStatement ps = cn.prepareStatement(SELECT_BY_NOMBRE_SQL)) {
+
+            ps.setString(1, nombre);
 
             try (ResultSet rs = ps.executeQuery()) {
                 if (rs.next()) {
@@ -190,13 +213,15 @@ public class AdminDAOImpl implements AdminDAO {
     private Usuario mapResultSetToUsuario(ResultSet rs) throws SQLException {
         String id = rs.getString("id");
         String nombre = rs.getString("nombre");
+        String contrasena = rs.getString("contrasena");
         String telefono = rs.getString("telefono");
         String correo = rs.getString("correo");
         EnuRol rol = EnuRol.valueOf(rs.getString("rol"));
-
+        
         return new Usuario(
                 id,
                 nombre,
+                contrasena,
                 telefono,
                 correo,
                 rol

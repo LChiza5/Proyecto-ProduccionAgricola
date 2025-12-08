@@ -19,6 +19,8 @@ public interface AdminDAO {
     Usuario buscarPorId(String id) throws DAOException;
 
     Usuario buscarPorCorreo(String correo) throws DAOException;
+    
+    Usuario buscarPorNombre(String nombre) throws DAOException;
 
     List<Usuario> listarTodos() throws DAOException;
 
