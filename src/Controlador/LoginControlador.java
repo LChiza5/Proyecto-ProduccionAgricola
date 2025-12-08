@@ -4,10 +4,13 @@
  */
 package Controlador;
 
+import Vista.FrmLogin;
+
 /**
  *
  * @author sebas
  */
 public class LoginControlador {
     
+    private final FrmLogin vista;
 }

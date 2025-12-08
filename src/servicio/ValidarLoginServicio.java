@@ -8,6 +8,6 @@ package servicio;
  *
  * @author sebas
  */
-public class ValidarContraServicio {
+public class ValidarLoginServicio {
     
 }
