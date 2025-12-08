@@ -4,7 +4,7 @@
  */
 package mapper;
 
-import Modelo.Admin;
+import Modelo.Usuario;
 import dto.AdminDTO;
 
 /**
@@ -12,7 +12,7 @@ import dto.AdminDTO;
  * @author Luisk
  */
 public class AdminMapper {
-    public static AdminDTO toDTO(Admin entidad) {
+    public static AdminDTO toDTO(Usuario entidad) {
         if (entidad == null) {
             return null;
         }
@@ -26,11 +26,11 @@ public class AdminMapper {
         return dto;
     }
 
-    public static Admin toEntity(AdminDTO dto) {
+    public static Usuario toEntity(AdminDTO dto) {
         if (dto == null) {
             return null;
         }
-        Admin entidad = new Admin(
+        Usuario entidad = new Usuario(
             dto.getContrasena(),
             dto.getId(),
             dto.getNombre(),

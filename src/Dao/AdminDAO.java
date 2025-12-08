@@ -3,7 +3,7 @@
  * Click nbfs://nbhost/SystemFileSystem/Templates/Classes/Interface.java to edit this template
  */
 package Dao;
-import Modelo.Admin;
+import Modelo.Usuario;
 import Excepciones.DAOException;
 import java.util.List;
 /**
@@ -14,15 +14,15 @@ import java.util.List;
  * @author ilope
  */
 public interface AdminDAO {
-    void crear(Admin admin) throws DAOException;
+    void crear(Usuario admin) throws DAOException;
 
-    Admin buscarPorId(String id) throws DAOException;
+    Usuario buscarPorId(String id) throws DAOException;
 
-    Admin buscarPorCorreo(String correo) throws DAOException;
+    Usuario buscarPorCorreo(String correo) throws DAOException;
 
-    List<Admin> listarTodos() throws DAOException;
+    List<Usuario> listarTodos() throws DAOException;
 
-    void actualizar(Admin admin) throws DAOException;
+    void actualizar(Usuario admin) throws DAOException;
 
     void eliminar(String id) throws DAOException;
 }

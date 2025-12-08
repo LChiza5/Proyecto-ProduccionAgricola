@@ -8,10 +8,10 @@ package Modelo;
  *
  * @author sebas
  */
-public class Admin extends Persona{
+public class Usuario extends Persona{
     private String contrasena;
 
-        public Admin(String contrasena, String id, String nombre,String telefono, String correo, EnuRol rol) {
+        public Usuario(String contrasena, String id, String nombre,String telefono, String correo, EnuRol rol) {
         super(id, nombre, telefono, correo, rol);
         this.contrasena = contrasena;
     }
