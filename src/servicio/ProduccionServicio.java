@@ -74,14 +74,14 @@ import java.util.stream.Collectors;
     public List<ProduccionDTO> buscarConFiltros(
             LocalDate fechaDesde,
             LocalDate fechaHasta,
-            Integer idCultivo,
+            String idCultivo,
             String destino
     ) throws DAOException {
 
         List<Produccion> lista = produccionDAO.buscarConFiltros(
                 fechaDesde,
                 fechaHasta,
-                idCultivo, // aquí ya es Integer, null si no se filtra
+                (idCultivo != null && !idCultivo.isBlank()) ? idCultivo : null,
                 (destino != null && !destino.isBlank()) ? destino : null
         );
 
@@ -108,8 +108,8 @@ import java.util.stream.Collectors;
         if (dto.getDestino() == null || dto.getDestino().isBlank()) {
             throw new ValidacionException("El destino (VENTA o ALMACENAMIENTO) es obligatorio.");
         }
-        if (dto.getIdCultivo() <= 0) {
-            throw new ValidacionException("Debe seleccionar un cultivo válido.");
+        if (dto.getIdCultivo() == null || dto.getIdCultivo().isBlank()) {
+            throw new ValidacionException("Debe seleccionar un cultivo.");
         }
     }
 

@@ -16,21 +16,10 @@ import Modelo.Persona;
  * @author ilope
  */
 public interface UsuarioDAO {
- 
-    /**
-     * Busca un usuario por sus credenciales.
-     * 
-     * @param correo Correo ingresado en el login.
-     * @param contrasenaEnTextoPlano Contraseña en texto plano tal como la escribe el usuario.
-     *        La implementación se encargará de aplicar el mismo algoritmo de hash
-     *        que se usó al guardar la contraseña en la base de datos.
-     * @return Persona (con rol ADMIN o TRABAJADOR) si las credenciales son válidas;
-     *         null si no coinciden.
-     */
-    Persona buscarPorCredenciales(String correo, String contrasenaEnTextoPlano) throws DAOException;
 
     /**
-     * Verifica si ya existe un usuario con ese correo electrónico.
+     * Obtiene el usuario (persona + admin) por su ID (persona.id).
+     * Devuelve null si no existe o no tiene acceso.
      */
-    boolean existeCorreo(String correo) throws DAOException;
+    UsuarioDAO buscarPorId(String id) throws DAOException;
 }

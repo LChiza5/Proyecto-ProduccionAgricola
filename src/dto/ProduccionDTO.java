@@ -18,14 +18,14 @@ public class ProduccionDTO {
     private int calidad;         
     private int productividad;   
     private String destino;      
-    private int idCultivo;    
+    private String idCultivo;    
 
     public ProduccionDTO() {
     }
 
     public ProduccionDTO(int id, LocalDate fecha, int cantProducto,
                          int calidad, int productividad, String destino,
-                         int idCultivo) {
+                         String idCultivo) {
         this.id = id;
         this.fecha = fecha;
         this.cantProducto = cantProducto;
@@ -85,11 +85,11 @@ public class ProduccionDTO {
         this.destino = destino;
     }
 
-    public int getIdCultivo() {
+    public String getIdCultivo() {
         return idCultivo;
     }
 
-    public void setIdCultivo(int idCultivo) {
+    public void setIdCultivo(String idCultivo) {
         this.idCultivo = idCultivo;
     }
     

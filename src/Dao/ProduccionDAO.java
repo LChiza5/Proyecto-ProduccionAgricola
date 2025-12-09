@@ -34,7 +34,7 @@ void crear(Produccion produccion) throws DAOException;
     List<Produccion> buscarConFiltros(
             LocalDate fechaDesde,
             LocalDate fechaHasta,
-            Integer idCultivo,
+            String idCultivo,
             String destino
     ) throws DAOException;
 }

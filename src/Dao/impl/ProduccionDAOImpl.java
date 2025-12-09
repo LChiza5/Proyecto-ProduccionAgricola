@@ -44,7 +44,7 @@ public class ProduccionDAOImpl implements ProduccionDAO {
             ps.setInt(2, p.getCantProducto());
             ps.setInt(3, p.getCalidad());
             ps.setString(4, p.getDestino());
-            ps.setInt(5, p.getIdCultivo());
+            ps.setString(5, p.getIdCultivo());
 
             ps.executeUpdate();
 
@@ -68,7 +68,7 @@ public class ProduccionDAOImpl implements ProduccionDAO {
             ps.setInt(2, p.getCantProducto());
             ps.setInt(3, p.getCalidad());
             ps.setString(4, p.getDestino());
-            ps.setInt(5, p.getIdCultivo());
+            ps.setString(5, p.getIdCultivo());
             ps.setInt(6, p.getId());
 
             ps.executeUpdate();
@@ -131,7 +131,7 @@ public class ProduccionDAOImpl implements ProduccionDAO {
     @Override
     public List<Produccion> buscarConFiltros(LocalDate fechaDesde,
                                              LocalDate fechaHasta,
-                                             Integer idCultivo,
+                                             String idCultivo,
                                              String destino) throws DAOException {
 
         StringBuilder sql = new StringBuilder("SELECT * FROM produccion WHERE 1=1");
@@ -183,7 +183,7 @@ public class ProduccionDAOImpl implements ProduccionDAO {
         int cantProducto = rs.getInt("cant_producto");
         int calidad = rs.getInt("calidad");
         String destino = rs.getString("destino");
-        int idCultivo = rs.getInt("id_cultivo");
+        String idCultivo = rs.getString("id_cultivo");
 
         int productividad = cantProducto > 0
                 ? (int) Math.round((double) calidad / cantProducto * 100)
