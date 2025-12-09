@@ -5,21 +5,15 @@
 package Dao;
 
 import Excepciones.DAOException;
-import Modelo.Persona;
+import Modelo.Usuario;
 
 /**
- * DAO especializado para autenticación y validación de usuarios.
  * 
- * La implementación se encargará de:
- *  - Verificar correo y contraseña.
- *  - Consultar las tablas correspondientes (persona, admin, trabajador).
  * @author ilope
  */
 public interface UsuarioDAO {
 
-    /**
-     * Obtiene el usuario (persona + admin) por su ID (persona.id).
-     * Devuelve null si no existe o no tiene acceso.
-     */
-    UsuarioDAO buscarPorId(String id) throws DAOException;
+    Usuario buscarPorId(String id) throws DAOException;
+
+    void crear(Usuario usuario) throws DAOException;
 }

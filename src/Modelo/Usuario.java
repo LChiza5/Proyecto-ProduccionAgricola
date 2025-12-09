@@ -8,19 +8,22 @@ package Modelo;
  *
  * @author sebas
  */
-public class Usuario extends Persona{
+public class Usuario extends Persona {
     private String contrasenaHash;
 
-        public Usuario( String id, String nombre, String contrasenaHash,String telefono, String correo, EnuRol rol) {
+    public Usuario(String id, String nombre,
+                   String telefono, String correo,
+                   String contrasenaHash, EnuRol rol) {
+
         super(id, nombre, telefono, correo, rol);
         this.contrasenaHash = contrasenaHash;
     }
 
-
-    public String getContrasenaHash() { 
-        return contrasenaHash; 
+    public String getContrasenaHash() {
+        return contrasenaHash;
     }
-    public void setContrasena(String contrasena) { 
-        this.contrasenaHash = contrasena; 
+
+    public void setContrasenaHash(String contrasenaHash) {
+        this.contrasenaHash = contrasenaHash;
     }
 }

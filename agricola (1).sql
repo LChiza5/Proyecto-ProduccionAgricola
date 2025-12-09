@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Servidor: mariadb
--- Tiempo de generación: 08-12-2025 a las 04:48:20
+-- Tiempo de generación: 09-12-2025 a las 14:19:36
 -- Versión del servidor: 10.5.29-MariaDB-ubu2004
 -- Versión de PHP: 8.3.27
 
@@ -20,17 +20,6 @@ SET time_zone = "+00:00";
 --
 -- Base de datos: `agricola`
 --
-
--- --------------------------------------------------------
-
---
--- Estructura de tabla para la tabla `admin`
---
-
-CREATE TABLE `admin` (
-  `id` varchar(20) NOT NULL,
-  `contrasena_hash` varchar(255) NOT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 -- --------------------------------------------------------
 
@@ -83,6 +72,13 @@ CREATE TABLE `persona` (
   `rol` enum('ADMIN','TRABAJADOR') NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
+--
+-- Volcado de datos para la tabla `persona`
+--
+
+INSERT INTO `persona` (`id`, `nombre`, `telefono`, `correo`, `rol`) VALUES
+('1111', 'Admin Prin', '7000-0000', 'admiin@agricola.com', 'ADMIN');
+
 -- --------------------------------------------------------
 
 --
@@ -111,15 +107,27 @@ CREATE TABLE `trabajador` (
   `salario` decimal(10,2) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
+-- --------------------------------------------------------
+
+--
+-- Estructura de tabla para la tabla `usuario`
+--
+
+CREATE TABLE `usuario` (
+  `id` varchar(20) NOT NULL,
+  `contrasena_hash` varchar(255) NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+
+--
+-- Volcado de datos para la tabla `usuario`
+--
+
+INSERT INTO `usuario` (`id`, `contrasena_hash`) VALUES
+('1111', 'e04507b6c94d72d45887a9722bc944664484fe71f73b7f3e0b489e7351d6ad4d');
+
 --
 -- Índices para tablas volcadas
 --
-
---
--- Indices de la tabla `admin`
---
-ALTER TABLE `admin`
-  ADD PRIMARY KEY (`id`);
 
 --
 -- Indices de la tabla `almacenamiento`
@@ -155,6 +163,12 @@ ALTER TABLE `trabajador`
   ADD PRIMARY KEY (`id`);
 
 --
+-- Indices de la tabla `usuario`
+--
+ALTER TABLE `usuario`
+  ADD PRIMARY KEY (`id`);
+
+--
 -- AUTO_INCREMENT de las tablas volcadas
 --
 
@@ -175,12 +189,6 @@ ALTER TABLE `produccion`
 --
 
 --
--- Filtros para la tabla `admin`
---
-ALTER TABLE `admin`
-  ADD CONSTRAINT `fk_admin_persona` FOREIGN KEY (`id`) REFERENCES `persona` (`id`) ON DELETE CASCADE ON UPDATE CASCADE;
-
---
 -- Filtros para la tabla `almacenamiento`
 --
 ALTER TABLE `almacenamiento`
@@ -197,6 +205,12 @@ ALTER TABLE `produccion`
 --
 ALTER TABLE `trabajador`
   ADD CONSTRAINT `fk_trabajador_persona` FOREIGN KEY (`id`) REFERENCES `persona` (`id`) ON DELETE CASCADE ON UPDATE CASCADE;
+
+--
+-- Filtros para la tabla `usuario`
+--
+ALTER TABLE `usuario`
+  ADD CONSTRAINT `fk_usuario_persona` FOREIGN KEY (`id`) REFERENCES `persona` (`id`) ON DELETE CASCADE ON UPDATE CASCADE;
 COMMIT;
 
 /*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;

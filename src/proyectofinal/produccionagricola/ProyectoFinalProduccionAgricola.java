@@ -10,6 +10,7 @@ import Dao.CultivoDAO;
 import Dao.TrabajadorDAO;
 import Dao.impl.CultivoDAOImpl;
 import Dao.impl.TrabajadorDAOImpl;
+import Util.HashUtil;
 import Vista.FrmCultivos;
 import Vista.FrmTrabajadores;
 import servicio.CultivoServicio;
@@ -25,11 +26,7 @@ public class ProyectoFinalProduccionAgricola {
      * @param args the command line arguments
      */
     public static void main(String[] args) {
-        TrabajadorDAO dao = new TrabajadorDAOImpl();
-        TrabajadorServicio servicio = new TrabajadorServicio(dao);
-        FrmTrabajadores vista = new FrmTrabajadores();
-        TrabajadorControlador controlador = new TrabajadorControlador(servicio, vista);
-        controlador.iniciar();
+        System.out.println(HashUtil.sha256("Isaac123"));
     }
     
 }

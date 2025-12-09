@@ -5,6 +5,16 @@
 package Vista;
 
 import Controlador.LoginControlador;
+import Dao.UsuarioDAO;
+import Dao.impl.UsuarioDAOImpl;
+import Excepciones.DAOException;
+import Excepciones.ValidacionException;
+import Infraestructura.ConexionBD;
+import Modelo.Usuario;
+import javax.swing.JButton;
+import javax.swing.JOptionPane;
+import javax.swing.JPasswordField;
+import javax.swing.JTextField;
 import servicio.ValidarLoginServicio;
 
 /**
@@ -12,38 +22,31 @@ import servicio.ValidarLoginServicio;
  * @author sebas
  */
 public class FrmLogin extends javax.swing.JFrame {
-        public static void main(String args[]) {
-        /* Set the Nimbus look and feel */
-        //<editor-fold defaultstate="collapsed" desc=" Look and feel setting code (optional) ">
-        /* If Nimbus (introduced in Java SE 6) is not available, stay with the default look and feel.
-         * For details see http://download.oracle.com/javase/tutorial/uiswing/lookandfeel/plaf.html 
-         */
-        try {
-            for (javax.swing.UIManager.LookAndFeelInfo info : javax.swing.UIManager.getInstalledLookAndFeels()) {
-                if ("Nimbus".equals(info.getName())) {
-                    javax.swing.UIManager.setLookAndFeel(info.getClassName());
-                    break;
-                }
-            }
-        } catch (ReflectiveOperationException | javax.swing.UnsupportedLookAndFeelException ex) {
-            logger.log(java.util.logging.Level.SEVERE, null, ex);
-        }
-        //</editor-fold>
-
-        /* Create and display the form */
-        java.awt.EventQueue.invokeLater(() -> new FrmLogin().setVisible(true));
-    }
-    private static final java.util.logging.Logger logger = java.util.logging.Logger.getLogger(FrmLogin.class.getName());
-
-    LoginControlador controlador;
-    ValidarLoginServicio servicio;
+       private final ValidarLoginServicio servicioLogin;
+       private final LoginControlador controlador;
     /**
      * Creates new form FrmLogin
      */
     public FrmLogin() {
+         try {
+        // Forzar carga del driver y validar conexión
+        ConexionBD.getInstancia().obtenerConexion();
+    } catch (DAOException ex) {
+        JOptionPane.showMessageDialog(this,
+                "Error al iniciar la conexión con la base de datos:\n" + ex.getMessage(),
+                "Error crítico",
+                JOptionPane.ERROR_MESSAGE);
+        System.exit(1); // Cierra la app, no tiene sentido seguir
+    }
         initComponents();
-        servicio = new ValidarLoginServicio();
-        controlador = new LoginControlador(servicio, this);
+         // Crear DAO y servicio
+        UsuarioDAO usuarioDAO = new UsuarioDAOImpl();
+        this.servicioLogin = new ValidarLoginServicio(usuarioDAO);
+
+        // Pasar el servicio correcto al controlador
+        this.controlador = new LoginControlador(servicioLogin, this);
+
+        
     }
     /**
      * This method is called from within the constructor to initialize the form.
@@ -57,31 +60,22 @@ public class FrmLogin extends javax.swing.JFrame {
         jLabel1 = new javax.swing.JLabel();
         jLabel2 = new javax.swing.JLabel();
         jLabel3 = new javax.swing.JLabel();
-        txtUsuario = new javax.swing.JTextField();
-        txtContra = new javax.swing.JTextField();
-        btnAceptar = new javax.swing.JButton();
+        txtId = new javax.swing.JTextField();
+        btnIngresar = new javax.swing.JButton();
+        TxtPassword = new javax.swing.JPasswordField();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 
         jLabel1.setText("Producción agrícola");
 
-        jLabel2.setText("Usuario:");
+        jLabel2.setText("ID");
 
         jLabel3.setText("Contraseña:");
 
-        txtUsuario.setText("ingrese el usuario");
-
-        txtContra.setText("ingrese la contraseña");
-        txtContra.addActionListener(new java.awt.event.ActionListener() {
+        btnIngresar.setText("Ingresar");
+        btnIngresar.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                txtContraActionPerformed(evt);
-            }
-        });
-
-        btnAceptar.setText("Aceptar");
-        btnAceptar.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                btnAceptarActionPerformed(evt);
+                btnIngresarActionPerformed(evt);
             }
         });
 
@@ -93,21 +87,21 @@ public class FrmLogin extends javax.swing.JFrame {
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(layout.createSequentialGroup()
                         .addGap(81, 81, 81)
-                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                            .addComponent(jLabel3, javax.swing.GroupLayout.DEFAULT_SIZE, 66, Short.MAX_VALUE)
-                            .addComponent(jLabel2, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addComponent(jLabel2, javax.swing.GroupLayout.PREFERRED_SIZE, 66, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(jLabel3))
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                            .addComponent(txtContra, javax.swing.GroupLayout.DEFAULT_SIZE, 170, Short.MAX_VALUE)
-                            .addComponent(txtUsuario)))
+                            .addComponent(txtId, javax.swing.GroupLayout.DEFAULT_SIZE, 170, Short.MAX_VALUE)
+                            .addComponent(TxtPassword)))
                     .addGroup(layout.createSequentialGroup()
                         .addGap(142, 142, 142)
                         .addComponent(jLabel1, javax.swing.GroupLayout.PREFERRED_SIZE, 115, javax.swing.GroupLayout.PREFERRED_SIZE)))
-                .addContainerGap(74, Short.MAX_VALUE))
+                .addContainerGap(72, Short.MAX_VALUE))
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
                 .addGap(0, 0, Short.MAX_VALUE)
-                .addComponent(btnAceptar)
-                .addGap(15, 15, 15))
+                .addComponent(btnIngresar)
+                .addGap(139, 139, 139))
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -117,51 +111,74 @@ public class FrmLogin extends javax.swing.JFrame {
                 .addGap(18, 18, 18)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jLabel2, javax.swing.GroupLayout.PREFERRED_SIZE, 40, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(txtUsuario, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addComponent(txtId, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addGap(18, 18, 18)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jLabel3, javax.swing.GroupLayout.PREFERRED_SIZE, 40, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(txtContra, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 46, Short.MAX_VALUE)
-                .addComponent(btnAceptar, javax.swing.GroupLayout.PREFERRED_SIZE, 40, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(17, 17, 17))
+                    .addComponent(TxtPassword, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addGap(18, 18, 18)
+                .addComponent(btnIngresar, javax.swing.GroupLayout.PREFERRED_SIZE, 40, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addContainerGap(45, Short.MAX_VALUE))
         );
 
         pack();
     }// </editor-fold>//GEN-END:initComponents
 
-    private void txtContraActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_txtContraActionPerformed
-        // TODO add your handling code here:
-    }//GEN-LAST:event_txtContraActionPerformed
-
-    private void btnAceptarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnAceptarActionPerformed
-        if (controlador.verificarLogin(txtUsuario.getText(), txtContra.getText())) {
-            javax.swing.JOptionPane.showMessageDialog(this, "Login correcto");
-            FrmTrabajadores frmTrabajadores = new FrmTrabajadores();
-            frmTrabajadores.dispose();
-            frmTrabajadores.setVisible(true);
-        }else{
-            javax.swing.JOptionPane.showMessageDialog(this, "Usuario o contraseña incorrectos");
-            limpiarCampos();
-        }
-        
-        
-    }//GEN-LAST:event_btnAceptarActionPerformed
+    private void btnIngresarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnIngresarActionPerformed
+   
+    }//GEN-LAST:event_btnIngresarActionPerformed
 
     /**
      * @param args the command line arguments
      */
+    private void abrirPrincipal(Usuario usuarioLogueado) {
+    FrmPrincipal frm = new FrmPrincipal(usuarioLogueado);
+    frm.setLocationRelativeTo(null);
+    frm.setVisible(true);
+    this.dispose(); // CIERRA LOGIN
+}
     private void limpiarCampos(){
-        txtUsuario.setText("");
-        txtContra.setText("");
+        txtId.setText("");
+        TxtPassword.setText("");
     }
     // Variables declaration - do not modify//GEN-BEGIN:variables
-    private javax.swing.JButton btnAceptar;
+    private javax.swing.JPasswordField TxtPassword;
+    private javax.swing.JButton btnIngresar;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel2;
     private javax.swing.JLabel jLabel3;
-    private javax.swing.JTextField txtContra;
-    private javax.swing.JTextField txtUsuario;
+    private javax.swing.JTextField txtId;
     // End of variables declaration//GEN-END:variables
+    
+    public JButton getBtnIngresar() {
+        return btnIngresar;
+    }
 
+    public JTextField getTxtId() {
+        return txtId;
+    }
+
+    public JPasswordField getTxtPassword() {
+        return TxtPassword;
+    }
+
+    
+    
+  public static void main(String args[]) {
+    try {
+        for (javax.swing.UIManager.LookAndFeelInfo info : javax.swing.UIManager.getInstalledLookAndFeels()) {
+            if ("Nimbus".equals(info.getName())) {
+                javax.swing.UIManager.setLookAndFeel(info.getClassName());
+                break;
+            }
+        }
+    } catch (Exception ex) {
+        ex.printStackTrace();
+    }
+
+    java.awt.EventQueue.invokeLater(() -> {
+        new FrmLogin().setVisible(true);
+    });
+}
+  
 }
