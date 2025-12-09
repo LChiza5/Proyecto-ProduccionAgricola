@@ -1,6 +1,6 @@
 /*
  * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
- * Click nbfs://nbhost/SystemFileSystem/Templates/GUIForms/JFrame.java to edit this template
+ * Click nbfs://nbhost/SystemFileSystem/Templates/GUIForms/JInternalFrame.java to edit this template
  */
 package Vista;
 
@@ -10,14 +10,12 @@ import javax.swing.JFormattedTextField;
 import javax.swing.JScrollPane;
 import javax.swing.JTable;
 import javax.swing.JTextField;
-import javax.swing.ListSelectionModel;
-import javax.swing.table.DefaultTableModel;
 
 /**
  *
  * @author ilope
  */
-public class FrmTrabajadores extends javax.swing.JFrame {
+public class FrmTrabajadores extends javax.swing.JInternalFrame {
 
     /**
      * Creates new form FrmTrabajadores
@@ -25,7 +23,7 @@ public class FrmTrabajadores extends javax.swing.JFrame {
     public FrmTrabajadores() {
         initComponents();
     }
-    
+
     /**
      * This method is called from within the constructor to initialize the form.
      * WARNING: Do NOT modify this code. The content of this method is always
@@ -35,6 +33,14 @@ public class FrmTrabajadores extends javax.swing.JFrame {
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
 
+        jPanel2 = new javax.swing.JPanel();
+        btnGuardar = new javax.swing.JButton();
+        btnActualizar = new javax.swing.JButton();
+        btnEliminar = new javax.swing.JButton();
+        btnBuscar = new javax.swing.JButton();
+        btnListar = new javax.swing.JButton();
+        btnLimpiar = new javax.swing.JButton();
+        btnBuscarFiltros = new javax.swing.JButton();
         jPanel1 = new javax.swing.JPanel();
         jLabel1 = new javax.swing.JLabel();
         jLabel2 = new javax.swing.JLabel();
@@ -54,16 +60,77 @@ public class FrmTrabajadores extends javax.swing.JFrame {
         jScrollPane1 = new javax.swing.JScrollPane();
         tblTrabajadores = new javax.swing.JTable();
         CmbFiltroPuesto = new javax.swing.JComboBox<>();
-        jPanel2 = new javax.swing.JPanel();
-        btnGuardar = new javax.swing.JButton();
-        btnActualizar = new javax.swing.JButton();
-        btnEliminar = new javax.swing.JButton();
-        btnBuscar = new javax.swing.JButton();
-        btnListar = new javax.swing.JButton();
-        btnLimpiar = new javax.swing.JButton();
-        btnBuscarFiltros = new javax.swing.JButton();
 
-        setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
+        setClosable(true);
+        setIconifiable(true);
+        setMaximizable(true);
+        setResizable(true);
+
+        jPanel2.setBorder(new javax.swing.border.LineBorder(new java.awt.Color(0, 0, 0), 3, true));
+
+        btnGuardar.setText("guardar");
+
+        btnActualizar.setText("Actualizar");
+
+        btnEliminar.setText("Eliminar");
+
+        btnBuscar.setText("Buscar");
+
+        btnListar.setText("Listar");
+
+        btnLimpiar.setText("Limpiar");
+
+        btnBuscarFiltros.setText("Filtro");
+        btnBuscarFiltros.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnBuscarFiltrosActionPerformed(evt);
+            }
+        });
+
+        javax.swing.GroupLayout jPanel2Layout = new javax.swing.GroupLayout(jPanel2);
+        jPanel2.setLayout(jPanel2Layout);
+        jPanel2Layout.setHorizontalGroup(
+            jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel2Layout.createSequentialGroup()
+                .addGap(84, 84, 84)
+                .addComponent(btnGuardar)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                    .addComponent(btnBuscarFiltros)
+                    .addComponent(btnBuscar))
+                .addGap(45, 45, 45)
+                .addComponent(btnListar)
+                .addGap(42, 42, 42)
+                .addComponent(btnLimpiar)
+                .addGap(197, 197, 197))
+            .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                .addGroup(jPanel2Layout.createSequentialGroup()
+                    .addGap(186, 186, 186)
+                    .addComponent(btnActualizar)
+                    .addGap(35, 35, 35)
+                    .addComponent(btnEliminar)
+                    .addContainerGap(531, Short.MAX_VALUE)))
+        );
+        jPanel2Layout.setVerticalGroup(
+            jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(jPanel2Layout.createSequentialGroup()
+                .addGap(40, 40, 40)
+                .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(btnGuardar)
+                    .addComponent(btnLimpiar)
+                    .addComponent(btnListar)
+                    .addComponent(btnBuscar))
+                .addGap(18, 18, 18)
+                .addComponent(btnBuscarFiltros)
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+            .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                .addGroup(jPanel2Layout.createSequentialGroup()
+                    .addGap(41, 41, 41)
+                    .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                        .addComponent(btnActualizar)
+                        .addComponent(btnEliminar))
+                    .addContainerGap(42, Short.MAX_VALUE)))
+        );
 
         jPanel1.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(0, 0, 0), 3));
 
@@ -144,7 +211,7 @@ public class FrmTrabajadores extends javax.swing.JFrame {
                             .addComponent(cmbPuesto, javax.swing.GroupLayout.PREFERRED_SIZE, 83, javax.swing.GroupLayout.PREFERRED_SIZE)
                             .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
                         .addGroup(jPanel1Layout.createSequentialGroup()
-                            .addGap(0, 6, Short.MAX_VALUE)
+                            .addGap(0, 0, Short.MAX_VALUE)
                             .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                                 .addComponent(jLabel1, javax.swing.GroupLayout.PREFERRED_SIZE, 50, javax.swing.GroupLayout.PREFERRED_SIZE)
                                 .addComponent(txtId, javax.swing.GroupLayout.PREFERRED_SIZE, 83, javax.swing.GroupLayout.PREFERRED_SIZE))
@@ -161,9 +228,8 @@ public class FrmTrabajadores extends javax.swing.JFrame {
                     .addComponent(jLabel4)
                     .addComponent(jLabel8)
                     .addComponent(jLabel7, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                    .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
-                        .addComponent(txtHorarios, javax.swing.GroupLayout.Alignment.LEADING)
-                        .addComponent(txtCorreo, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, 130, Short.MAX_VALUE))
+                    .addComponent(txtHorarios)
+                    .addComponent(txtCorreo)
                     .addComponent(CmbFiltroPuesto, 0, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
                 .addGap(26, 26, 26)
                 .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 418, javax.swing.GroupLayout.PREFERRED_SIZE)
@@ -206,72 +272,6 @@ public class FrmTrabajadores extends javax.swing.JFrame {
                 .addContainerGap(58, Short.MAX_VALUE))
         );
 
-        jPanel2.setBorder(new javax.swing.border.LineBorder(new java.awt.Color(0, 0, 0), 3, true));
-
-        btnGuardar.setText("guardar");
-
-        btnActualizar.setText("Actualizar");
-
-        btnEliminar.setText("Eliminar");
-
-        btnBuscar.setText("Buscar");
-
-        btnListar.setText("Listar");
-
-        btnLimpiar.setText("Limpiar");
-
-        btnBuscarFiltros.setText("Filtro");
-        btnBuscarFiltros.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                btnBuscarFiltrosActionPerformed(evt);
-            }
-        });
-
-        javax.swing.GroupLayout jPanel2Layout = new javax.swing.GroupLayout(jPanel2);
-        jPanel2.setLayout(jPanel2Layout);
-        jPanel2Layout.setHorizontalGroup(
-            jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel2Layout.createSequentialGroup()
-                .addGap(84, 84, 84)
-                .addComponent(btnGuardar)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-                    .addComponent(btnBuscarFiltros)
-                    .addComponent(btnBuscar))
-                .addGap(45, 45, 45)
-                .addComponent(btnListar)
-                .addGap(42, 42, 42)
-                .addComponent(btnLimpiar)
-                .addGap(197, 197, 197))
-            .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                .addGroup(jPanel2Layout.createSequentialGroup()
-                    .addGap(186, 186, 186)
-                    .addComponent(btnActualizar)
-                    .addGap(35, 35, 35)
-                    .addComponent(btnEliminar)
-                    .addContainerGap(531, Short.MAX_VALUE)))
-        );
-        jPanel2Layout.setVerticalGroup(
-            jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(jPanel2Layout.createSequentialGroup()
-                .addGap(40, 40, 40)
-                .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(btnGuardar)
-                    .addComponent(btnLimpiar)
-                    .addComponent(btnListar)
-                    .addComponent(btnBuscar))
-                .addGap(18, 18, 18)
-                .addComponent(btnBuscarFiltros)
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
-            .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                .addGroup(jPanel2Layout.createSequentialGroup()
-                    .addGap(41, 41, 41)
-                    .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                        .addComponent(btnActualizar)
-                        .addComponent(btnEliminar))
-                    .addContainerGap(42, Short.MAX_VALUE)))
-        );
-
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
@@ -292,18 +292,14 @@ public class FrmTrabajadores extends javax.swing.JFrame {
         pack();
     }// </editor-fold>//GEN-END:initComponents
 
+    private void btnBuscarFiltrosActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnBuscarFiltrosActionPerformed
+
+    }//GEN-LAST:event_btnBuscarFiltrosActionPerformed
+
     private void txtNombreActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_txtNombreActionPerformed
         // TODO add your handling code here:
     }//GEN-LAST:event_txtNombreActionPerformed
 
-    private void btnBuscarFiltrosActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnBuscarFiltrosActionPerformed
-    
-    }//GEN-LAST:event_btnBuscarFiltrosActionPerformed
-
-    /**
-     * @param args the command line arguments
-     */
-    
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JComboBox<String> CmbFiltroPuesto;
@@ -334,8 +330,7 @@ public class FrmTrabajadores extends javax.swing.JFrame {
     private javax.swing.JTextField txtNombre;
     private javax.swing.JTextField txtTelefono;
     // End of variables declaration//GEN-END:variables
-
-  public JTextField getTxtId() {
+public JTextField getTxtId() {
         return txtId;
     }
 
@@ -405,9 +400,4 @@ public class FrmTrabajadores extends javax.swing.JFrame {
         return tblTrabajadores;
     }
 
-    
-  
-    
 }
-
-

@@ -4,7 +4,16 @@
  */
 package Vista;
 
+import Controlador.MenuControlador;
+import Dao.CultivoDAO;
+import Dao.TrabajadorDAO;
+import Dao.impl.CultivoDAOImpl;
+import Dao.impl.TrabajadorDAOImpl;
 import Modelo.Usuario;
+import javax.swing.JButton;
+import javax.swing.JDesktopPane;
+import servicio.CultivoServicio;
+import servicio.TrabajadorServicio;
 
 /**
  *
@@ -15,10 +24,22 @@ public class FrmPrincipal extends javax.swing.JFrame {
     /**
      * Creates new form FrmPrincipal
      */
-    public FrmPrincipal(Usuario usuario) {
-        this.usuarioLogueado = usuario;
+    public FrmPrincipal(Usuario usuarioLogueado) {
+         this.usuarioLogueado = usuarioLogueado;
         initComponents();
         configurarSegunRol();
+
+        // Crear DAOs
+        CultivoDAO cultivoDAO = new CultivoDAOImpl();
+        TrabajadorDAO trabajadorDAO = new TrabajadorDAOImpl();
+
+        // Crear servicios
+        CultivoServicio cultivoServicio = new CultivoServicio(cultivoDAO);
+        TrabajadorServicio trabajadorServicio = new TrabajadorServicio(trabajadorDAO);
+
+        //Pasarlos al controlador del menú
+        new MenuControlador(usuarioLogueado, this, cultivoServicio, trabajadorServicio);
+    
     }
 
     /**
@@ -31,12 +52,12 @@ public class FrmPrincipal extends javax.swing.JFrame {
     private void initComponents() {
 
         jPanel1 = new javax.swing.JPanel();
-        jButton1 = new javax.swing.JButton();
-        jButton2 = new javax.swing.JButton();
-        jButton3 = new javax.swing.JButton();
+        btnCultivos = new javax.swing.JButton();
+        btnAlmacen = new javax.swing.JButton();
+        btnProduccion = new javax.swing.JButton();
         btnUsuarios = new javax.swing.JButton();
         btnTrabajadores = new javax.swing.JButton();
-        jButton6 = new javax.swing.JButton();
+        btnCerrarSesion = new javax.swing.JButton();
         jDesktopPane1 = new javax.swing.JDesktopPane();
         jLabel1 = new javax.swing.JLabel();
 
@@ -45,11 +66,11 @@ public class FrmPrincipal extends javax.swing.JFrame {
         jPanel1.setBackground(new java.awt.Color(0, 102, 0));
         jPanel1.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(255, 255, 255), 2));
 
-        jButton1.setText("Cultivos");
+        btnCultivos.setText("Cultivos");
 
-        jButton2.setText("Almacen");
+        btnAlmacen.setText("Almacen");
 
-        jButton3.setText("Produccion");
+        btnProduccion.setText("Produccion");
 
         btnUsuarios.setText("Usuarios");
 
@@ -60,7 +81,7 @@ public class FrmPrincipal extends javax.swing.JFrame {
             }
         });
 
-        jButton6.setText("Cerrar Sesion");
+        btnCerrarSesion.setText("Cerrar Sesion");
 
         javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
         jPanel1.setLayout(jPanel1Layout);
@@ -69,11 +90,11 @@ public class FrmPrincipal extends javax.swing.JFrame {
             .addGroup(jPanel1Layout.createSequentialGroup()
                 .addGap(30, 30, 30)
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(jButton6)
+                    .addComponent(btnCerrarSesion)
                     .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                        .addComponent(jButton3, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                        .addComponent(jButton2, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                        .addComponent(jButton1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                        .addComponent(btnProduccion, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                        .addComponent(btnAlmacen, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                        .addComponent(btnCultivos, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                         .addComponent(btnUsuarios, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                         .addComponent(btnTrabajadores, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)))
                 .addContainerGap(39, Short.MAX_VALUE))
@@ -82,17 +103,17 @@ public class FrmPrincipal extends javax.swing.JFrame {
             jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanel1Layout.createSequentialGroup()
                 .addGap(73, 73, 73)
-                .addComponent(jButton1)
+                .addComponent(btnCultivos)
                 .addGap(18, 18, 18)
-                .addComponent(jButton2)
+                .addComponent(btnAlmacen)
                 .addGap(18, 18, 18)
-                .addComponent(jButton3)
+                .addComponent(btnProduccion)
                 .addGap(18, 18, 18)
                 .addComponent(btnTrabajadores)
                 .addGap(18, 18, 18)
                 .addComponent(btnUsuarios)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 165, Short.MAX_VALUE)
-                .addComponent(jButton6)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addComponent(btnCerrarSesion)
                 .addGap(52, 52, 52))
         );
 
@@ -102,11 +123,11 @@ public class FrmPrincipal extends javax.swing.JFrame {
         jDesktopPane1.setLayout(jDesktopPane1Layout);
         jDesktopPane1Layout.setHorizontalGroup(
             jDesktopPane1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 525, Short.MAX_VALUE)
+            .addGap(0, 565, Short.MAX_VALUE)
         );
         jDesktopPane1Layout.setVerticalGroup(
             jDesktopPane1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 0, Short.MAX_VALUE)
+            .addGap(0, 868, Short.MAX_VALUE)
         );
 
         jLabel1.setBackground(new java.awt.Color(0, 102, 0));
@@ -125,17 +146,20 @@ public class FrmPrincipal extends javax.swing.JFrame {
                 .addComponent(jPanel1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(jDesktopPane1))
-            .addComponent(jLabel1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+            .addComponent(jLabel1, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
-                .addGap(0, 0, Short.MAX_VALUE)
                 .addComponent(jLabel1, javax.swing.GroupLayout.PREFERRED_SIZE, 30, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                    .addComponent(jPanel1, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                    .addComponent(jDesktopPane1, javax.swing.GroupLayout.Alignment.TRAILING)))
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(layout.createSequentialGroup()
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(jPanel1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                        .addComponent(jDesktopPane1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addContainerGap())))
         );
 
         pack();
@@ -156,14 +180,45 @@ public class FrmPrincipal extends javax.swing.JFrame {
     
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
+    private javax.swing.JButton btnAlmacen;
+    private javax.swing.JButton btnCerrarSesion;
+    private javax.swing.JButton btnCultivos;
+    private javax.swing.JButton btnProduccion;
     private javax.swing.JButton btnTrabajadores;
     private javax.swing.JButton btnUsuarios;
-    private javax.swing.JButton jButton1;
-    private javax.swing.JButton jButton2;
-    private javax.swing.JButton jButton3;
-    private javax.swing.JButton jButton6;
     private javax.swing.JDesktopPane jDesktopPane1;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JPanel jPanel1;
     // End of variables declaration//GEN-END:variables
+
+    public JButton getBtnAlmacen() {
+        return btnAlmacen;
+    }
+
+    public JButton getBtnCerrarSesion() {
+        return btnCerrarSesion;
+    }
+
+    public JButton getBtnCultivos() {
+        return btnCultivos;
+    }
+
+    public JButton getBtnTrabajadores() {
+        return btnTrabajadores;
+    }
+
+    public JButton getBtnUsuarios() {
+        return btnUsuarios;
+    }
+
+    public JDesktopPane getjDesktopPane1() {
+        return jDesktopPane1;
+    }
+
+    public JButton getBtnProduccion() {
+        return btnProduccion;
+    }
+
+   
+
 }

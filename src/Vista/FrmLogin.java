@@ -42,7 +42,7 @@ public class FrmLogin extends javax.swing.JFrame {
          // Crear DAO y servicio
         UsuarioDAO usuarioDAO = new UsuarioDAOImpl();
         this.servicioLogin = new ValidarLoginServicio(usuarioDAO);
-
+        
         // Pasar el servicio correcto al controlador
         this.controlador = new LoginControlador(servicioLogin, this);
 
