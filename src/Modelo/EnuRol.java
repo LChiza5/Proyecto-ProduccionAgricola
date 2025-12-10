@@ -10,5 +10,5 @@ package Modelo;
  */
 public enum EnuRol {
     ADMIN,
-    TRABAJADOR
+    USUARIO
 }

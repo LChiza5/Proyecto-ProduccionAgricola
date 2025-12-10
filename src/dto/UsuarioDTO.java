@@ -11,15 +11,19 @@ package dto;
 public class UsuarioDTO {
      private String id;
     private String nombre;
+    private String telefono;
     private String correo;
-    private String rol; // 'ADMIN' o 'TRABAJADOR'
+    private String contrasenaHash;
+    private String rol; // 'ADMIN' o 'USUARIO'
 
     public UsuarioDTO() { }
 
-    public UsuarioDTO(String id, String nombre, String correo, String rol) {
+    public UsuarioDTO(String id, String nombre, String telefono, String correo, String contrasenaHash, String rol) {
         this.id = id;
         this.nombre = nombre;
+        this.telefono = telefono;
         this.correo = correo;
+        this.contrasenaHash = contrasenaHash;
         this.rol = rol;
     }
 
@@ -27,31 +31,49 @@ public class UsuarioDTO {
         return id;
     }
 
-    public void setId(String id) {
-        this.id = id;
-    }
-
     public String getNombre() {
         return nombre;
     }
 
-    public void setNombre(String nombre) {
-        this.nombre = nombre;
+    public String getTelefono() {
+        return telefono;
     }
 
     public String getCorreo() {
         return correo;
     }
 
+    public String getContrasenaHash() {
+        return contrasenaHash;
+    }
+    
+    public String getRol() {
+        return rol;
+    }
+
+    public void setId(String id) {
+        this.id = id;
+    }
+
+    public void setNombre(String nombre) {
+        this.nombre = nombre;
+    }
+
+    public void setTelefono(String telefono) {
+        this.telefono = telefono;
+    }
+
     public void setCorreo(String correo) {
         this.correo = correo;
     }
 
-    public String getRol() {
-        return rol;
+    public void setContrasenaHash(String contrasenaHash) {
+        this.contrasenaHash = contrasenaHash;
     }
 
     public void setRol(String rol) {
         this.rol = rol;
     }
+    
+    
 }

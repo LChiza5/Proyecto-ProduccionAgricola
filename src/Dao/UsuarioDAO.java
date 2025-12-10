@@ -12,8 +12,12 @@ import Modelo.Usuario;
  * @author ilope
  */
 public interface UsuarioDAO {
-
+    
     Usuario buscarPorId(String id) throws DAOException;
 
     void crear(Usuario usuario) throws DAOException;
+    
+    void eliminar(Usuario usuario) throws DAOException;
+    
+    void actualizar(Usuario usuario) throws DAOException;
 }

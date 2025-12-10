@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Servidor: mariadb
--- Tiempo de generación: 09-12-2025 a las 22:16:51
+-- Tiempo de generación: 10-12-2025 a las 18:34:28
 -- Versión del servidor: 10.5.29-MariaDB-ubu2004
 -- Versión de PHP: 8.3.27
 
@@ -115,15 +115,19 @@ CREATE TABLE `trabajador` (
 
 CREATE TABLE `usuario` (
   `id` varchar(20) NOT NULL,
-  `contrasena_hash` varchar(255) NOT NULL
+  `nombre` varchar(100) NOT NULL,
+  `telefono` varchar(20) NOT NULL,
+  `correo` varchar(100) NOT NULL,
+  `contrasena_hash` varchar(255) NOT NULL,
+  `rol` enum('ADMIN','USUARIO') NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 --
 -- Volcado de datos para la tabla `usuario`
 --
 
-INSERT INTO `usuario` (`id`, `contrasena_hash`) VALUES
-('1111', 'e04507b6c94d72d45887a9722bc944664484fe71f73b7f3e0b489e7351d6ad4d');
+INSERT INTO `usuario` (`id`, `nombre`, `telefono`, `correo`, `contrasena_hash`, `rol`) VALUES
+('1111', '', '', '', 'e04507b6c94d72d45887a9722bc944664484fe71f73b7f3e0b489e7351d6ad4d', 'ADMIN');
 
 --
 -- Índices para tablas volcadas

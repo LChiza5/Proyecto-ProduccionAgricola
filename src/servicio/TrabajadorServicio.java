@@ -29,7 +29,7 @@ public class TrabajadorServicio {
     public void crearTrabajador(TrabajadorDTO dto) throws ValidacionException, DAOException {
         // Forzamos rol TRABAJADOR si no viene
         if (dto.getRol() == null) {
-            dto.setRol(EnuRol.TRABAJADOR);
+            dto.setRol(EnuRol.USUARIO);
         }
         validarTrabajador(dto);
 
@@ -42,7 +42,7 @@ public class TrabajadorServicio {
             throw new ValidacionException("La cédula/ID del trabajador es obligatoria para actualizar.");
         }
         if (dto.getRol() == null) {
-            dto.setRol(EnuRol.TRABAJADOR);
+            dto.setRol(EnuRol.USUARIO);
         }
         validarTrabajador(dto);
 

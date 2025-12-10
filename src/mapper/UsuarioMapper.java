@@ -4,39 +4,41 @@
  */
 package mapper;
 
+import Modelo.EnuRol;
 import Modelo.Usuario;
-import dto.AdminDTO;
+import dto.UsuarioDTO;
 
 /**
  *
  * @author Luisk
  */
-public class AdminMapper {
-    public static AdminDTO toDTO(Usuario entidad) {
-        if (entidad == null) {
+public class UsuarioMapper {
+    public static UsuarioDTO toDTO(Usuario e) {
+        if (e == null) {
             return null;
         }
-        AdminDTO dto = new AdminDTO();
-        dto.setId(entidad.getId());
-        dto.setNombre(entidad.getNombre());
-        dto.setTelefono(entidad.getTelefono());
-        dto.setCorreo(entidad.getCorreo());
-        dto.setRol(entidad.getRol());
-        dto.setContrasena(entidad.getContrasenaHash());
+        UsuarioDTO dto = new UsuarioDTO(
+        e.getId(),
+        e.getNombre(),
+        e.getTelefono(),
+        e.getCorreo(),
+        e.getContrasenaHash(),        
+        e.getRol().toString()
+        );
         return dto;
     }
 
-    public static Usuario toEntity(AdminDTO dto) {
+    public static Usuario toEntity(UsuarioDTO dto) {
         if (dto == null) {
             return null;
         }
         Usuario entidad = new Usuario(
-            dto.getContrasena(),
             dto.getId(),
             dto.getNombre(),
             dto.getTelefono(),
             dto.getCorreo(),
-            dto.getRol()
+            dto.getContrasenaHash(),    
+            EnuRol.valueOf(dto.getRol())
         );
         return entidad;
     }
