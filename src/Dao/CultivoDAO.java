@@ -22,16 +22,9 @@ public interface CultivoDAO {
      * Búsqueda avanzada por filtros.
      * Cualquier parámetro puede ser null o vacío; el DAO lo ignora.
      */
-    List<Cultivo> buscarConFiltros(
-            String nombre,
-            String tipo,
-            String estado,
-            LocalDate fechaSiembraDesde,
-            LocalDate fechaSiembraHasta,
-            LocalDate fechaCosechaDesde,
-            LocalDate fechaCosechaHasta
-    ) throws DAOException;
-
+    List<Cultivo> buscarConFiltros(String nombre, String tipo, String estado) 
+            throws DAOException;
+    List<String> obtenerTiposUnicos() throws DAOException;
     List<Cultivo> listarTodos() throws DAOException;
 
     void actualizar(Cultivo cultivo) throws DAOException;

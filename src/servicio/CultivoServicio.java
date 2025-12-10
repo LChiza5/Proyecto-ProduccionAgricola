@@ -9,8 +9,6 @@ import dto.CultivoDTO;
 import Excepciones.DAOException;
 import Excepciones.ValidacionException;
 import mapper.CultivoMapper;
-
-import java.time.LocalDate;
 import java.util.List;
 import java.util.stream.Collectors;
 /**
@@ -61,26 +59,15 @@ public class CultivoServicio {
                 .map(CultivoMapper::toDTO)
                 .collect(Collectors.toList());
     }
-
-    public List<CultivoDTO> buscarConFiltros(
-            String nombre,
-            String tipo,
-            String estado,
-            LocalDate fechaSiembraDesde,
-            LocalDate fechaSiembraHasta,
-            LocalDate fechaCosechaDesde,
-            LocalDate fechaCosechaHasta
-    ) throws DAOException {
-
-        List<Cultivo> lista = cultivoDAO.buscarConFiltros(
-                nombre, tipo, estado,
-                fechaSiembraDesde, fechaSiembraHasta,
-                fechaCosechaDesde, fechaCosechaHasta
-        );
-
-        return lista.stream()
+   public List<CultivoDTO> buscarConFiltros(String nombre, String tipo, String estado) throws DAOException {
+        return cultivoDAO.buscarConFiltros(nombre, tipo, estado)
+                .stream()
                 .map(CultivoMapper::toDTO)
-                .collect(Collectors.toList());
+                .toList();
+    }
+
+    public List<String> obtenerTiposUnicos() throws DAOException {
+        return cultivoDAO.obtenerTiposUnicos();
     }
 
     /**

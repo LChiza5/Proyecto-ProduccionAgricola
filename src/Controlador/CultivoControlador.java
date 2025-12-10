@@ -6,14 +6,12 @@ package Controlador;
 import dto.CultivoDTO;
 import Excepciones.DAOException;
 import Excepciones.ValidacionException;
+import Vista.DlgCultivosBusqueda;
 import servicio.CultivoServicio;
 import Vista.FrmCultivos;
-
 import javax.swing.*;
-import javax.swing.table.DefaultTableModel;
 import java.time.LocalDate;
-import java.time.format.DateTimeParseException;
-import java.util.List;
+import java.time.format.DateTimeParseException;;
 /**
  *
  * @author ilope
@@ -26,36 +24,26 @@ public class CultivoControlador {
         this.servicio = servicio;
         this.vista = vista;
         inicializarEventos();
-        configurarTabla();
     }
 
     private void inicializarEventos() {
         vista.getBtnGuardar().addActionListener(e -> guardarCultivo());
         vista.getBtnActualizar().addActionListener(e -> actualizarCultivo());
         vista.getBtnEliminar().addActionListener(e -> eliminarCultivo());
-        vista.getBtnBuscar().addActionListener(e -> buscarCultivoPorId());
-        vista.getBtnListar().addActionListener(e -> listarTodos());
+        vista.getBtnBuscar().addActionListener(e -> abrirDialogoBusqueda());
         vista.getBtnLimpiar().addActionListener(e -> limpiarFormulario());
-
-        // Cuando seleccionas una fila en la tabla, cargar los datos al formulario
-        vista.getTblCultivos().getSelectionModel().addListSelectionListener(e -> {
-            if (!e.getValueIsAdjusting()) {
-                cargarCultivoDesdeTabla();
-            }
-        });
     }
 
-    private void configurarTabla() {
-        // Forzamos el modelo con las columnas correctas
-        DefaultTableModel modelo = new DefaultTableModel(
-                new Object[]{"ID", "Nombre", "Tipo", "Área", "Estado", "Siembra"}, 0
-        );
-        vista.getTblCultivos().setModel(modelo);
+    private void abrirDialogoBusqueda() {
+        DlgCultivosBusqueda dialogo = new DlgCultivosBusqueda(vista, true);
+        CultivoBusquedaControlador ctrlBusqueda =
+                new CultivoBusquedaControlador(servicio, dialogo, this);
+        ctrlBusqueda.mostrar();
     }
 
     public void iniciar() {
         vista.setVisible(true);
-        listarTodos();
+        
     }
 
     // ======================= Acciones de los botones =======================
@@ -65,7 +53,6 @@ public class CultivoControlador {
             CultivoDTO dto = leerCultivoDesdeFormulario();
             servicio.crearCultivo(dto);
             mostrarMensaje("Cultivo registrado correctamente.");
-            listarTodos();
             limpiarFormulario();
         } catch (ValidacionException | DAOException ex) {
             mostrarError("Error al guardar el cultivo: " + ex.getMessage());
@@ -79,7 +66,6 @@ public class CultivoControlador {
             CultivoDTO dto = leerCultivoDesdeFormulario();
             servicio.actualizarCultivo(dto);
             mostrarMensaje("Cultivo actualizado correctamente.");
-            listarTodos();
         } catch (ValidacionException | DAOException ex) {
             mostrarError("Error al actualizar el cultivo: " + ex.getMessage());
         } catch (NumberFormatException | DateTimeParseException ex) {
@@ -105,50 +91,11 @@ public class CultivoControlador {
             try {
                 servicio.eliminarCultivo(id);
                 mostrarMensaje("Cultivo eliminado correctamente.");
-                listarTodos();
                 limpiarFormulario();
             } catch (ValidacionException | DAOException ex) {
                 mostrarError("Error al eliminar el cultivo: " + ex.getMessage());
             }
         }
-    }
-
-    private void buscarCultivoPorId() {
-        String id = vista.getTxtId().getText().trim();
-        if (id.isBlank()) {
-            mostrarError("Debe ingresar un ID para buscar.");
-            return;
-        }
-
-        try {
-            CultivoDTO dto = servicio.buscarPorId(id);
-            if (dto == null) {
-                mostrarMensaje("No se encontró un cultivo con ese ID.");
-                return;
-            }
-            cargarCultivoEnFormulario(dto);
-        } catch (DAOException ex) {
-            mostrarError("Error al buscar el cultivo: " + ex.getMessage());
-        }
-    }
-
-    private void listarTodos() {
-        try {
-            List<CultivoDTO> lista = servicio.listarTodos();
-            cargarTabla(lista);
-        } catch (DAOException ex) {
-            mostrarError("Error al listar los cultivos: " + ex.getMessage());
-        }
-    }
-
-    private void limpiarFormulario() {
-        vista.getTxtId().setText("");
-        vista.getTxtNombre().setText("");
-        vista.getCmbTipo().setSelectedIndex(-1);
-        vista.getFtxtAreaSembrada().setValue(null);
-        vista.getCmbEstado().setSelectedIndex(-1);
-        vista.getFtxtFechaSiembra().setValue(null);
-        vista.getTblCultivos().clearSelection();
     }
 
     // ======================= Métodos de apoyo =======================
@@ -167,11 +114,10 @@ public class CultivoControlador {
             estado = vista.getCmbEstado().getSelectedItem().toString().trim();
         }
 
-        // Área sembrada: viene del JFormattedTextField
+        // Área sembrada
         String areaStr = vista.getFtxtAreaSembrada().getText().trim();
         double area = 0;
         if (!areaStr.isBlank()) {
-            // Reemplazar coma por punto si el usuario la usa
             areaStr = areaStr.replace(",", ".");
             area = Double.parseDouble(areaStr);
         }
@@ -183,7 +129,13 @@ public class CultivoControlador {
             fechaSiembra = LocalDate.parse(fechaSiembraStr);
         }
 
-        // De momento no capturamos fecha de cosecha desde la vista (puede ser null)
+        // Fecha cosecha (si la usas)
+        String fechaCosechaStr = vista.getFtxtFechaCosecha().getText().trim();
+        LocalDate fechaCosecha = null;
+        if (!fechaCosechaStr.isBlank() && !fechaCosechaStr.contains("_")) {
+            fechaCosecha = LocalDate.parse(fechaCosechaStr);
+        }
+
         return new CultivoDTO(
                 id,
                 nombre,
@@ -191,74 +143,42 @@ public class CultivoControlador {
                 area,
                 estado,
                 fechaSiembra,
-                null // fechaCosecha
+                fechaCosecha
         );
     }
 
-    private void cargarCultivoEnFormulario(CultivoDTO dto) {
+    public void cargarCultivoEnFormulario(CultivoDTO dto) {
         vista.getTxtId().setText(dto.getId());
         vista.getTxtNombre().setText(dto.getNombre());
-
-        if (dto.getTipo() != null) {
-            vista.getCmbTipo().setSelectedItem(dto.getTipo());
-        } else {
-            vista.getCmbTipo().setSelectedIndex(-1);
-        }
+        vista.getCmbTipo().setSelectedItem(dto.getTipo());
 
         vista.getFtxtAreaSembrada().setText(
                 dto.getAreaSembrada() == 0 ? "" : String.valueOf(dto.getAreaSembrada())
         );
 
-        if (dto.getEstado() != null) {
-            vista.getCmbEstado().setSelectedItem(dto.getEstado());
-        } else {
-            vista.getCmbEstado().setSelectedIndex(-1);
-        }
+        vista.getCmbEstado().setSelectedItem(dto.getEstado());
 
         if (dto.getFechaSiembra() != null) {
             vista.getFtxtFechaSiembra().setText(dto.getFechaSiembra().toString());
         } else {
             vista.getFtxtFechaSiembra().setText("");
         }
-    }
 
-    private void cargarCultivoDesdeTabla() {
-        int fila = vista.getTblCultivos().getSelectedRow();
-        if (fila < 0) return;
-
-        DefaultTableModel modelo = (DefaultTableModel) vista.getTblCultivos().getModel();
-
-        String id = modelo.getValueAt(fila, 0).toString();
-        String nombre = modelo.getValueAt(fila, 1).toString();
-        String tipo = modelo.getValueAt(fila, 2).toString();
-        String area = modelo.getValueAt(fila, 3).toString();
-        String estado = modelo.getValueAt(fila, 4).toString();
-        String fechaSiembra = modelo.getValueAt(fila, 5) != null
-                ? modelo.getValueAt(fila, 5).toString()
-                : "";
-
-        vista.getTxtId().setText(id);
-        vista.getTxtNombre().setText(nombre);
-        vista.getCmbTipo().setSelectedItem(tipo);
-        vista.getFtxtAreaSembrada().setText(area);
-        vista.getCmbEstado().setSelectedItem(estado);
-        vista.getFtxtFechaSiembra().setText(fechaSiembra);
-    }
-
-    private void cargarTabla(List<CultivoDTO> lista) {
-        DefaultTableModel modelo = (DefaultTableModel) vista.getTblCultivos().getModel();
-        modelo.setRowCount(0); // limpiar
-
-        for (CultivoDTO dto : lista) {
-            modelo.addRow(new Object[]{
-                    dto.getId(),
-                    dto.getNombre(),
-                    dto.getTipo(),
-                    dto.getAreaSembrada(),
-                    dto.getEstado(),
-                    dto.getFechaSiembra() != null ? dto.getFechaSiembra().toString() : ""
-            });
+        if (dto.getFechaCosecha() != null) {
+            vista.getFtxtFechaCosecha().setText(dto.getFechaCosecha().toString());
+        } else {
+            vista.getFtxtFechaCosecha().setText("");
         }
+    }
+
+    private void limpiarFormulario() {
+        vista.getTxtId().setText("");
+        vista.getTxtNombre().setText("");
+        vista.getCmbTipo().setSelectedIndex(-1);
+        vista.getFtxtAreaSembrada().setValue(null);
+        vista.getCmbEstado().setSelectedIndex(-1);
+        vista.getFtxtFechaSiembra().setValue(null);
+        vista.getFtxtFechaCosecha().setValue(null);
     }
 
     private void mostrarMensaje(String mensaje) {

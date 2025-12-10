@@ -40,6 +40,10 @@ public class CultivoDAOImpl implements CultivoDAO {
     private static final String DELETE_SQL =
             "DELETE FROM cultivo WHERE id = ?";
 
+    // NUEVO: para llenar el ComboBox de tipos en el diálogo
+    private static final String SELECT_TIPOS_UNICOS_SQL =
+            "SELECT DISTINCT tipo FROM cultivo ORDER BY tipo";
+
     @Override
     public void crear(Cultivo cultivo) throws DAOException {
         try (Connection cn = ConexionBD.getInstancia().obtenerConexion();
@@ -84,9 +88,8 @@ public class CultivoDAOImpl implements CultivoDAO {
     }
 
     @Override
-    public List<Cultivo> buscarConFiltros(String nombre, String tipo, String estado,
-                                          LocalDate fechaSiembraDesde, LocalDate fechaSiembraHasta,
-                                          LocalDate fechaCosechaDesde, LocalDate fechaCosechaHasta)
+    public List<Cultivo> buscarConFiltros(String nombre, String tipo, String estado)
+                                          
             throws DAOException {
 
         StringBuilder sql = new StringBuilder(
@@ -99,36 +102,22 @@ public class CultivoDAOImpl implements CultivoDAO {
             parametros.add("%" + nombre + "%");
         }
         if (tipo != null && !tipo.isBlank()) {
-            sql.append(" AND tipo LIKE ?");
-            parametros.add("%" + tipo + "%");
+            // Como el tipo viene de un ComboBox de valores únicos, puedes usar = en lugar de LIKE
+            sql.append(" AND tipo = ?");
+            parametros.add(tipo);
         }
         if (estado != null && !estado.isBlank()) {
             sql.append(" AND estado LIKE ?");
             parametros.add("%" + estado + "%");
         }
-        if (fechaSiembraDesde != null) {
-            sql.append(" AND fecha_siembra >= ?");
-            parametros.add(Date.valueOf(fechaSiembraDesde));
-        }
-        if (fechaSiembraHasta != null) {
-            sql.append(" AND fecha_siembra <= ?");
-            parametros.add(Date.valueOf(fechaSiembraHasta));
-        }
-        if (fechaCosechaDesde != null) {
-            sql.append(" AND (fecha_cosecha IS NOT NULL AND fecha_cosecha >= ?)");
-            parametros.add(Date.valueOf(fechaCosechaDesde));
-        }
-        if (fechaCosechaHasta != null) {
-            sql.append(" AND (fecha_cosecha IS NOT NULL AND fecha_cosecha <= ?)");
-            parametros.add(Date.valueOf(fechaCosechaHasta));
-        }
+        
+        
 
         List<Cultivo> lista = new ArrayList<>();
 
         try (Connection cn = ConexionBD.getInstancia().obtenerConexion();
              PreparedStatement ps = cn.prepareStatement(sql.toString())) {
 
-            // Asignar parámetros dinámicos
             for (int i = 0; i < parametros.size(); i++) {
                 ps.setObject(i + 1, parametros.get(i));
             }
@@ -202,6 +191,26 @@ public class CultivoDAOImpl implements CultivoDAO {
         } catch (SQLException ex) {
             throw new DAOException("Error al eliminar el cultivo.", ex);
         }
+    }
+
+    // NUEVO: tipos únicos para llenar el ComboBox del filtro en el JDialog
+    @Override
+    public List<String> obtenerTiposUnicos() throws DAOException {
+        List<String> tipos = new ArrayList<>();
+
+        try (Connection cn = ConexionBD.getInstancia().obtenerConexion();
+             PreparedStatement ps = cn.prepareStatement(SELECT_TIPOS_UNICOS_SQL);
+             ResultSet rs = ps.executeQuery()) {
+
+            while (rs.next()) {
+                tipos.add(rs.getString("tipo"));
+            }
+
+        } catch (SQLException ex) {
+            throw new DAOException("Error al obtener la lista de tipos de cultivo.", ex);
+        }
+
+        return tipos;
     }
 
     private Cultivo mapResultSetToCultivo(ResultSet rs) throws SQLException {
