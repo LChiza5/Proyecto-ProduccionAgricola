@@ -112,10 +112,14 @@ public class FrmLogin extends javax.swing.JFrame {
 
         txtId.setBackground(new java.awt.Color(33, 71, 54));
         txtId.setFont(new java.awt.Font("Segoe UI", 0, 18)); // NOI18N
+        txtId.setForeground(new java.awt.Color(255, 255, 255));
         txtId.setBorder(javax.swing.BorderFactory.createEtchedBorder());
+        txtId.setOpaque(true);
 
         TxtPassword.setBackground(new java.awt.Color(33, 71, 54));
+        TxtPassword.setForeground(new java.awt.Color(255, 255, 255));
         TxtPassword.setBorder(javax.swing.BorderFactory.createEtchedBorder());
+        TxtPassword.setOpaque(true);
 
         jLabel3.setBackground(new java.awt.Color(241, 255, 243));
         jLabel3.setFont(new java.awt.Font("Segoe UI", 0, 18)); // NOI18N
