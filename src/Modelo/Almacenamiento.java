@@ -11,13 +11,18 @@ import java.time.LocalDate;
  * @author sebas
  */
 public class Almacenamiento {
+
     private int id;
-    private String idProduccion; // o idCultivo, según el diseño
+    private int idProduccion;   
     private int cantidad;
     private LocalDate ingreso;
-    private LocalDate egreso;
+    private LocalDate egreso;  
 
-    public Almacenamiento(int id, String idProduccion, int cantidad, LocalDate ingreso, LocalDate egreso) {
+    public Almacenamiento() {
+    }
+
+    public Almacenamiento(int id, int idProduccion, int cantidad,
+                          LocalDate ingreso, LocalDate egreso) {
         this.id = id;
         this.idProduccion = idProduccion;
         this.cantidad = cantidad;
@@ -25,27 +30,43 @@ public class Almacenamiento {
         this.egreso = egreso;
     }
 
-    public int getId() { 
-        return id; 
-    }
-    public String getIdProduccion() { 
-        return idProduccion; 
-    }
-    public int getCantidad() { 
-        return cantidad; 
-    }
-    public LocalDate getIngreso() { 
-        return ingreso; 
-    }
-    public LocalDate getEgreso() { 
-        return egreso; 
+    public int getId() {
+        return id;
     }
 
-    public void setCantidad(int cantidad) { 
-        this.cantidad = cantidad; 
+    public void setId(int id) {
+        this.id = id;
     }
-    public void setEgreso(LocalDate egreso) { 
-        this.egreso = egreso; 
+
+    public int getIdProduccion() {
+        return idProduccion;
     }
-    
+
+    public void setIdProduccion(int idProduccion) {
+        this.idProduccion = idProduccion;
+    }
+
+    public int getCantidad() {
+        return cantidad;
+    }
+
+    public void setCantidad(int cantidad) {
+        this.cantidad = cantidad;
+    }
+
+    public LocalDate getIngreso() {
+        return ingreso;
+    }
+
+    public void setIngreso(LocalDate ingreso) {
+        this.ingreso = ingreso;
+    }
+
+    public LocalDate getEgreso() {
+        return egreso;
+    }
+
+    public void setEgreso(LocalDate egreso) {
+        this.egreso = egreso;
+    }
 }

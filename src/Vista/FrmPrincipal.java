@@ -5,13 +5,16 @@
 package Vista;
 
 import Controlador.MenuControlador;
+import Dao.AlmacenamientoDAO;
 import Dao.CultivoDAO;
 import Dao.TrabajadorDAO;
+import Dao.impl.AlmacenamientoDAOImpl;
 import Dao.impl.CultivoDAOImpl;
 import Dao.impl.TrabajadorDAOImpl;
 import Modelo.Usuario;
 import javax.swing.JButton;
 import javax.swing.JDesktopPane;
+import servicio.AlmacenamientoServicio;
 import servicio.CultivoServicio;
 import servicio.TrabajadorServicio;
 
@@ -25,22 +28,29 @@ public class FrmPrincipal extends javax.swing.JFrame {
      * Creates new form FrmPrincipal
      */
     public FrmPrincipal(Usuario usuarioLogueado) {
-         this.usuarioLogueado = usuarioLogueado;
-        initComponents();
-        configurarSegunRol();
+    this.usuarioLogueado = usuarioLogueado;
+    initComponents();
+    configurarSegunRol();
 
-        // Crear DAOs
-        CultivoDAO cultivoDAO = new CultivoDAOImpl();
-        TrabajadorDAO trabajadorDAO = new TrabajadorDAOImpl();
+    // Crear DAOs una sola vez
+    CultivoDAO cultivoDAO = new CultivoDAOImpl();
+    TrabajadorDAO trabajadorDAO = new TrabajadorDAOImpl();
+    AlmacenamientoDAO almacenamientoDAO = new AlmacenamientoDAOImpl();
 
-        // Crear servicios
-        CultivoServicio cultivoServicio = new CultivoServicio(cultivoDAO);
-        TrabajadorServicio trabajadorServicio = new TrabajadorServicio(trabajadorDAO);
+    // Crear servicios
+    CultivoServicio cultivoServicio = new CultivoServicio(cultivoDAO);
+    TrabajadorServicio trabajadorServicio = new TrabajadorServicio(trabajadorDAO);
+    AlmacenamientoServicio almacenamientoServicio = new AlmacenamientoServicio(almacenamientoDAO);
 
-        //Pasarlos al controlador del menú
-        new MenuControlador(usuarioLogueado, this, cultivoServicio, trabajadorServicio);
-    
-    }
+    // Pasarlos al controlador del menú
+    new MenuControlador(
+            usuarioLogueado,
+            this,
+            cultivoServicio,
+            trabajadorServicio,
+            almacenamientoServicio
+    );
+}
 
     /**
      * This method is called from within the constructor to initialize the form.

@@ -11,8 +11,9 @@ import java.time.LocalDate;
  * @author Luisk
  */
 public class AlmacenamientoDTO {
+
     private int id;
-    private String idProduccion;
+    private int idProduccion;
     private int cantidad;
     private LocalDate ingreso;
     private LocalDate egreso;
@@ -20,7 +21,8 @@ public class AlmacenamientoDTO {
     public AlmacenamientoDTO() {
     }
 
-    public AlmacenamientoDTO(int id, String idProduccion, int cantidad, LocalDate ingreso, LocalDate egreso) {
+    public AlmacenamientoDTO(int id, int idProduccion, int cantidad,
+                             LocalDate ingreso, LocalDate egreso) {
         this.id = id;
         this.idProduccion = idProduccion;
         this.cantidad = cantidad;
@@ -36,11 +38,11 @@ public class AlmacenamientoDTO {
         this.id = id;
     }
 
-    public String getIdProduccion() {
+    public int getIdProduccion() {
         return idProduccion;
     }
 
-    public void setIdProduccion(String idProduccion) {
+    public void setIdProduccion(int idProduccion) {
         this.idProduccion = idProduccion;
     }
 

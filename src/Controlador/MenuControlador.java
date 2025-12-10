@@ -4,11 +4,13 @@
  */
 package Controlador;
 import Modelo.Usuario;
+import Vista.FrmAlmacenamiento;
 import Vista.FrmPrincipal;
 import Vista.FrmCultivos;
 import Vista.FrmTrabajadores;
 import javax.swing.JInternalFrame;
 import javax.swing.JOptionPane;
+import servicio.AlmacenamientoServicio;
 import servicio.CultivoServicio;
 import servicio.TrabajadorServicio;
 /**
@@ -16,24 +18,35 @@ import servicio.TrabajadorServicio;
  * @author ilope
  */
 public class MenuControlador {
+
     private final Usuario usuarioLogueado;
     private final FrmPrincipal vista;
     private final CultivoServicio cultivoServicio;
     private final TrabajadorServicio trabajadorServicio;
+    private final AlmacenamientoServicio almacenamientoServicio;
+
+    
+    private FrmAlmacenamiento frmAlmacenamiento;
 
     public MenuControlador(Usuario usuarioLogueado,
                            FrmPrincipal vista,
                            CultivoServicio cultivoServicio,
-                           TrabajadorServicio trabajadorServicio) {
-                            this.usuarioLogueado = usuarioLogueado;
-                            this.vista = vista;
-                            this.cultivoServicio = cultivoServicio;
-                            this.trabajadorServicio = trabajadorServicio;
-                            inicializarEventos();
+                           TrabajadorServicio trabajadorServicio,
+                           AlmacenamientoServicio almacenamientoServicio) {
+        this.usuarioLogueado = usuarioLogueado;
+        this.vista = vista;
+        this.cultivoServicio = cultivoServicio;
+        this.trabajadorServicio = trabajadorServicio;
+        this.almacenamientoServicio = almacenamientoServicio;
+
+        inicializarEventos();
     }
 
-    private void inicializarEventos() {
+    
 
+    private void inicializarEventos() {
+        vista.getBtnAlmacen().addActionListener(e -> abrirAlmacenamiento());
+        
         // === CULTIVOS ===
         vista.getBtnCultivos().addActionListener(e -> {
             
@@ -76,6 +89,18 @@ public class MenuControlador {
             }
         });
     }
+    private void abrirAlmacenamiento() {
+    if (frmAlmacenamiento == null || frmAlmacenamiento.isClosed()) {
+        frmAlmacenamiento = new FrmAlmacenamiento();
+        AlmacenamientoControlador ctrl =
+                new AlmacenamientoControlador(almacenamientoServicio, frmAlmacenamiento);
+
+        vista.getjDesktopPane1().add(frmAlmacenamiento); // ajusta al nombre real del JDesktopPane
+        ctrl.iniciar();
+    } else {
+        frmAlmacenamiento.toFront();
+    }
+}
 
     // ---- Métodos de apoyo ----
 
