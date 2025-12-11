@@ -46,6 +46,8 @@ public class FrmLogin extends javax.swing.JFrame {
         this.controlador = new LoginControlador(servicioLogin, this);
 
         
+        
+        
     }
     /**
      * This method is called from within the constructor to initialize the form.
