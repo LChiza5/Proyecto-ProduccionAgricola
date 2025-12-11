@@ -28,25 +28,13 @@ public class TrabajadorBusquedaControlador {
         this.servicio = servicio;
         this.vista = vista;
         this.controladorPrincipal = controladorPrincipal;
-        actualizarComboFiltroPuestos(); 
-        configurarTabla();
+        
         inicializarEventos();
         cargarPuestosEnFiltro();
         cargarTodos();
     }
 
-    private void configurarTabla() {
-        DefaultTableModel modelo = new DefaultTableModel(
-                new Object[]{"ID", "Nombre", "Teléfono", "Correo", "Puesto", "Horarios", "Salario"}, 0
-        ) {
-            @Override
-            public boolean isCellEditable(int row, int column) {
-                return false;
-            }
-        };
-        vista.getTblTrabajadores().setModel(modelo);
-        vista.getTblTrabajadores().setSelectionMode(javax.swing.ListSelectionModel.SINGLE_SELECTION);
-    }
+    
 
     private void inicializarEventos() {
         vista.getCmbFiltroPuesto().addActionListener(e -> buscarPorFiltroPuesto());
@@ -63,21 +51,7 @@ public class TrabajadorBusquedaControlador {
         });
         
     }
-     private void actualizarComboFiltroPuestos() {
-        JComboBox<String> combo = vista.getCmbFiltroPuesto();
-        combo.removeAllItems();
-        combo.addItem("Todos");
-
-        try {
-            List<String> puestos = servicio.obtenerPuestosUnicos();
-            for (String p : puestos) {
-                combo.addItem(p);
-            }
-            combo.setSelectedIndex(0); 
-        } catch (DAOException ex) {
-            mostrarError("Error al cargar los puestos para el filtro: " + ex.getMessage());
-        }
-    }
+     
     private void cargarTodos() {
         try {
             List<TrabajadorDTO> lista = servicio.listarTodos();
