@@ -18,10 +18,6 @@ public interface CultivoDAO {
 
     Cultivo buscarPorId(String id) throws DAOException;
 
-    /**
-     * Búsqueda avanzada por filtros.
-     * Cualquier parámetro puede ser null o vacío; el DAO lo ignora.
-     */
     List<Cultivo> buscarConFiltros(String nombre, String tipo, String estado) 
             throws DAOException;
     List<String> obtenerTiposUnicos() throws DAOException;

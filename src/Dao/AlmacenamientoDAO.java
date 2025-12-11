@@ -16,13 +16,6 @@ public interface AlmacenamientoDAO {
 
     Almacenamiento buscarPorId(int id) throws DAOException;
 
-    /**
-     * Búsqueda con filtros:
-     *  - Rango de fecha de ingreso
-     *  - idProduccion
-     * 
-     * Los parámetros pueden ser null para ser ignorados.
-     */
     List<Almacenamiento> buscarConFiltros(
             LocalDate fechaIngresoDesde,
             LocalDate fechaIngresoHasta,

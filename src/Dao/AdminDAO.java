@@ -7,10 +7,7 @@ import Modelo.Usuario;
 import Excepciones.DAOException;
 import java.util.List;
 /**
- * DAO para los administradores del sistema.
- * 
- * NOTA: Se asume que el campo contrasena de Admin está
- *       en el formato que se guardará en la BD (idealmente hash)
+ *
  * @author ilope
  */
 public interface AdminDAO {

@@ -12,6 +12,7 @@ import mapper.AlmacenamientoMapper;
 import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
+import javax.swing.JOptionPane;
 /**
  *
  * @author ilope
@@ -25,9 +26,7 @@ public class AlmacenamientoServicio {
 
     // ===================== Métodos públicos =====================
 
-    /**
-     * Registra un nuevo almacenamiento (ingreso de producto al inventario).
-     */
+    
     public void registrarAlmacenamiento(AlmacenamientoDTO dto)
             throws DAOException, ValidacionException {
 
@@ -36,13 +35,9 @@ public class AlmacenamientoServicio {
         Almacenamiento entidad = AlmacenamientoMapper.toEntity(dto);
         dao.crear(entidad);
 
-        // Actualizamos el ID generado en el DTO
         dto.setId(entidad.getId());
     }
 
-    /**
-     * Actualiza un registro de almacenamiento existente.
-     */
     public void actualizarAlmacenamiento(AlmacenamientoDTO dto)
             throws DAOException, ValidacionException {
 
@@ -52,9 +47,6 @@ public class AlmacenamientoServicio {
         dao.actualizar(entidad);
     }
 
-    /**
-     * Elimina un registro de almacenamiento por ID.
-     */
     public void eliminarAlmacenamiento(int id) throws DAOException, ValidacionException {
         if (id <= 0) {
             throw new ValidacionException("El ID de almacenamiento es inválido.");
@@ -62,9 +54,7 @@ public class AlmacenamientoServicio {
         dao.eliminar(id);
     }
 
-    /**
-     * Lista todos los registros de almacenamiento.
-     */
+
     public List<AlmacenamientoDTO> listarTodos() throws DAOException {
         List<Almacenamiento> entidades = dao.listarTodos();
         List<AlmacenamientoDTO> dtos = new ArrayList<>();
@@ -75,9 +65,6 @@ public class AlmacenamientoServicio {
         return dtos;
     }
 
-    /**
-     * Busca registros de almacenamiento aplicando filtros opcionales.
-     */
     public List<AlmacenamientoDTO> buscarConFiltros(
             LocalDate fechaIngresoDesde,
             LocalDate fechaIngresoHasta,
@@ -94,10 +81,7 @@ public class AlmacenamientoServicio {
         return dtos;
     }
 
-    /**
-     * Obtiene registros de almacenamiento cuya estadía supera cierta cantidad de días.
-     * Se usará para las alertas de productos almacenados por tiempo prolongado.
-     */
+    
     public List<AlmacenamientoDTO> obtenerAlertasPorEstadiaMayorA(int dias)
             throws DAOException {
 
@@ -108,7 +92,6 @@ public class AlmacenamientoServicio {
         LocalDate hoy = LocalDate.now();
         List<AlmacenamientoDTO> alertas = new ArrayList<>();
 
-        // Podemos reutilizar listarTodos y filtrar en memoria
         List<AlmacenamientoDTO> todos = listarTodos();
 
         for (AlmacenamientoDTO dto : todos) {
@@ -116,7 +99,6 @@ public class AlmacenamientoServicio {
                 continue;
             }
 
-            // Si no tiene fecha de egreso, asumimos que aún está almacenado.
             LocalDate fechaFin = dto.getEgreso() != null ? dto.getEgreso() : hoy;
 
             long diasEntre = java.time.temporal.ChronoUnit.DAYS.between(dto.getIngreso(), fechaFin);
@@ -153,10 +135,13 @@ public class AlmacenamientoServicio {
             throw new ValidacionException("La fecha de ingreso es obligatoria.");
         }
 
-        // No permitir fechas de ingreso en el futuro (opcional, pero razonable)
+        
         if (dto.getIngreso().isAfter(LocalDate.now())) {
-            throw new ValidacionException("La fecha de ingreso no puede ser futura.");
-        }
+        JOptionPane.showMessageDialog(null,
+            "Advertencia: la fecha de ingreso es futura.",
+            "Aviso",
+            JOptionPane.WARNING_MESSAGE);
+}
 
         if (dto.getEgreso() != null) {
             if (dto.getEgreso().isBefore(dto.getIngreso())) {

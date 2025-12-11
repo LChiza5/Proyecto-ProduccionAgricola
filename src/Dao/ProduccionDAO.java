@@ -25,12 +25,7 @@ void crear(Produccion produccion) throws DAOException;
 
     List<Produccion> listarTodos() throws DAOException;
 
-    /**
-     * Búsqueda con filtros:
-     *  - fechaDesde / fechaHasta: rango de fechas (pueden ser null)
-     *  - idCultivo: filtrar por cultivo (puede ser null)
-     *  - destino: "VENTA" / "ALMACENAMIENTO" (puede ser null)
-     */
+    
     List<Produccion> buscarConFiltros(
             LocalDate fechaDesde,
             LocalDate fechaHasta,

@@ -119,7 +119,6 @@ public class TrabajadorServicio {
     }
 
     private boolean esCorreoValido(String correo) {
-        // Validación simple, suficiente para el proyecto
         String regex = "^[^@\\s]+@[^@\\s]+\\.[^@\\s]+$";
         return Pattern.matches(regex, correo);
     }

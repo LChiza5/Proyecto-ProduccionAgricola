@@ -19,9 +19,6 @@ public interface PersonaDAO {
 
     Persona buscarPorCorreo(String correo) throws DAOException;
 
-    /**
-     * Búsqueda por nombre (ej. LIKE '%texto%').
-     */
     List<Persona> buscarPorNombre(String nombreParcial) throws DAOException;
 
     List<Persona> listarTodas() throws DAOException;

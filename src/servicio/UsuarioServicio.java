@@ -53,7 +53,7 @@ public class UsuarioServicio {
                 .collect(Collectors.toList());
     }
     public List<UsuarioDTO> buscarConFiltros(String id, String nombre, String rol) throws DAOException {
-        List<UsuarioDTO> todos = listarTodos(); // ya existente
+        List<UsuarioDTO> todos = listarTodos(); 
 
         return todos.stream()
                 .filter(u -> {
@@ -97,7 +97,6 @@ public class UsuarioServicio {
     }
 
     private boolean esCorreoValido(String correo) {
-        // Validación simple, suficiente para el proyecto
         String regex = "^[^@\\s]+@[^@\\s]+\\.[^@\\s]+$";
         return Pattern.matches(regex, correo);
     }

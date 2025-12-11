@@ -70,9 +70,7 @@ public class CultivoServicio {
         return cultivoDAO.obtenerTiposUnicos();
     }
 
-    /**
-     * Reglas de negocio básicas para validar datos de cultivo.
-     */
+    
     private void validarCultivo(CultivoDTO dto) throws ValidacionException {
         if (dto.getId() == null || dto.getId().isBlank()) {
             throw new ValidacionException("El ID del cultivo es obligatorio.");
