@@ -167,7 +167,7 @@ public class FrmTrabajadores extends javax.swing.JInternalFrame {
         btnBuscar.setBackground(new java.awt.Color(64, 145, 108));
         btnBuscar.setFont(new java.awt.Font("Segoe UI", 0, 24)); // NOI18N
         btnBuscar.setForeground(new java.awt.Color(0, 0, 0));
-        btnBuscar.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Imagenes/buscar2.png"))); // NOI18N
+        btnBuscar.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Imagenes/buscar1.png"))); // NOI18N
         btnBuscar.setText("Buscar");
 
         btnLimpiar.setBackground(new java.awt.Color(180, 180, 180));
