@@ -8,7 +8,6 @@ import Controlador.LoginControlador;
 import Dao.UsuarioDAO;
 import Dao.impl.UsuarioDAOImpl;
 import Excepciones.DAOException;
-import Excepciones.ValidacionException;
 import Infraestructura.ConexionBD;
 import Modelo.Usuario;
 import javax.swing.JButton;
