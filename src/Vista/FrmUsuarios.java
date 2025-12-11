@@ -254,7 +254,7 @@ public class FrmUsuarios extends javax.swing.JInternalFrame {
         BtnBuscar.setBackground(new java.awt.Color(64, 145, 108));
         BtnBuscar.setFont(new java.awt.Font("Segoe UI", 0, 24)); // NOI18N
         BtnBuscar.setForeground(new java.awt.Color(0, 0, 0));
-        BtnBuscar.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Imagenes/buscar1.png"))); // NOI18N
+        BtnBuscar.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Imagenes/buscar3.png"))); // NOI18N
         BtnBuscar.setText("Buscar");
         BtnBuscar.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
