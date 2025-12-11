@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Servidor: mariadb
--- Tiempo de generación: 10-12-2025 a las 18:34:28
+-- Tiempo de generación: 11-12-2025 a las 02:58:36
 -- Versión del servidor: 10.5.29-MariaDB-ubu2004
 -- Versión de PHP: 8.3.27
 
@@ -56,7 +56,7 @@ CREATE TABLE `cultivo` (
 --
 
 INSERT INTO `cultivo` (`id`, `nombre`, `tipo`, `area_sembrada`, `estado`, `fecha_siembra`, `fecha_cosecha`) VALUES
-('1', 'maiz', 'frutales', 12, 'listo', '2025-12-12', NULL);
+('10', 'melon', 'fruta', 12, 'preparando', '2025-12-12', '2026-10-10');
 
 -- --------------------------------------------------------
 
@@ -93,6 +93,13 @@ CREATE TABLE `produccion` (
   `destino` varchar(20) NOT NULL,
   `id_cultivo` varchar(20) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+
+--
+-- Volcado de datos para la tabla `produccion`
+--
+
+INSERT INTO `produccion` (`id`, `fecha`, `cant_producto`, `calidad`, `destino`, `id_cultivo`) VALUES
+(7, '2025-02-02', 1, 1, 'Venta', '10');
 
 -- --------------------------------------------------------
 
@@ -186,7 +193,7 @@ ALTER TABLE `almacenamiento`
 -- AUTO_INCREMENT de la tabla `produccion`
 --
 ALTER TABLE `produccion`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=8;
 
 --
 -- Restricciones para tablas volcadas
