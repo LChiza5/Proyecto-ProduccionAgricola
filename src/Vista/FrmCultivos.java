@@ -176,7 +176,7 @@ public class FrmCultivos extends javax.swing.JInternalFrame {
         jLabel1.setText("ID");
         jLabel1.setOpaque(true);
 
-        jLabel8.setBackground(new java.awt.Color(33, 71, 54));
+        jLabel8.setBackground(new java.awt.Color(64, 145, 108));
         jLabel8.setFont(new java.awt.Font("Segoe UI", 0, 36)); // NOI18N
         jLabel8.setForeground(new java.awt.Color(255, 255, 255));
         jLabel8.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);

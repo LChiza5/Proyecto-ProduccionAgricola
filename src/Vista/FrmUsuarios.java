@@ -163,7 +163,7 @@ public class FrmUsuarios extends javax.swing.JInternalFrame {
         jLabel9.setBackground(new java.awt.Color(35, 35, 35));
         jLabel9.setFont(new java.awt.Font("sansserif", 0, 24)); // NOI18N
         jLabel9.setForeground(new java.awt.Color(245, 255, 250));
-        jLabel9.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Imagenes/gmail (1).png"))); // NOI18N
+        jLabel9.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Imagenes/seguro.png"))); // NOI18N
         jLabel9.setText("Contraseña");
         jLabel9.setBorder(javax.swing.BorderFactory.createBevelBorder(javax.swing.border.BevelBorder.RAISED));
         jLabel9.setOpaque(true);

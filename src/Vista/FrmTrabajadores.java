@@ -195,7 +195,7 @@ public class FrmTrabajadores extends javax.swing.JInternalFrame {
         btnGuardar.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Imagenes/guardar-el-archivo.png"))); // NOI18N
         btnGuardar.setText("Guardar");
 
-        jLabel7.setBackground(new java.awt.Color(33, 71, 54));
+        jLabel7.setBackground(new java.awt.Color(64, 145, 108));
         jLabel7.setFont(new java.awt.Font("Segoe UI", 0, 36)); // NOI18N
         jLabel7.setForeground(new java.awt.Color(255, 255, 255));
         jLabel7.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
