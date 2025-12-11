@@ -52,7 +52,30 @@ public class UsuarioServicio {
                 .map(UsuarioMapper::toDTO)
                 .collect(Collectors.toList());
     }
-    
+    public List<UsuarioDTO> buscarConFiltros(String id, String nombre, String rol) throws DAOException {
+        List<UsuarioDTO> todos = listarTodos(); // ya existente
+
+        return todos.stream()
+                .filter(u -> {
+                    if (id != null && !id.isBlank()) {
+                        if (u.getId() == null || !u.getId().toLowerCase().contains(id.toLowerCase())) {
+                            return false;
+                        }
+                    }
+                    if (nombre != null && !nombre.isBlank()) {
+                        if (u.getNombre() == null || !u.getNombre().toLowerCase().contains(nombre.toLowerCase())) {
+                            return false;
+                        }
+                    }
+                    if (rol != null && !rol.isBlank() && !"Todos".equalsIgnoreCase(rol)) {
+                        if (u.getRol() == null || !u.getRol().equalsIgnoreCase(rol)) {
+                            return false;
+                        }
+                    }
+                    return true;
+                })
+                .toList();
+    }
         // ================== Validaciones de negocio ==================
 
     private void validarUsuario(UsuarioDTO dto) throws ValidacionException {

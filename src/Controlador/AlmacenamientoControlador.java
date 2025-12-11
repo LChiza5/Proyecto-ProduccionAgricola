@@ -27,13 +27,13 @@ public class AlmacenamientoControlador {
         this.servicio = servicio;
         this.vista = vista;
         inicializarEventos();
-        configurarTabla();
+        
     }
 
     // Se llamará desde el MenuControlador
     public void iniciar() {
         vista.setVisible(true);
-        listarTodos();
+        
         // Más adelante cargaremos combo de idProduccion
     }
 
@@ -46,11 +46,6 @@ public class AlmacenamientoControlador {
         vista.getBtnBuscar().addActionListener(e -> abrirDialogoBusqueda());
         vista.getBtnLimpiar().addActionListener(e -> limpiarFormulario());
 
-        vista.getTblAlmacenamientos().getSelectionModel().addListSelectionListener(e -> {
-            if (!e.getValueIsAdjusting()) {
-                cargarDesdeSeleccionTabla();
-            }
-        });
     }
 
     private void configurarTabla() {
@@ -191,7 +186,7 @@ public class AlmacenamientoControlador {
         vista.getTxtCantidad().setText("");
         vista.getTxtFechaIngreso().setText("");
         vista.getTxtFechaEgreso().setText("");
-        vista.getTblAlmacenamientos().clearSelection();
+        
     }
 
     // ================== Utilidades internas ==================

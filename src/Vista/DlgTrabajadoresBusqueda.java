@@ -90,9 +90,18 @@ public class DlgTrabajadoresBusqueda extends javax.swing.JDialog {
         jPanel2.setBackground(new java.awt.Color(33, 71, 54));
         jPanel2.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(0, 0, 0)));
 
+<<<<<<< Updated upstream
         btnSeleccionar.setBackground(new java.awt.Color(35, 35, 35));
         btnSeleccionar.setForeground(new java.awt.Color(255, 255, 255));
         btnSeleccionar.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Imagenes/checkVerde.png"))); // NOI18N
+=======
+        btnSeleccionar.setText("jButton1");
+        btnSeleccionar.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnSeleccionarActionPerformed(evt);
+            }
+        });
+>>>>>>> Stashed changes
 
         btnCancelar.setBackground(new java.awt.Color(35, 35, 35));
         btnCancelar.setForeground(new java.awt.Color(255, 255, 255));
@@ -178,6 +187,10 @@ public class DlgTrabajadoresBusqueda extends javax.swing.JDialog {
 
         pack();
     }// </editor-fold>//GEN-END:initComponents
+
+    private void btnSeleccionarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnSeleccionarActionPerformed
+       
+    }//GEN-LAST:event_btnSeleccionarActionPerformed
 
     /**
      * @param args the command line arguments

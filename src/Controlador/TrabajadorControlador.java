@@ -10,9 +10,7 @@ import Excepciones.ValidacionException;
 import Vista.DlgTrabajadoresBusqueda;
 import servicio.TrabajadorServicio;
 import Vista.FrmTrabajadores;
-
 import javax.swing.*;
-import javax.swing.table.DefaultTableModel;
 import java.util.List;
 /**
  *
@@ -44,8 +42,6 @@ public class TrabajadorControlador {
         listarTodos();
         
     }
-
-    // ======================= Acciones de botones =======================
 
     private void guardarTrabajador() {
         try {
