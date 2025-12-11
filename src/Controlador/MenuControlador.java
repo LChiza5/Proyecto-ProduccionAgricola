@@ -7,11 +7,13 @@ import Modelo.Usuario;
 import Vista.FrmAlmacenamiento;
 import Vista.FrmPrincipal;
 import Vista.FrmCultivos;
+import Vista.FrmProduccion;
 import Vista.FrmTrabajadores;
 import javax.swing.JInternalFrame;
 import javax.swing.JOptionPane;
 import servicio.AlmacenamientoServicio;
 import servicio.CultivoServicio;
+import servicio.ProduccionServicio;
 import servicio.TrabajadorServicio;
 /**
  *
@@ -27,26 +29,30 @@ public class MenuControlador {
 
     
     private FrmAlmacenamiento frmAlmacenamiento;
+    private final ProduccionServicio produccionServicio;
+    private FrmProduccion frmProduccion;
 
     public MenuControlador(Usuario usuarioLogueado,
-                           FrmPrincipal vista,
-                           CultivoServicio cultivoServicio,
-                           TrabajadorServicio trabajadorServicio,
-                           AlmacenamientoServicio almacenamientoServicio) {
-        this.usuarioLogueado = usuarioLogueado;
-        this.vista = vista;
-        this.cultivoServicio = cultivoServicio;
-        this.trabajadorServicio = trabajadorServicio;
-        this.almacenamientoServicio = almacenamientoServicio;
+                       FrmPrincipal vista,
+                       CultivoServicio cultivoServicio,
+                       TrabajadorServicio trabajadorServicio,
+                       AlmacenamientoServicio almacenamientoServicio,
+                       ProduccionServicio produccionServicio) {
+                         this.usuarioLogueado = usuarioLogueado;
+                         this.vista = vista;
+                         this.cultivoServicio = cultivoServicio;
+                         this.trabajadorServicio = trabajadorServicio;
+                         this.almacenamientoServicio = almacenamientoServicio;
+                         this.produccionServicio = produccionServicio;
 
-        inicializarEventos();
-    }
+    inicializarEventos();
+}
 
     
 
     private void inicializarEventos() {
         vista.getBtnAlmacen().addActionListener(e -> abrirAlmacenamiento());
-        
+        vista.getBtnProduccion().addActionListener(e -> abrirProduccion());
         // === CULTIVOS ===
         vista.getBtnCultivos().addActionListener(e -> {
             
@@ -74,8 +80,6 @@ public class MenuControlador {
             abrirEnDesktop(frm);
         });
 
-        // === Producción, Almacenamiento, Usuarios los dejas para después ===
-
         vista.getBtnCerrarSesion().addActionListener(e -> {
             int opc = JOptionPane.showConfirmDialog(
                     vista,
@@ -95,10 +99,22 @@ public class MenuControlador {
         AlmacenamientoControlador ctrl =
                 new AlmacenamientoControlador(almacenamientoServicio, frmAlmacenamiento);
 
-        vista.getjDesktopPane1().add(frmAlmacenamiento); // ajusta al nombre real del JDesktopPane
+        vista.getjDesktopPane1().add(frmAlmacenamiento); 
         ctrl.iniciar();
     } else {
         frmAlmacenamiento.toFront();
+    }
+}
+     private void abrirProduccion() {
+    if (frmProduccion == null || frmProduccion.isClosed()) {
+        frmProduccion = new FrmProduccion();
+        ProduccionControlador ctrl =
+                new ProduccionControlador(produccionServicio, cultivoServicio, frmProduccion);
+
+        vista.getjDesktopPane1().add(frmProduccion); 
+        ctrl.iniciar();
+    } else {
+        frmProduccion.toFront();
     }
 }
 
@@ -117,7 +133,7 @@ public class MenuControlador {
         try {
             frame.setSelected(true);
         } catch (java.beans.PropertyVetoException ex) {
-            // lo ignoramos
+            
         }
     }
     private JInternalFrame buscarFrameAbierto(Class<?> tipo) {

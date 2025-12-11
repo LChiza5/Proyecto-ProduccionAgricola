@@ -17,7 +17,7 @@ public class ProduccionMapper {
         if (p == null) return null;
 
         return new ProduccionDTO(
-                p.getId(),
+                p.getId(),              
                 p.getFecha(),
                 p.getCantProducto(),
                 p.getCalidad(),
@@ -30,8 +30,8 @@ public class ProduccionMapper {
     public static Produccion toEntity(ProduccionDTO dto) {
         if (dto == null) return null;
 
-        return new Produccion(
-                dto.getId(),
+        
+        Produccion p = new Produccion(
                 dto.getFecha(),
                 dto.getCantProducto(),
                 dto.getCalidad(),
@@ -39,6 +39,13 @@ public class ProduccionMapper {
                 dto.getDestino(),
                 dto.getIdCultivo()
         );
+
+        
+        if (dto.getId() != null && dto.getId() > 0) {
+            p.setId(dto.getId());
+        }
+
+        return p;
     }
 }
 

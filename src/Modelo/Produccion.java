@@ -19,7 +19,30 @@ public class Produccion {
     private String destino;
     private String idCultivo;
 
-    public Produccion(int id, LocalDate fecha, int cantProducto, int calidad, int productividad, String destino, String idCultivo) {
+    // ✅ Constructor SIN ID: para nuevas producciones (INSERT)
+    public Produccion(LocalDate fecha,
+                      int cantProducto,
+                      int calidad,
+                      int productividad,
+                      String destino,
+                      String idCultivo) {
+        this.id = 0; // nuevo, sin ID aún
+        this.fecha = fecha;
+        this.cantProducto = cantProducto;
+        this.calidad = calidad;
+        this.productividad = productividad;
+        this.destino = destino;
+        this.idCultivo = idCultivo;
+    }
+
+    // ✅ Constructor CON ID: para cuando se lee de BD o se usa en edición
+    public Produccion(int id,
+                      LocalDate fecha,
+                      int cantProducto,
+                      int calidad,
+                      int productividad,
+                      String destino,
+                      String idCultivo) {
         this.id = id;
         this.fecha = fecha;
         this.cantProducto = cantProducto;
@@ -29,34 +52,37 @@ public class Produccion {
         this.idCultivo = idCultivo;
     }
 
-    public int getId() { 
-        return id; 
-    }
-    public LocalDate getFecha() { 
-        return fecha; 
-    }
-    public int getCantProducto() { 
-        return cantProducto; 
-    }
-    public int getCalidad() { 
-        return calidad; 
-    }
-    public int getProductividad() { 
-        return productividad; 
-    }
-    public String getDestino() { 
-        return destino; 
-    }
-    public String getIdCultivo() { 
-        return idCultivo; 
+    // ============ Getters ============
+
+    public int getId() {
+        return id;
     }
 
-    public void setDestino(String destino) { 
-        this.destino = destino; 
+    public LocalDate getFecha() {
+        return fecha;
     }
-    public void setIdCultivo(String idCultivo) { 
-        this.idCultivo = idCultivo; 
+
+    public int getCantProducto() {
+        return cantProducto;
     }
+
+    public int getCalidad() {
+        return calidad;
+    }
+
+    public int getProductividad() {
+        return productividad;
+    }
+
+    public String getDestino() {
+        return destino;
+    }
+
+    public String getIdCultivo() {
+        return idCultivo;
+    }
+
+    // ============ Setters ============
 
     public void setId(int id) {
         this.id = id;
@@ -77,5 +103,12 @@ public class Produccion {
     public void setProductividad(int productividad) {
         this.productividad = productividad;
     }
-    
+
+    public void setDestino(String destino) {
+        this.destino = destino;
+    }
+
+    public void setIdCultivo(String idCultivo) {
+        this.idCultivo = idCultivo;
+    }
 }

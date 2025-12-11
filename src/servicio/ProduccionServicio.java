@@ -28,29 +28,31 @@ import java.util.stream.Collectors;
     // ==================== Operaciones principales ====================
 
     public void registrarProduccion(ProduccionDTO dto) throws ValidacionException, DAOException {
-        validarProduccion(dto);
+    validarProduccion(dto);
 
-        // calcular productividad (no se guarda en BD, pero sí en la entidad/DTO)
-        int productividad = calcularProductividad(dto);
-        dto.setProductividad(productividad);
+    int productividad = calcularProductividad(dto);
+    dto.setProductividad(productividad);
 
-        Produccion entidad = ProduccionMapper.toEntity(dto);
-        produccionDAO.crear(entidad);
-    }
+    Produccion entidad = ProduccionMapper.toEntity(dto);
+    produccionDAO.crear(entidad);
+
+    
+    dto.setId(entidad.getId());
+}
 
     public void actualizarProduccion(ProduccionDTO dto) throws ValidacionException, DAOException {
-        if (dto.getId() <= 0) {
-            throw new ValidacionException("El ID de la producción es obligatorio para actualizar.");
-        }
-
-        validarProduccion(dto);
-
-        int productividad = calcularProductividad(dto);
-        dto.setProductividad(productividad);
-
-        Produccion entidad = ProduccionMapper.toEntity(dto);
-        produccionDAO.actualizar(entidad);
+    if (dto.getId() == null || dto.getId() <= 0) {
+        throw new ValidacionException("El ID de la producción es obligatorio para actualizar.");
     }
+
+    validarProduccion(dto);
+
+    int productividad = calcularProductividad(dto);
+    dto.setProductividad(productividad);
+
+    Produccion entidad = ProduccionMapper.toEntity(dto);
+    produccionDAO.actualizar(entidad);
+}
 
     public void eliminarProduccion(int id) throws ValidacionException, DAOException {
         if (id <= 0) {

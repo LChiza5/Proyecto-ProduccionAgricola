@@ -7,15 +7,18 @@ package Vista;
 import Controlador.MenuControlador;
 import Dao.AlmacenamientoDAO;
 import Dao.CultivoDAO;
+import Dao.ProduccionDAO;
 import Dao.TrabajadorDAO;
 import Dao.impl.AlmacenamientoDAOImpl;
 import Dao.impl.CultivoDAOImpl;
+import Dao.impl.ProduccionDAOImpl;
 import Dao.impl.TrabajadorDAOImpl;
 import Modelo.Usuario;
 import javax.swing.JButton;
 import javax.swing.JDesktopPane;
 import servicio.AlmacenamientoServicio;
 import servicio.CultivoServicio;
+import servicio.ProduccionServicio;
 import servicio.TrabajadorServicio;
 
 /**
@@ -32,23 +35,25 @@ public class FrmPrincipal extends javax.swing.JFrame {
     initComponents();
     configurarSegunRol();
 
-    // Crear DAOs una sola vez
-    CultivoDAO cultivoDAO = new CultivoDAOImpl();
+   CultivoDAO cultivoDAO = new CultivoDAOImpl();
     TrabajadorDAO trabajadorDAO = new TrabajadorDAOImpl();
     AlmacenamientoDAO almacenamientoDAO = new AlmacenamientoDAOImpl();
+    ProduccionDAO produccionDAO = new ProduccionDAOImpl();
 
-    // Crear servicios
+    // Servicios
     CultivoServicio cultivoServicio = new CultivoServicio(cultivoDAO);
     TrabajadorServicio trabajadorServicio = new TrabajadorServicio(trabajadorDAO);
     AlmacenamientoServicio almacenamientoServicio = new AlmacenamientoServicio(almacenamientoDAO);
+    ProduccionServicio produccionServicio = new ProduccionServicio(produccionDAO);
 
-    // Pasarlos al controlador del menú
+    // Menu controlador
     new MenuControlador(
             usuarioLogueado,
             this,
             cultivoServicio,
             trabajadorServicio,
-            almacenamientoServicio
+            almacenamientoServicio,
+            produccionServicio
     );
 }
 

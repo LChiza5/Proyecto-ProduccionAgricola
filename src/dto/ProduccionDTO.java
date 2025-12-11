@@ -11,20 +11,24 @@ import java.time.LocalDate;
  * @author Luisk
  */
 public class ProduccionDTO {
-    
-    private Integer  id;
+
+    private Integer id;          // Puede ser null en nuevos registros
     private LocalDate fecha;
-    private int cantProducto;    
-    private int calidad;         
-    private int productividad;   
-    private String destino;      
-    private String idCultivo;    
+    private int cantProducto;
+    private int calidad;
+    private int productividad;
+    private String destino;
+    private String idCultivo;
 
     public ProduccionDTO() {
     }
 
-    public ProduccionDTO(int id, LocalDate fecha, int cantProducto,
-                         int calidad, int productividad, String destino,
+    public ProduccionDTO(Integer id,
+                         LocalDate fecha,
+                         int cantProducto,
+                         int calidad,
+                         int productividad,
+                         String destino,
                          String idCultivo) {
         this.id = id;
         this.fecha = fecha;
@@ -37,11 +41,11 @@ public class ProduccionDTO {
 
     // =============== Getters y setters ===============
 
-    public int getId() {
-        return id;
+    public Integer getId() {
+        return id;   
     }
 
-    public void setId(int id) {
+    public void setId(Integer id) {
         this.id = id;
     }
 
@@ -92,5 +96,4 @@ public class ProduccionDTO {
     public void setIdCultivo(String idCultivo) {
         this.idCultivo = idCultivo;
     }
-    
 }

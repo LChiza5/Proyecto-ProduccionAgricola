@@ -36,28 +36,32 @@ public class ProduccionDAOImpl implements ProduccionDAO {
             "SELECT * FROM produccion";
 
     @Override
-    public void crear(Produccion p) throws DAOException {
-        try (Connection cn = ConexionBD.getInstancia().obtenerConexion();
-             PreparedStatement ps = cn.prepareStatement(INSERT_SQL, Statement.RETURN_GENERATED_KEYS)) {
+    public void crear(Produccion produccion) throws DAOException {
+    String sql = "INSERT INTO produccion (fecha, cant_producto, calidad, destino, id_cultivo) " +
+                 "VALUES (?, ?, ?, ?, ?)";
 
-            ps.setDate(1, Date.valueOf(p.getFecha()));
-            ps.setInt(2, p.getCantProducto());
-            ps.setInt(3, p.getCalidad());
-            ps.setString(4, p.getDestino());
-            ps.setString(5, p.getIdCultivo());
+    try (Connection cn = ConexionBD.getInstancia().obtenerConexion();
+         PreparedStatement stmt = cn.prepareStatement(sql, Statement.RETURN_GENERATED_KEYS)) {
 
-            ps.executeUpdate();
+        stmt.setDate(1, java.sql.Date.valueOf(produccion.getFecha()));
+        stmt.setInt(2, produccion.getCantProducto());
+        stmt.setInt(3, produccion.getCalidad());
+        stmt.setString(4, produccion.getDestino());
+        stmt.setString(5, produccion.getIdCultivo());
 
-            try (ResultSet rs = ps.getGeneratedKeys()) {
-                if (rs.next()) {
-                    p.setId(rs.getInt(1));
-                }
+        stmt.executeUpdate();
+
+        try (ResultSet rs = stmt.getGeneratedKeys()) {
+            if (rs.next()) {
+                int idGenerado = rs.getInt(1);
+                produccion.setId(idGenerado);
             }
-
-        } catch (SQLException ex) {
-            throw new DAOException("Error al insertar producción", ex);
         }
+
+    } catch (SQLException e) {
+        throw new DAOException("Error al crear producción: " + e.getMessage(), e);
     }
+}
 
     @Override
     public void actualizar(Produccion p) throws DAOException {
