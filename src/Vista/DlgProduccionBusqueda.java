@@ -61,13 +61,13 @@ public class DlgProduccionBusqueda extends javax.swing.JDialog {
         tblResultados.setBackground(new java.awt.Color(64, 145, 108));
         tblResultados.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
-                {null, null, null, null},
-                {null, null, null, null},
-                {null, null, null, null},
-                {null, null, null, null}
+                {null, null, null, null, null},
+                {null, null, null, null, null},
+                {null, null, null, null, null},
+                {null, null, null, null, null}
             },
             new String [] {
-                "Title 1", "Title 2", "Title 3", "Title 4"
+                "ID", "Fecha", "Destino", "Calidad", "Cantidad"
             }
         ));
         jScrollPane1.setViewportView(tblResultados);
