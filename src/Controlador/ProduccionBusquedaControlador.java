@@ -56,6 +56,7 @@ public class ProduccionBusquedaControlador {
         vista.getBtnSeleccionar().addActionListener(e -> seleccionar());
         vista.getBtnGenerarReporte().addActionListener(e -> generarReporte());
         vista.getBtnCerrar().addActionListener(e -> vista.dispose());
+        vista.getBtnReporteGeneral().addActionListener(e -> generarReporteGeneral());
     }
 
     private void cargarTodos() {
@@ -213,5 +214,68 @@ public class ProduccionBusquedaControlador {
        JOptionPane.showMessageDialog(vista, mensaje, "Error", JOptionPane.ERROR_MESSAGE);
             }
 
-    
+    private void generarReporteGeneral() {
+    JTable tabla = vista.getTblResultados();
+    int filas = tabla.getRowCount();
+
+    if (filas == 0) {
+        mostrarError("No hay producciones en la tabla para generar el reporte general.");
+        return;
+    }
+
+    // Construir lista de DTOs a partir de TODAS las filas de la tabla
+    java.util.List<ProduccionDTO> lista = new java.util.ArrayList<>();
+
+    for (int i = 0; i < filas; i++) {
+        ProduccionDTO dto = new ProduccionDTO();
+
+        dto.setId((int) tabla.getValueAt(i, 0));
+        dto.setIdCultivo(tabla.getValueAt(i, 1).toString());
+
+        Object fecha = tabla.getValueAt(i, 2);
+        if (fecha != null) {
+            dto.setFecha(java.time.LocalDate.parse(fecha.toString()));
+        }
+
+        dto.setCantProducto((int) tabla.getValueAt(i, 3));
+        dto.setCalidad((int) tabla.getValueAt(i, 4));
+        dto.setDestino(tabla.getValueAt(i, 5).toString());
+
+        Object prod = tabla.getValueAt(i, 6);
+        if (prod != null) {
+            dto.setProductividad((int) Double.parseDouble(prod.toString()));
+        }
+
+        lista.add(dto);
+    }
+
+    // Selector de archivo PDF
+    javax.swing.JFileChooser chooser = new javax.swing.JFileChooser();
+    chooser.setDialogTitle("Guardar reporte general de producción (PDF)");
+    chooser.setSelectedFile(new java.io.File("reporte_produccion_listado.pdf"));
+
+    javax.swing.filechooser.FileNameExtensionFilter filtroPdf =
+            new javax.swing.filechooser.FileNameExtensionFilter("Archivos PDF (*.pdf)", "pdf");
+    chooser.setFileFilter(filtroPdf);
+
+    int opcion = chooser.showSaveDialog(vista);
+    if (opcion == javax.swing.JFileChooser.APPROVE_OPTION) {
+        java.io.File archivo = chooser.getSelectedFile();
+        if (!archivo.getName().toLowerCase().endsWith(".pdf")) {
+            archivo = new java.io.File(archivo.getAbsolutePath() + ".pdf");
+        }
+
+        try {
+            Util.ReporteProduccionPDF.generarListado(lista, archivo);
+            javax.swing.JOptionPane.showMessageDialog(
+                    vista,
+                    "Reporte general PDF generado en:\n" + archivo.getAbsolutePath(),
+                    "Información",
+                    javax.swing.JOptionPane.INFORMATION_MESSAGE
+            );
+        } catch (Exception ex) {
+            mostrarError("Error al generar reporte general: " + ex.getMessage());
+        }
+    }
+}
 }

@@ -196,4 +196,152 @@ public class ReporteProduccionPDF {
         valueCell.setPadding(6f);
         tabla.addCell(valueCell);
     }
+    public static void generarListado(java.util.List<ProduccionDTO> producciones, File archivo) throws Exception {
+
+    if (producciones == null || producciones.isEmpty()) {
+        throw new IllegalArgumentException("La lista de producciones está vacía.");
+    }
+    if (archivo == null) {
+        throw new IllegalArgumentException("Archivo destino no puede ser nulo.");
+    }
+
+    // Usamos A4 horizontal para que la tabla tenga más espacio
+    Document document = new Document(PageSize.A4.rotate(), 50, 50, 60, 50);
+    PdfWriter.getInstance(document, new FileOutputStream(archivo));
+    document.open();
+
+    // ========= 1. ENCABEZADO (MISMO ESTILO QUE REPORTE INDIVIDUAL) =========
+    PdfPTable headerTable = new PdfPTable(2);
+    headerTable.setWidthPercentage(100);
+    headerTable.setWidths(new float[]{1.2f, 3.8f});
+
+    // Logo (si existe)
+    try {
+        Image logo = Image.getInstance(RUTA_LOGO);
+        logo.scaleToFit(70, 70);
+        PdfPCell logoCell = new PdfPCell(logo);
+        logoCell.setBorder(Rectangle.NO_BORDER);
+        logoCell.setHorizontalAlignment(Element.ALIGN_LEFT);
+        headerTable.addCell(logoCell);
+    } catch (Exception e) {
+        PdfPCell emptyLogoCell = new PdfPCell(new Phrase(""));
+        emptyLogoCell.setBorder(Rectangle.NO_BORDER);
+        headerTable.addCell(emptyLogoCell);
+    }
+
+    // Título (mismo estilo, texto adaptado a "general")
+    Font tituloFont = new Font(Font.FontFamily.HELVETICA, 16, Font.BOLD);
+    Paragraph titulo = new Paragraph("Reporte General de Producciones Agrícolas", tituloFont);
+    titulo.setAlignment(Element.ALIGN_RIGHT);
+
+    Font subtituloFont = new Font(Font.FontFamily.HELVETICA, 11, Font.NORMAL);
+    Paragraph subtitulo = new Paragraph("Sistema de Gestión de Producción Agrícola", subtituloFont);
+    subtitulo.setAlignment(Element.ALIGN_RIGHT);
+
+    Paragraph tituloCompuesto = new Paragraph();
+    tituloCompuesto.add(titulo);
+    tituloCompuesto.add(Chunk.NEWLINE);
+    tituloCompuesto.add(subtitulo);
+
+    PdfPCell tituloCell = new PdfPCell(tituloCompuesto);
+    tituloCell.setBorder(Rectangle.NO_BORDER);
+    tituloCell.setHorizontalAlignment(Element.ALIGN_RIGHT);
+    tituloCell.setVerticalAlignment(Element.ALIGN_MIDDLE);
+    headerTable.addCell(tituloCell);
+
+    document.add(headerTable);
+
+    // Línea separadora (igual que en el reporte individual)
+    LineSeparator ls = new LineSeparator();
+    ls.setLineWidth(1f);
+    document.add(new Chunk(ls));
+    document.add(Chunk.NEWLINE);
+
+    // ========= 2. TABLA DE PRODUCCIONES (MISMA GAMA DE COLORES) =========
+    Font headerFont = new Font(Font.FontFamily.HELVETICA, 10, Font.BOLD, BaseColor.WHITE);
+    Font cellFont = new Font(Font.FontFamily.HELVETICA, 9, Font.NORMAL);
+
+    PdfPTable tabla = new PdfPTable(7); // ID, Cultivo, Fecha, Cant., Calidad, Destino, Prod
+    tabla.setWidthPercentage(100);
+    tabla.setSpacingBefore(5f);
+    tabla.setSpacingAfter(10f);
+    tabla.setWidths(new float[]{1f, 2f, 2f, 2f, 2f, 2f, 2f});
+
+    // Cabeceras (usa el mismo helper agregarHeaderTabla)
+    agregarHeaderTabla(tabla, "ID", headerFont);
+    agregarHeaderTabla(tabla, "Cultivo", headerFont);
+    agregarHeaderTabla(tabla, "Fecha", headerFont);
+    agregarHeaderTabla(tabla, "Cant. campo", headerFont);
+    agregarHeaderTabla(tabla, "Calidad", headerFont);
+    agregarHeaderTabla(tabla, "Destino", headerFont);
+    agregarHeaderTabla(tabla, "Productividad (%)", headerFont);
+
+    int totalRegistros = 0;
+    int sumaProductividad = 0;
+
+    for (ProduccionDTO dto : producciones) {
+        totalRegistros++;
+
+        tabla.addCell(crearCeldaDato(String.valueOf(dto.getId()), cellFont));
+        tabla.addCell(crearCeldaDato(dto.getIdCultivo(), cellFont));
+        tabla.addCell(crearCeldaDato(dto.getFecha() != null ? dto.getFecha().toString() : "", cellFont));
+        tabla.addCell(crearCeldaDato(String.valueOf(dto.getCantProducto()), cellFont));
+        tabla.addCell(crearCeldaDato(String.valueOf(dto.getCalidad()), cellFont));
+        tabla.addCell(crearCeldaDato(dto.getDestino(), cellFont));
+        tabla.addCell(crearCeldaDato(String.valueOf(dto.getProductividad()), cellFont));
+
+        sumaProductividad += dto.getProductividad();
+    }
+
+    document.add(tabla);
+
+    // ========= 3. RESUMEN ESTADÍSTICO (MISMOS COLORES / TIPOS) =========
+    double promedioProd = totalRegistros > 0 ? (double) sumaProductividad / totalRegistros : 0.0;
+
+    Font seccionFont = new Font(Font.FontFamily.HELVETICA, 13, Font.BOLD);
+    Paragraph resumenTitulo = new Paragraph("Resumen del listado", seccionFont);
+    resumenTitulo.setSpacingBefore(10f);
+    resumenTitulo.setSpacingAfter(5f);
+    document.add(resumenTitulo);
+
+    Font resumenFont = new Font(Font.FontFamily.HELVETICA, 10, Font.NORMAL);
+    Paragraph resumenTexto = new Paragraph(
+            "Total de registros incluidos en el reporte: " + totalRegistros
+                    + "\nProductividad promedio del conjunto: " + String.format("%.2f", promedioProd) + " %",
+            resumenFont
+    );
+    resumenTexto.setSpacingAfter(10f);
+    document.add(resumenTexto);
+
+    // ========= 4. PIE (MISMO ESTILO QUE REPORTE INDIVIDUAL) =========
+    java.time.LocalDateTime ahora = java.time.LocalDateTime.now();
+    java.time.format.DateTimeFormatter formatter =
+            java.time.format.DateTimeFormatter.ofPattern("dd/MM/yyyy HH:mm");
+
+    Font pieFont = new Font(Font.FontFamily.HELVETICA, 9, Font.ITALIC, BaseColor.DARK_GRAY);
+    Paragraph pie = new Paragraph(
+            "Reporte general generado automáticamente por el sistema de Gestión de Producción Agrícola. "
+                    + "Fecha y hora de generación: " + ahora.format(formatter),
+            pieFont
+    );
+    pie.setAlignment(Element.ALIGN_CENTER);
+    pie.setSpacingBefore(20f);
+    document.add(pie);
+
+    document.close();
+}
+    private static void agregarHeaderTabla(PdfPTable tabla, String texto, Font font) {
+    PdfPCell cell = new PdfPCell(new Phrase(texto, font));
+    cell.setBackgroundColor(new BaseColor(60, 120, 200)); 
+    cell.setHorizontalAlignment(Element.ALIGN_CENTER);
+    cell.setPadding(5f);
+    tabla.addCell(cell);
+}
+
+private static PdfPCell crearCeldaDato(String texto, Font font) {
+    PdfPCell cell = new PdfPCell(new Phrase(texto != null ? texto : "", font));
+    cell.setHorizontalAlignment(Element.ALIGN_CENTER);
+    cell.setPadding(4f);
+    return cell;
+}
 }

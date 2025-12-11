@@ -78,7 +78,7 @@ public class FrmPrincipal extends javax.swing.JFrame {
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 
-        jPanel1.setBackground(new java.awt.Color(27, 67, 50));
+        jPanel1.setBackground(new java.awt.Color(57, 143, 57));
         jPanel1.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(255, 255, 255), 2));
 
         btnCultivos.setBackground(new java.awt.Color(35, 35, 35));
@@ -180,7 +180,7 @@ public class FrmPrincipal extends javax.swing.JFrame {
             .addGap(0, 0, Short.MAX_VALUE)
         );
 
-        jLabel1.setBackground(new java.awt.Color(27, 67, 50));
+        jLabel1.setBackground(new java.awt.Color(57, 143, 57));
         jLabel1.setFont(new java.awt.Font("Segoe UI", 1, 36)); // NOI18N
         jLabel1.setForeground(new java.awt.Color(255, 255, 255));
         jLabel1.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
