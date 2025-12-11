@@ -9,10 +9,12 @@ import Dao.AlmacenamientoDAO;
 import Dao.CultivoDAO;
 import Dao.ProduccionDAO;
 import Dao.TrabajadorDAO;
+import Dao.UsuarioDAO;
 import Dao.impl.AlmacenamientoDAOImpl;
 import Dao.impl.CultivoDAOImpl;
 import Dao.impl.ProduccionDAOImpl;
 import Dao.impl.TrabajadorDAOImpl;
+import Dao.impl.UsuarioDAOImpl;
 import Modelo.Usuario;
 import javax.swing.JButton;
 import javax.swing.JDesktopPane;
@@ -20,6 +22,7 @@ import servicio.AlmacenamientoServicio;
 import servicio.CultivoServicio;
 import servicio.ProduccionServicio;
 import servicio.TrabajadorServicio;
+import servicio.UsuarioServicio;
 
 /**
  *
@@ -39,12 +42,14 @@ public class FrmPrincipal extends javax.swing.JFrame {
     TrabajadorDAO trabajadorDAO = new TrabajadorDAOImpl();
     AlmacenamientoDAO almacenamientoDAO = new AlmacenamientoDAOImpl();
     ProduccionDAO produccionDAO = new ProduccionDAOImpl();
+    UsuarioDAO usuarioDAO = new UsuarioDAOImpl();
 
     // Servicios
     CultivoServicio cultivoServicio = new CultivoServicio(cultivoDAO);
     TrabajadorServicio trabajadorServicio = new TrabajadorServicio(trabajadorDAO);
     AlmacenamientoServicio almacenamientoServicio = new AlmacenamientoServicio(almacenamientoDAO);
     ProduccionServicio produccionServicio = new ProduccionServicio(produccionDAO);
+    UsuarioServicio usuarioServicio = new UsuarioServicio(usuarioDAO);
 
     // Menu controlador
     new MenuControlador(
@@ -53,7 +58,8 @@ public class FrmPrincipal extends javax.swing.JFrame {
             cultivoServicio,
             trabajadorServicio,
             almacenamientoServicio,
-            produccionServicio
+            produccionServicio,
+            usuarioServicio
     );
 }
 
@@ -114,6 +120,11 @@ public class FrmPrincipal extends javax.swing.JFrame {
         btnUsuarios.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Imagenes/team_123415.png"))); // NOI18N
         btnUsuarios.setText("Usuarios");
         btnUsuarios.setBorder(javax.swing.BorderFactory.createBevelBorder(javax.swing.border.BevelBorder.RAISED));
+        btnUsuarios.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnUsuariosActionPerformed(evt);
+            }
+        });
 
         btnTrabajadores.setBackground(new java.awt.Color(35, 35, 35));
         btnTrabajadores.setFont(new java.awt.Font("Segoe UI", 0, 24)); // NOI18N
@@ -220,6 +231,10 @@ public class FrmPrincipal extends javax.swing.JFrame {
     private void btnAlmacenActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnAlmacenActionPerformed
         // TODO add your handling code here:
     }//GEN-LAST:event_btnAlmacenActionPerformed
+
+    private void btnUsuariosActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnUsuariosActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_btnUsuariosActionPerformed
     private void configurarSegunRol() {
         if (usuarioLogueado.getRol() != Modelo.EnuRol.ADMIN) {
             btnTrabajadores.setEnabled(false);

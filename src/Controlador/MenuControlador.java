@@ -9,12 +9,14 @@ import Vista.FrmPrincipal;
 import Vista.FrmCultivos;
 import Vista.FrmProduccion;
 import Vista.FrmTrabajadores;
+import Vista.FrmUsuarios;
 import javax.swing.JInternalFrame;
 import javax.swing.JOptionPane;
 import servicio.AlmacenamientoServicio;
 import servicio.CultivoServicio;
 import servicio.ProduccionServicio;
 import servicio.TrabajadorServicio;
+import servicio.UsuarioServicio;
 /**
  *
  * @author ilope
@@ -26,7 +28,7 @@ public class MenuControlador {
     private final CultivoServicio cultivoServicio;
     private final TrabajadorServicio trabajadorServicio;
     private final AlmacenamientoServicio almacenamientoServicio;
-
+    private final UsuarioServicio usuarioServicio;
     
     private FrmAlmacenamiento frmAlmacenamiento;
     private final ProduccionServicio produccionServicio;
@@ -37,14 +39,15 @@ public class MenuControlador {
                        CultivoServicio cultivoServicio,
                        TrabajadorServicio trabajadorServicio,
                        AlmacenamientoServicio almacenamientoServicio,
-                       ProduccionServicio produccionServicio) {
+                       ProduccionServicio produccionServicio,
+                       UsuarioServicio usuarioServicio) {
                          this.usuarioLogueado = usuarioLogueado;
                          this.vista = vista;
                          this.cultivoServicio = cultivoServicio;
                          this.trabajadorServicio = trabajadorServicio;
                          this.almacenamientoServicio = almacenamientoServicio;
                          this.produccionServicio = produccionServicio;
-
+                         this.usuarioServicio = usuarioServicio;
     inicializarEventos();
 }
 
@@ -78,6 +81,24 @@ public class MenuControlador {
             FrmTrabajadores frm = new FrmTrabajadores();              
             new TrabajadorControlador(trabajadorServicio, frm);       
             abrirEnDesktop(frm);
+        });
+
+
+        // === Producción, Almacenamiento para después ===
+        
+        
+        // === USUARIOS ===
+        vista.getBtnUsuarios().addActionListener(e -> {
+        JInternalFrame abierto = buscarFrameAbierto(FrmUsuarios.class);
+            if (abierto != null) {
+                try { abierto.setSelected(true); } catch (java.beans.PropertyVetoException ex) {}
+                return;
+            }
+
+            FrmUsuarios frm = new FrmUsuarios();              
+            UsuarioControlador cntrl = new UsuarioControlador(usuarioServicio, frm);       
+            abrirEnDesktop(frm);
+            cntrl.iniciar();
         });
 
         vista.getBtnCerrarSesion().addActionListener(e -> {

@@ -206,7 +206,9 @@ public class ReporteProduccionPDF {
     }
 
     // Usamos A4 horizontal para que la tabla tenga más espacio
-    Document document = new Document(PageSize.A4.rotate(), 50, 50, 60, 50);
+    Document document = new Document(PageSize.A4.rotate(), 50, 50, 60, 50) {
+
+    };
     PdfWriter.getInstance(document, new FileOutputStream(archivo));
     document.open();
 

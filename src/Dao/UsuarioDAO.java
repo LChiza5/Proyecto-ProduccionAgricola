@@ -6,6 +6,7 @@ package Dao;
 
 import Excepciones.DAOException;
 import Modelo.Usuario;
+import java.util.List;
 
 /**
  * 
@@ -17,7 +18,9 @@ public interface UsuarioDAO {
 
     void crear(Usuario usuario) throws DAOException;
     
-    void eliminar(Usuario usuario) throws DAOException;
+    void eliminar(String id) throws DAOException;
     
     void actualizar(Usuario usuario) throws DAOException;
+    
+    List<Usuario> listarTodos() throws DAOException;
 }

@@ -27,6 +27,7 @@ public class ProyectoFinalProduccionAgricola {
      */
     public static void main(String[] args) {
         System.out.println(HashUtil.sha256("Isaac123"));
+        System.out.println(HashUtil.sha256("Sebas123"));
     }
     
 }
