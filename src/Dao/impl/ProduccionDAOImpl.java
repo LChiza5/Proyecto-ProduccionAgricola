@@ -35,6 +35,11 @@ public class ProduccionDAOImpl implements ProduccionDAO {
     private static final String SELECT_ALL_SQL =
             "SELECT * FROM produccion";
 
+    
+    private static final String SQL_LISTAR_PARA_ALMAC =
+            "SELECT * FROM produccion WHERE destino = 'ALMACENAMIENTO'";
+            
+
     @Override
     public void crear(Produccion produccion) throws DAOException {
     String sql = "INSERT INTO produccion (fecha, cant_producto, calidad, destino, id_cultivo) " +
@@ -114,8 +119,6 @@ public class ProduccionDAOImpl implements ProduccionDAO {
             throw new DAOException("Error al buscar producción", ex);
         }
     }
-
-    @Override
     public List<Produccion> listarTodos() throws DAOException {
         List<Produccion> lista = new ArrayList<>();
 
@@ -131,6 +134,24 @@ public class ProduccionDAOImpl implements ProduccionDAO {
 
         return lista;
     }
+    @Override
+    public List<Produccion> listarParaAlmacenamiento() throws DAOException {
+    List<Produccion> lista = new ArrayList<>();
+
+    try (Connection con = ConexionBD.getInstancia().obtenerConexion();
+         PreparedStatement ps = con.prepareStatement(SQL_LISTAR_PARA_ALMAC);
+         ResultSet rs = ps.executeQuery()) {
+
+        while (rs.next()) {
+            lista.add(map(rs));  
+        }
+
+    } catch (SQLException ex) {
+        throw new DAOException("Error listando producciones para almacenamiento", ex);
+    }
+
+    return lista;
+}
 
     @Override
     public List<Produccion> buscarConFiltros(LocalDate fechaDesde,

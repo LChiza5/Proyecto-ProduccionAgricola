@@ -24,7 +24,7 @@ void crear(Produccion produccion) throws DAOException;
     Produccion buscarPorId(int id) throws DAOException;
 
     List<Produccion> listarTodos() throws DAOException;
-
+    List<Produccion> listarParaAlmacenamiento() throws DAOException;
     
     List<Produccion> buscarConFiltros(
             LocalDate fechaDesde,

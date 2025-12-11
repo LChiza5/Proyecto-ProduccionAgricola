@@ -121,6 +121,7 @@ public class FrmTrabajadores extends javax.swing.JInternalFrame {
         cmbPuesto.setEditable(true);
         cmbPuesto.setFont(new java.awt.Font("Segoe UI", 0, 18)); // NOI18N
         cmbPuesto.setForeground(new java.awt.Color(35, 78, 59));
+        cmbPuesto.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Recolector", "Agricultor" }));
         cmbPuesto.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(149, 213, 178)));
         cmbPuesto.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {

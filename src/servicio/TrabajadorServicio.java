@@ -91,7 +91,8 @@ public class TrabajadorServicio {
             .distinct()
             .sorted()
             .collect(Collectors.toList());
-}
+}    
+    
     // ================== Validaciones de negocio ==================
 
     private void validarTrabajador(TrabajadorDTO dto) throws ValidacionException {

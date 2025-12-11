@@ -11,6 +11,7 @@ import Excepciones.ValidacionException;
 import mapper.ProduccionMapper;
 
 import java.time.LocalDate;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
 /**
@@ -72,7 +73,14 @@ import java.util.stream.Collectors;
                 .map(ProduccionMapper::toDTO)
                 .collect(Collectors.toList());
     }
-
+    public List<ProduccionDTO> listarParaAlmacenamiento() throws DAOException {
+        List<Produccion> entidades = produccionDAO.listarParaAlmacenamiento();
+        List<ProduccionDTO> lista = new ArrayList<>();
+        for (Produccion p : entidades) {
+            lista.add(ProduccionMapper.toDTO(p));
+        }
+        return lista;
+    }
     public List<ProduccionDTO> buscarConFiltros(
             LocalDate fechaDesde,
             LocalDate fechaHasta,

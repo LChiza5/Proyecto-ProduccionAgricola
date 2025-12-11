@@ -27,4 +27,5 @@ public interface TrabajadorDAO {
     void actualizar(Trabajador trabajador) throws DAOException;
 
     void eliminar(String id) throws DAOException;
+    
 }

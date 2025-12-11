@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Servidor: mariadb
--- Tiempo de generación: 11-12-2025 a las 11:03:34
+-- Tiempo de generación: 11-12-2025 a las 21:41:54
 -- Versión del servidor: 10.5.29-MariaDB-ubu2004
 -- Versión de PHP: 8.3.27
 
@@ -57,7 +57,7 @@ CREATE TABLE `cultivo` (
 
 INSERT INTO `cultivo` (`id`, `nombre`, `tipo`, `area_sembrada`, `estado`, `fecha_siembra`, `fecha_cosecha`) VALUES
 ('1', 'Maiz', 'Trigo', 30, 'Preparando', '2026-10-20', '2026-10-30'),
-('10', 'melon', 'Trigo', 12, 'Listo', '2025-12-12', '2026-10-11');
+('2', 'piña', 'fruta', 1000, 'Preparando', '2025-12-12', '2026-10-11');
 
 -- --------------------------------------------------------
 
@@ -126,7 +126,7 @@ CREATE TABLE `usuario` (
 
 INSERT INTO `usuario` (`id`, `contrasena_hash`) VALUES
 ('1', 'c1c224b03cd9bc7b6a86d77f5dace40191766c485cd55dc48caf9ac873335d6f'),
-('3', '17952c3827e16ecb3cedcc7cdf877d82989f0085cff66d2241a56d776f86d4e4');
+('3', 'ceef825134d22576b496c17f8429406ab6b753124a2fa15a76cb76f7eea1209b');
 
 --
 -- Índices para tablas volcadas
@@ -185,7 +185,7 @@ ALTER TABLE `almacenamiento`
 -- AUTO_INCREMENT de la tabla `produccion`
 --
 ALTER TABLE `produccion`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=9;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
 
 --
 -- Restricciones para tablas volcadas

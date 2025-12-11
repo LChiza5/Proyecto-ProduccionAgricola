@@ -112,6 +112,7 @@ public class FrmAlmacenamiento extends javax.swing.JInternalFrame {
         txtFechaEgreso.setBackground(new java.awt.Color(240, 255, 252));
         txtFechaEgreso.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(149, 213, 178)));
         txtFechaEgreso.setForeground(new java.awt.Color(27, 67, 50));
+        txtFechaEgreso.setFont(new java.awt.Font("sansserif", 0, 18)); // NOI18N
         txtFechaEgreso.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 txtFechaEgresoActionPerformed(evt);

@@ -13,6 +13,7 @@ import javax.swing.table.DefaultTableModel;
 import java.io.File;
 import java.time.LocalDate;
 import java.time.format.DateTimeParseException;
+import java.util.ArrayList;
 import java.util.List;
 /**
  *
@@ -30,7 +31,6 @@ public class ProduccionBusquedaControlador {
         this.servicio = servicio;
         this.vista = vista;
         this.controladorPrincipal = controladorPrincipal;
-
         configurarTabla();
         inicializarEventos();
         cargarTodos();
@@ -40,6 +40,13 @@ public class ProduccionBusquedaControlador {
         vista.setVisible(true);
     }
 
+    private void inicializarEventos() {
+        vista.getBtnFiltrar().addActionListener(e -> buscar());
+        vista.getBtnSeleccionar().addActionListener(e -> seleccionar());
+        vista.getBtnGenerarReporte().addActionListener(e -> generarReporte());
+        vista.getBtnCerrar().addActionListener(e -> vista.dispose());
+        vista.getBtnReporteGeneral().addActionListener(e -> generarReporteGeneral());
+    }
     private void configurarTabla() {
         String[] columnas = { "ID", "Cultivo", "Fecha", "Cantidad", "Calidad", "Destino", "Productividad (%)" };
         DefaultTableModel modelo = new DefaultTableModel(columnas, 0) {
@@ -49,14 +56,6 @@ public class ProduccionBusquedaControlador {
             }
         };
         vista.getTblResultados().setModel(modelo);
-    }
-
-    private void inicializarEventos() {
-        vista.getBtnFiltrar().addActionListener(e -> buscar());
-        vista.getBtnSeleccionar().addActionListener(e -> seleccionar());
-        vista.getBtnGenerarReporte().addActionListener(e -> generarReporte());
-        vista.getBtnCerrar().addActionListener(e -> vista.dispose());
-        vista.getBtnReporteGeneral().addActionListener(e -> generarReporteGeneral());
     }
 
     private void cargarTodos() {
@@ -73,7 +72,7 @@ public class ProduccionBusquedaControlador {
         modelo.setRowCount(0);
 
         for (ProduccionDTO dto : lista) {
-            modelo.addRow(new Object[] {
+            modelo.addRow(new Object[]{
                     dto.getId(),
                     dto.getIdCultivo(),
                     dto.getFecha(),
@@ -87,8 +86,9 @@ public class ProduccionBusquedaControlador {
 
     private void buscar() {
         String fechaDesdeTxt = vista.getTxtFechaDesde().getText().trim();
-        String fechaHastaTxt = vista.getTxtFechaHasta().getText().trim();        
+        String fechaHastaTxt = vista.getTxtFechaHasta().getText().trim();
         String destino = (String) vista.getCmbDestino().getSelectedItem();
+
         LocalDate fechaDesde = null;
         LocalDate fechaHasta = null;
         String idCultivo = null;
@@ -148,134 +148,127 @@ public class ProduccionBusquedaControlador {
     }
 
     private void generarReporte() {
-    int fila = vista.getTblResultados().getSelectedRow();
-    if (fila == -1) {
-        mostrarError("Seleccione una producción de la tabla para generar el reporte.");
-        return;
-    }
-
-    JTable tabla = vista.getTblResultados();
-
-    
-    ProduccionDTO dto = new ProduccionDTO();
-    dto.setId((int) tabla.getValueAt(fila, 0));
-    dto.setIdCultivo(tabla.getValueAt(fila, 1).toString());
-
-    Object fecha = tabla.getValueAt(fila, 2);
-    if (fecha != null) {
-        dto.setFecha(LocalDate.parse(fecha.toString()));
-    }
-
-    dto.setCantProducto((int) tabla.getValueAt(fila, 3));
-    dto.setCalidad((int) tabla.getValueAt(fila, 4));
-    dto.setDestino(tabla.getValueAt(fila, 5).toString());
-
-    Object prod = tabla.getValueAt(fila, 6);
-    if (prod != null) {
-        dto.setProductividad((int) Double.parseDouble(prod.toString()));
-    }
-
-    
-    JFileChooser chooser = new JFileChooser();
-    chooser.setDialogTitle("Guardar reporte PDF de producción");
-    chooser.setSelectedFile(new File("reporte_produccion_" + dto.getId() + ".pdf"));
-
-    
-    javax.swing.filechooser.FileNameExtensionFilter filtroPdf =
-            new javax.swing.filechooser.FileNameExtensionFilter("Archivos PDF (*.pdf)", "pdf");
-    chooser.setFileFilter(filtroPdf);
-
-    int opcion = chooser.showSaveDialog(vista);
-    if (opcion == JFileChooser.APPROVE_OPTION) {
-        File archivo = chooser.getSelectedFile();
-
-        
-        if (!archivo.getName().toLowerCase().endsWith(".pdf")) {
-            archivo = new File(archivo.getAbsolutePath() + ".pdf");
+        int fila = vista.getTblResultados().getSelectedRow();
+        if (fila == -1) {
+            mostrarError("Seleccione una producción de la tabla para generar el reporte.");
+            return;
         }
 
-        try {
-            
-            ReporteProduccionPDF.generar(dto, archivo);
+        JTable tabla = vista.getTblResultados();
 
-            JOptionPane.showMessageDialog(
-                    vista,
-                    "Reporte PDF generado en:\n" + archivo.getAbsolutePath(),
-                    "Información",
-                    JOptionPane.INFORMATION_MESSAGE
-            );
-        } catch (Exception ex) {
-            mostrarError("Error al generar reporte: " + ex.getMessage());
-        }
-        }
-        }
-
-          private void mostrarError(String mensaje) {
-       JOptionPane.showMessageDialog(vista, mensaje, "Error", JOptionPane.ERROR_MESSAGE);
-            }
-
-    private void generarReporteGeneral() {
-    JTable tabla = vista.getTblResultados();
-    int filas = tabla.getRowCount();
-
-    if (filas == 0) {
-        mostrarError("No hay producciones en la tabla para generar el reporte general.");
-        return;
-    }
-
-    
-    java.util.List<ProduccionDTO> lista = new java.util.ArrayList<>();
-
-    for (int i = 0; i < filas; i++) {
         ProduccionDTO dto = new ProduccionDTO();
+        dto.setId((int) tabla.getValueAt(fila, 0));
+        dto.setIdCultivo(tabla.getValueAt(fila, 1).toString());
 
-        dto.setId((int) tabla.getValueAt(i, 0));
-        dto.setIdCultivo(tabla.getValueAt(i, 1).toString());
-
-        Object fecha = tabla.getValueAt(i, 2);
+        Object fecha = tabla.getValueAt(fila, 2);
         if (fecha != null) {
-            dto.setFecha(java.time.LocalDate.parse(fecha.toString()));
+            dto.setFecha(LocalDate.parse(fecha.toString()));
         }
 
-        dto.setCantProducto((int) tabla.getValueAt(i, 3));
-        dto.setCalidad((int) tabla.getValueAt(i, 4));
-        dto.setDestino(tabla.getValueAt(i, 5).toString());
+        dto.setCantProducto((int) tabla.getValueAt(fila, 3));
+        dto.setCalidad((int) tabla.getValueAt(fila, 4));
+        dto.setDestino(tabla.getValueAt(fila, 5).toString());
 
-        Object prod = tabla.getValueAt(i, 6);
+        Object prod = tabla.getValueAt(fila, 6);
         if (prod != null) {
             dto.setProductividad((int) Double.parseDouble(prod.toString()));
         }
 
-        lista.add(dto);
+        JFileChooser chooser = new JFileChooser();
+        chooser.setDialogTitle("Guardar reporte PDF de producción");
+        chooser.setSelectedFile(new File("reporte_produccion_" + dto.getId() + ".pdf"));
+
+        javax.swing.filechooser.FileNameExtensionFilter filtroPdf =
+                new javax.swing.filechooser.FileNameExtensionFilter("Archivos PDF (*.pdf)", "pdf");
+        chooser.setFileFilter(filtroPdf);
+
+        int opcion = chooser.showSaveDialog(vista);
+        if (opcion == JFileChooser.APPROVE_OPTION) {
+            File archivo = chooser.getSelectedFile();
+
+            if (!archivo.getName().toLowerCase().endsWith(".pdf")) {
+                archivo = new File(archivo.getAbsolutePath() + ".pdf");
+            }
+
+            try {
+                ReporteProduccionPDF.generar(dto, archivo);
+
+                JOptionPane.showMessageDialog(
+                        vista,
+                        "Reporte PDF generado en:\n" + archivo.getAbsolutePath(),
+                        "Información",
+                        JOptionPane.INFORMATION_MESSAGE
+                );
+            } catch (Exception ex) {
+                mostrarError("Error al generar reporte: " + ex.getMessage());
+            }
+        }
     }
 
-    
-    javax.swing.JFileChooser chooser = new javax.swing.JFileChooser();
-    chooser.setDialogTitle("Guardar reporte general de producción (PDF)");
-    chooser.setSelectedFile(new java.io.File("reporte_produccion_listado.pdf"));
+    private void generarReporteGeneral() {
+        JTable tabla = vista.getTblResultados();
+        int filas = tabla.getRowCount();
 
-    javax.swing.filechooser.FileNameExtensionFilter filtroPdf =
-            new javax.swing.filechooser.FileNameExtensionFilter("Archivos PDF (*.pdf)", "pdf");
-    chooser.setFileFilter(filtroPdf);
-
-    int opcion = chooser.showSaveDialog(vista);
-    if (opcion == javax.swing.JFileChooser.APPROVE_OPTION) {
-        java.io.File archivo = chooser.getSelectedFile();
-        if (!archivo.getName().toLowerCase().endsWith(".pdf")) {
-            archivo = new java.io.File(archivo.getAbsolutePath() + ".pdf");
+        if (filas == 0) {
+            mostrarError("No hay producciones en la tabla para generar el reporte general.");
+            return;
         }
 
-        try {
-            Util.ReporteProduccionPDF.generarListado(lista, archivo);
-            javax.swing.JOptionPane.showMessageDialog(
-                    vista,
-                    "Reporte general PDF generado en:\n" + archivo.getAbsolutePath(),
-                    "Información",
-                    javax.swing.JOptionPane.INFORMATION_MESSAGE
-            );
-        } catch (Exception ex) {
-            mostrarError("Error al generar reporte general: " + ex.getMessage());
+        List<ProduccionDTO> lista = new ArrayList<>();
+
+        for (int i = 0; i < filas; i++) {
+            ProduccionDTO dto = new ProduccionDTO();
+
+            dto.setId((int) tabla.getValueAt(i, 0));
+            dto.setIdCultivo(tabla.getValueAt(i, 1).toString());
+
+            Object fecha = tabla.getValueAt(i, 2);
+            if (fecha != null) {
+                dto.setFecha(LocalDate.parse(fecha.toString()));
+            }
+
+            dto.setCantProducto((int) tabla.getValueAt(i, 3));
+            dto.setCalidad((int) tabla.getValueAt(i, 4));
+            dto.setDestino(tabla.getValueAt(i, 5).toString());
+
+            Object prod = tabla.getValueAt(i, 6);
+            if (prod != null) {
+                dto.setProductividad((int) Double.parseDouble(prod.toString()));
+            }
+
+            lista.add(dto);
+        }
+
+        JFileChooser chooser = new JFileChooser();
+        chooser.setDialogTitle("Guardar reporte general de producción (PDF)");
+        chooser.setSelectedFile(new File("reporte_produccion_listado.pdf"));
+
+        javax.swing.filechooser.FileNameExtensionFilter filtroPdf =
+                new javax.swing.filechooser.FileNameExtensionFilter("Archivos PDF (*.pdf)", "pdf");
+        chooser.setFileFilter(filtroPdf);
+
+        int opcion = chooser.showSaveDialog(vista);
+        if (opcion == JFileChooser.APPROVE_OPTION) {
+            File archivo = chooser.getSelectedFile();
+            if (!archivo.getName().toLowerCase().endsWith(".pdf")) {
+                archivo = new File(archivo.getAbsolutePath() + ".pdf");
+            }
+
+            try {
+                ReporteProduccionPDF.generarListado(lista, archivo);
+                JOptionPane.showMessageDialog(
+                        vista,
+                        "Reporte general PDF generado en:\n" + archivo.getAbsolutePath(),
+                        "Información",
+                        JOptionPane.INFORMATION_MESSAGE
+                );
+            } catch (Exception ex) {
+                mostrarError("Error al generar reporte general: " + ex.getMessage());
+            }
         }
     }
-}
+
+    private void mostrarError(String mensaje) {
+        JOptionPane.showMessageDialog(vista, mensaje, "Error", JOptionPane.ERROR_MESSAGE);
+    }
 }

@@ -108,19 +108,18 @@ public class AlmacenamientoControlador {
     combo.removeAllItems();
 
     try {
-        List<ProduccionDTO> producciones = produccionServicio.listarTodos();
+       
+        List<ProduccionDTO> producciones = produccionServicio.listarParaAlmacenamiento();
 
-        for (ProduccionDTO p : producciones) {
-            
-            combo.addItem(String.valueOf(p.getId()));
-        }
-
-        if (combo.getItemCount() > 0) {
-            combo.setSelectedIndex(0);
+        for (ProduccionDTO dto : producciones) {
+            combo.addItem(String.valueOf(dto.getId()));
         }
 
     } catch (DAOException ex) {
-        mostrarError("Error al cargar las producciones en el combo: " + ex.getMessage());
+        JOptionPane.showMessageDialog(vista,
+                "Error al cargar producciones para almacenamiento: " + ex.getMessage(),
+                "Error",
+                JOptionPane.ERROR_MESSAGE);
     }
 }
     private void limpiar() {

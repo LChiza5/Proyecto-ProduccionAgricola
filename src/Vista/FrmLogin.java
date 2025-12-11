@@ -4,17 +4,13 @@
  */
 package Vista;
 
-import Controlador.LoginControlador;
-import Dao.UsuarioDAO;
-import Dao.impl.UsuarioDAOImpl;
+import Controlador.LoginControladorFactory;
 import Excepciones.DAOException;
 import Infraestructura.ConexionBD;
-import Modelo.Usuario;
 import javax.swing.JButton;
 import javax.swing.JOptionPane;
 import javax.swing.JPasswordField;
 import javax.swing.JTextField;
-import servicio.ValidarLoginServicio;
 
 /**
  *
@@ -183,7 +179,7 @@ public class FrmLogin extends javax.swing.JFrame {
     }
 
     java.awt.EventQueue.invokeLater(() -> {
-        new FrmLogin().setVisible(true);
+        new LoginControladorFactory().mostrarLogin();
     });
 }
   

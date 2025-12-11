@@ -24,7 +24,7 @@ public class TrabajadorControlador {
         this.servicio = servicio;
         this.vista = vista;
         inicializarEventos();
-        
+        cargarPuestosEnComboSeleccion(); 
        
     }
 
@@ -192,7 +192,27 @@ public class TrabajadorControlador {
     }
 
     
-   
+   private void cargarPuestosEnComboSeleccion() {
+    JComboBox<String> combo = vista.getCmbPuesto();
+    combo.removeAllItems();
+
+    combo.setEditable(true);
+
+
+    combo.addItem(""); 
+
+    try {
+        
+        List<String> puestos = servicio.obtenerPuestosUnicos();
+        for (String p : puestos) {
+            if (p != null && !p.isBlank()) {
+                combo.addItem(p);
+            }
+        }
+    } catch (DAOException ex) {
+        mostrarError("Error al cargar los puestos: " + ex.getMessage());
+    }
+}
     
 
     private void mostrarMensaje(String mensaje) {
