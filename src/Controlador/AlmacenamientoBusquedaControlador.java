@@ -143,7 +143,6 @@ public class AlmacenamientoBusquedaControlador {
         vista.dispose();
     }
 
-    // ========================= ALERTAS =========================
     private void verAlertas() {
         String diasStr = JOptionPane.showInputDialog(
                 vista,

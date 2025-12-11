@@ -12,7 +12,7 @@ import java.time.LocalDate;
  */
 public class ProduccionDTO {
 
-    private Integer id;          // Puede ser null en nuevos registros
+    private Integer id;         
     private LocalDate fecha;
     private int cantProducto;
     private int calidad;
@@ -39,7 +39,6 @@ public class ProduccionDTO {
         this.idCultivo = idCultivo;
     }
 
-    // =============== Getters y setters ===============
 
     public Integer getId() {
         return id;   

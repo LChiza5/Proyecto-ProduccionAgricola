@@ -28,21 +28,18 @@ public class FrmLogin extends javax.swing.JFrame {
      */
     public FrmLogin() {
          try {
-        // Forzar carga del driver y validar conexión
         ConexionBD.getInstancia().obtenerConexion();
     } catch (DAOException ex) {
         JOptionPane.showMessageDialog(this,
                 "Error al iniciar la conexión con la base de datos:\n" + ex.getMessage(),
                 "Error crítico",
                 JOptionPane.ERROR_MESSAGE);
-        System.exit(1); // Cierra la app, no tiene sentido seguir
+        System.exit(1); 
     }
         initComponents();
-         // Crear DAO y servicio
         UsuarioDAO usuarioDAO = new UsuarioDAOImpl();
         this.servicioLogin = new ValidarLoginServicio(usuarioDAO);
         
-        // Pasar el servicio correcto al controlador
         this.controlador = new LoginControlador(servicioLogin, this);
 
         

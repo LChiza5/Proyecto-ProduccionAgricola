@@ -39,8 +39,6 @@ public class ProduccionControlador {
         vista.setVisible(true);
     }
 
-    // =============== Inicialización ===============
-
     private void inicializarEventos() {
         vista.getBtnGuardar().addActionListener(e -> guardar());
         vista.getBtnActualizar().addActionListener(e -> actualizar());
@@ -68,7 +66,6 @@ public class ProduccionControlador {
         }
     }
 
-    // =============== CRUD ===============
 
     private void guardar() {
         try {
@@ -136,7 +133,6 @@ public class ProduccionControlador {
         }
     }
 
-    // =============== Búsqueda (JDialog con JTable) ===============
 
     private void abrirDialogoBusqueda() {
         java.awt.Window parent = SwingUtilities.getWindowAncestor(vista);
@@ -171,7 +167,6 @@ public class ProduccionControlador {
         vista.getLblProductividad().setText("");
     }
 
-    // =============== Utilidades ===============
 
     private ProduccionDTO leerFormulario(boolean esNuevo) {
         ProduccionDTO dto = new ProduccionDTO();

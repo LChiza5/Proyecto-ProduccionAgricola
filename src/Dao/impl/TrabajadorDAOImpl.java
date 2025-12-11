@@ -199,7 +199,6 @@ public class TrabajadorDAOImpl implements TrabajadorDAO {
             cn = ConexionBD.getInstancia().obtenerConexion();
             cn.setAutoCommit(false);
 
-            // Actualizar persona
             psPersona = cn.prepareStatement(UPDATE_PERSONA_SQL);
             psPersona.setString(1, trabajador.getNombre());
             psPersona.setString(2, trabajador.getTelefono());
@@ -208,7 +207,6 @@ public class TrabajadorDAOImpl implements TrabajadorDAO {
             psPersona.setString(5, trabajador.getId());
             psPersona.executeUpdate();
 
-            // Actualizar trabajador
             psTrabajador = cn.prepareStatement(UPDATE_TRABAJADOR_SQL);
             psTrabajador.setString(1, trabajador.getPuesto());
             psTrabajador.setString(2, trabajador.getHorarios());
@@ -245,12 +243,10 @@ public class TrabajadorDAOImpl implements TrabajadorDAO {
             cn = ConexionBD.getInstancia().obtenerConexion();
             cn.setAutoCommit(false);
 
-            // Borrar de trabajador
             psTrabajador = cn.prepareStatement(DELETE_TRABAJADOR_SQL);
             psTrabajador.setString(1, id);
             psTrabajador.executeUpdate();
 
-            // Borrar de persona
             psPersona = cn.prepareStatement(DELETE_PERSONA_SQL);
             psPersona.setString(1, id);
             psPersona.executeUpdate();
@@ -274,7 +270,6 @@ public class TrabajadorDAOImpl implements TrabajadorDAO {
         }
     }
 
-    // =================== Métodos auxiliares ===================
 
     private Trabajador mapResultSetToTrabajador(ResultSet rs) throws SQLException {
         String id = rs.getString("id");

@@ -61,7 +61,6 @@ private static final String DELETE_SQL =
 
         ps.executeUpdate();
 
-        // Recuperar el ID auto-generado
         rs = ps.getGeneratedKeys();
         if (rs.next()) {
             a.setId(rs.getInt(1));

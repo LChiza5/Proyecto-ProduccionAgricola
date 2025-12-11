@@ -44,14 +44,12 @@ public class FrmPrincipal extends javax.swing.JFrame {
     ProduccionDAO produccionDAO = new ProduccionDAOImpl();
     UsuarioDAO usuarioDAO = new UsuarioDAOImpl();
 
-    // Servicios
     CultivoServicio cultivoServicio = new CultivoServicio(cultivoDAO);
     TrabajadorServicio trabajadorServicio = new TrabajadorServicio(trabajadorDAO);
     AlmacenamientoServicio almacenamientoServicio = new AlmacenamientoServicio(almacenamientoDAO);
     ProduccionServicio produccionServicio = new ProduccionServicio(produccionDAO);
     UsuarioServicio usuarioServicio = new UsuarioServicio(usuarioDAO);
 
-    // Menu controlador
     new MenuControlador(
             usuarioLogueado,
             this,

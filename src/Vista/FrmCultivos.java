@@ -28,11 +28,6 @@ public class FrmCultivos extends javax.swing.JInternalFrame {
     }
     private void configurarComponentes() {
         
-
-        // Tabla: solo una fila a la vez
-       
-
-        // Combo Tipo que aprende nuevos valores escritos
         cmbTipo.addActionListener(e -> {
             if (cmbTipo.isEditable() && cmbTipo.getSelectedItem() != null) {
                 String valor = cmbTipo.getSelectedItem().toString().trim();

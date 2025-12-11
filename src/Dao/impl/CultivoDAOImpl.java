@@ -40,7 +40,6 @@ public class CultivoDAOImpl implements CultivoDAO {
     private static final String DELETE_SQL =
             "DELETE FROM cultivo WHERE id = ?";
 
-    // NUEVO: para llenar el ComboBox de tipos en el diálogo
     private static final String SELECT_TIPOS_UNICOS_SQL =
             "SELECT DISTINCT tipo FROM cultivo ORDER BY tipo";
 
@@ -102,7 +101,6 @@ public class CultivoDAOImpl implements CultivoDAO {
             parametros.add("%" + nombre + "%");
         }
         if (tipo != null && !tipo.isBlank()) {
-            // Como el tipo viene de un ComboBox de valores únicos, puedes usar = en lugar de LIKE
             sql.append(" AND tipo = ?");
             parametros.add(tipo);
         }
@@ -193,7 +191,6 @@ public class CultivoDAOImpl implements CultivoDAO {
         }
     }
 
-    // NUEVO: tipos únicos para llenar el ComboBox del filtro en el JDialog
     @Override
     public List<String> obtenerTiposUnicos() throws DAOException {
         List<String> tipos = new ArrayList<>();

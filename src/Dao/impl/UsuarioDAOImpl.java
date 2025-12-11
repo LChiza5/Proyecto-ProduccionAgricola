@@ -73,7 +73,6 @@ public class UsuarioDAOImpl implements UsuarioDAO  {
             try (PreparedStatement psPersona = cn.prepareStatement(INSERT_PERSONA_SQL);
                  PreparedStatement psUsuario = cn.prepareStatement(INSERT_USUARIO_SQL)) {
 
-                // Insert en PERSONA
                 psPersona.setString(1, usuario.getId());
                 psPersona.setString(2, usuario.getNombre());
                 psPersona.setString(3, usuario.getTelefono());
@@ -81,7 +80,6 @@ public class UsuarioDAOImpl implements UsuarioDAO  {
                 psPersona.setString(5, usuario.getRol().name());
                 psPersona.executeUpdate();
 
-                // Insert en USUARIO
                 psUsuario.setString(1, usuario.getId());
                 psUsuario.setString(2, usuario.getContrasenaHash());
                 psUsuario.executeUpdate();
@@ -120,7 +118,6 @@ public class UsuarioDAOImpl implements UsuarioDAO  {
             try (PreparedStatement psPersona = cn.prepareStatement(UPDATE_PERSONA_SQL);
                  PreparedStatement psUsuario = cn.prepareStatement(UPDATE_USUARIO_SQL)) {
 
-                // Update en PERSONA
                 psPersona.setString(1, u.getNombre());
                 psPersona.setString(2, u.getTelefono());
                 psPersona.setString(3, u.getCorreo());
@@ -129,7 +126,6 @@ public class UsuarioDAOImpl implements UsuarioDAO  {
                 
                 psPersona.executeUpdate();
 
-                // Update en USUARIO
                 psUsuario.setString(1, u.getContrasenaHash());
                 psUsuario.setString(2, u.getId());
                 psUsuario.executeUpdate();
@@ -166,7 +162,6 @@ public class UsuarioDAOImpl implements UsuarioDAO  {
         return lista;
     }
     
-        // ======================= Métodos de apoyo =======================
     
     private Usuario mapResultSetToUsuario(ResultSet rs) throws SQLException {
         String id = rs.getString("id");

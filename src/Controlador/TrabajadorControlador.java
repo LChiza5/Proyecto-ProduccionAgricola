@@ -134,7 +134,6 @@ public class TrabajadorControlador {
        
     }
 
-    // ======================= Métodos de apoyo =======================
 
     private TrabajadorDTO leerTrabajadorDesdeFormulario() throws ValidacionException {
     String id = vista.getTxtId().getText().trim();

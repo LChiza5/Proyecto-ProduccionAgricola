@@ -14,7 +14,7 @@ public class UsuarioDTO {
     private String telefono;
     private String correo;
     private String contrasenaHash;
-    private String rol; // 'ADMIN' o 'USUARIO'
+    private String rol; 
 
     public UsuarioDTO() { }
 

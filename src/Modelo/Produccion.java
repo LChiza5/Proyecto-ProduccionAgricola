@@ -15,18 +15,17 @@ public class Produccion {
     private LocalDate fecha;
     private int cantProducto;
     private int calidad;
-    private int productividad; // No va en BD
+    private int productividad; 
     private String destino;
     private String idCultivo;
 
-    // ✅ Constructor SIN ID: para nuevas producciones (INSERT)
     public Produccion(LocalDate fecha,
                       int cantProducto,
                       int calidad,
                       int productividad,
                       String destino,
                       String idCultivo) {
-        this.id = 0; // nuevo, sin ID aún
+        this.id = 0; 
         this.fecha = fecha;
         this.cantProducto = cantProducto;
         this.calidad = calidad;
@@ -35,7 +34,6 @@ public class Produccion {
         this.idCultivo = idCultivo;
     }
 
-    // ✅ Constructor CON ID: para cuando se lee de BD o se usa en edición
     public Produccion(int id,
                       LocalDate fecha,
                       int cantProducto,
@@ -52,7 +50,6 @@ public class Produccion {
         this.idCultivo = idCultivo;
     }
 
-    // ============ Getters ============
 
     public int getId() {
         return id;
@@ -82,7 +79,6 @@ public class Produccion {
         return idCultivo;
     }
 
-    // ============ Setters ============
 
     public void setId(int id) {
         this.id = id;

@@ -209,7 +209,6 @@ public class PersonaDAOImpl implements PersonaDAO {
         }
     }
 
-    // =================== Métodos auxiliares ===================
 
     private Persona mapResultSetToPersona(ResultSet rs) throws SQLException {
         String id = rs.getString("id");

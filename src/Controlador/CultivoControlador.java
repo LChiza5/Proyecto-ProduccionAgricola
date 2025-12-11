@@ -46,7 +46,6 @@ public class CultivoControlador {
         
     }
 
-    // ======================= Acciones de los botones =======================
 
     private void guardarCultivo() {
         try {
@@ -98,7 +97,6 @@ public class CultivoControlador {
         }
     }
 
-    // ======================= Métodos de apoyo =======================
 
     private CultivoDTO leerCultivoDesdeFormulario() {
         String id = vista.getTxtId().getText().trim();
@@ -114,7 +112,6 @@ public class CultivoControlador {
             estado = vista.getCmbEstado().getSelectedItem().toString().trim();
         }
 
-        // Área sembrada
         String areaStr = vista.getFtxtAreaSembrada().getText().trim();
         double area = 0;
         if (!areaStr.isBlank()) {
@@ -122,14 +119,12 @@ public class CultivoControlador {
             area = Double.parseDouble(areaStr);
         }
 
-        // Fecha siembra
         String fechaSiembraStr = vista.getFtxtFechaSiembra().getText().trim();
         LocalDate fechaSiembra = null;
         if (!fechaSiembraStr.isBlank() && !fechaSiembraStr.contains("_")) {
             fechaSiembra = LocalDate.parse(fechaSiembraStr);
         }
 
-        // Fecha cosecha (si la usas)
         String fechaCosechaStr = vista.getFtxtFechaCosecha().getText().trim();
         LocalDate fechaCosecha = null;
         if (!fechaCosechaStr.isBlank() && !fechaCosechaStr.contains("_")) {

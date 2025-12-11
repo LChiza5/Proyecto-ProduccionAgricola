@@ -46,7 +46,6 @@ public class AlmacenamientoControlador {
         vista.getBtnRevisarAlertas().addActionListener(e -> revisarAlertasAsync());
     }
 
-    // =================== Acciones CRUD ===================
 
     private void guardar() {
         try {
@@ -140,7 +139,6 @@ public class AlmacenamientoControlador {
         vista.setVisible(true);
     }
 
-    // =================== Búsqueda con diálogo ===================
 
     private void abrirDialogoBusqueda() {
         DlgAlmacenamientoBusqueda dialogo = new DlgAlmacenamientoBusqueda(vista, true);
@@ -195,7 +193,6 @@ public class AlmacenamientoControlador {
         worker.execute(); 
     }
 
-    // =================== Métodos de apoyo ===================
 
     private AlmacenamientoDTO leerDesdeFormulario() throws ValidacionException {
     AlmacenamientoDTO dto = new AlmacenamientoDTO();
@@ -230,7 +227,6 @@ public class AlmacenamientoControlador {
         throw new ValidacionException("La cantidad debe ser un número entero.");
     }
 
-    // Fechas (ajusta según tu diseño)
     String ingresoStr = vista.getTxtFechaIngreso().getText().trim();
     if (ingresoStr.isBlank()) {
         throw new ValidacionException("Debe indicar la fecha de ingreso.");

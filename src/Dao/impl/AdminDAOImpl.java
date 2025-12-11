@@ -208,7 +208,6 @@ public class AdminDAOImpl implements AdminDAO {
         }
     }
 
-    // =================== Métodos auxiliares ===================
 
     private Usuario mapResultSetToUsuario(ResultSet rs) throws SQLException {
         String id = rs.getString("id");

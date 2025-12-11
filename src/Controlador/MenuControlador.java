@@ -56,7 +56,6 @@ public class MenuControlador {
     private void inicializarEventos() {
         vista.getBtnAlmacen().addActionListener(e -> abrirAlmacenamiento());
         vista.getBtnProduccion().addActionListener(e -> abrirProduccion());
-        // === CULTIVOS ===
         vista.getBtnCultivos().addActionListener(e -> {
             
             JInternalFrame abierto = buscarFrameAbierto(FrmCultivos.class);
@@ -70,7 +69,6 @@ public class MenuControlador {
             abrirEnDesktop(frm);                              
         });
 
-        // === TRABAJADORES ===
         vista.getBtnTrabajadores().addActionListener(e -> {
             JInternalFrame abierto = buscarFrameAbierto(FrmTrabajadores.class);
             if (abierto != null) {
@@ -83,7 +81,6 @@ public class MenuControlador {
             abrirEnDesktop(frm);
         });
 
-        // === USUARIOS ===
         vista.getBtnUsuarios().addActionListener(e -> {
         JInternalFrame abierto = buscarFrameAbierto(FrmUsuarios.class);
             if (abierto != null) {
@@ -135,13 +132,11 @@ public class MenuControlador {
     }
 }
 
-    // ---- Métodos de apoyo ----
 
     private void abrirEnDesktop(JInternalFrame frame) {
 
         vista.getjDesktopPane1().add(frame);
 
-        // Centrar dentro del desktop
         int x = (vista.getjDesktopPane1().getWidth() - frame.getWidth()) / 2;
         int y = (vista.getjDesktopPane1().getHeight() - frame.getHeight()) / 2;
         frame.setLocation(Math.max(x, 0), Math.max(y, 0));
