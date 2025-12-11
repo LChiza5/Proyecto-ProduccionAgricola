@@ -8,6 +8,7 @@ import Dao.UsuarioDAO;
 import Excepciones.DAOException;
 import Excepciones.ValidacionException;
 import Modelo.Usuario;
+import Util.HashUtil;
 import dto.UsuarioDTO;
 import java.util.List;
 import java.util.regex.Pattern;
