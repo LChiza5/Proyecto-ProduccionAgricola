@@ -37,6 +37,7 @@ public class AlmacenamientoControlador {
         vista.getBtnEliminar().addActionListener(e -> eliminar());
         vista.getBtnBuscar().addActionListener(e -> abrirDialogoBusqueda());
         vista.getBtnLimpiar().addActionListener(e -> limpiar());
+        vista.getBtnRevisarAlertas().addActionListener(e -> revisarAlertasAsync());
     }
 
     // =================== Acciones CRUD ===================
@@ -104,10 +105,9 @@ public class AlmacenamientoControlador {
         vista.getTxtFechaIngreso().setText("");
         vista.getTxtFechaEgreso().setText("");
 
-        // Limpiar combo de producción (elige la convención que uses)
         JComboBox<?> combo = vista.getCmbIdProduccion();
         if (combo.getItemCount() > 0) {
-            combo.setSelectedIndex(0); // por ejemplo, "Seleccione..." o el primero
+            combo.setSelectedIndex(0);
         }
     }
 
@@ -124,20 +124,13 @@ public class AlmacenamientoControlador {
         ctrlBusqueda.mostrar();
     }
 
-    /**
-     * Método llamado desde AlmacenamientoBusquedaControlador
-     * cuando el usuario selecciona un registro en el diálogo.
-     */
     public void cargarDesdeSeleccion(AlmacenamientoDTO dto) {
         vista.getTxtId().setText(String.valueOf(dto.getId()));
+        vista.getCmbIdProduccion().setSelectedItem(dto.getIdProduccion());
         vista.getTxtCantidad().setText(String.valueOf(dto.getCantidad()));
 
-        // Seleccionar el idProduccion en el combo
-        // Esto funcionará si llenas el combo con Integer o String que corresponda al ID
-        vista.getCmbIdProduccion().setSelectedItem(dto.getIdProduccion());
-
         if (dto.getIngreso() != null) {
-            vista.getTxtFechaIngreso().setText(dto.getIngreso().toString()); // yyyy-MM-dd
+            vista.getTxtFechaIngreso().setText(dto.getIngreso().toString());
         } else {
             vista.getTxtFechaIngreso().setText("");
         }
@@ -149,12 +142,48 @@ public class AlmacenamientoControlador {
         }
     }
 
+
+    /**
+     * Revisa las alertas de almacenamiento en un hilo separado usando SwingWorker,
+     * para no bloquear la interfaz gráfica.
+     */
+    private void revisarAlertasAsync() {
+        // Puedes ajustar los días de alerta según lo que te pida el profe
+        final int DIAS_ALERTA = 30;
+
+        SwingWorker<List<AlmacenamientoDTO>, Void> worker =
+                new SwingWorker<>() {
+                    @Override
+                    protected List<AlmacenamientoDTO> doInBackground() throws Exception {
+                        return servicio.obtenerAlertasPorEstadiaMayorA(DIAS_ALERTA);
+                    }
+
+                    @Override
+                    protected void done() {
+                        try {
+                            List<AlmacenamientoDTO> alertas = get(); 
+                            if (alertas.isEmpty()) {
+                                mostrarMensaje("No hay productos con más de " + DIAS_ALERTA + " días almacenados.");
+                            } else {
+                                mostrarMensaje("Hay " + alertas.size() +
+                                        " registros con más de " + DIAS_ALERTA + " días almacenados.\n" +
+                                        "Puedes ver el detalle en el diálogo de búsqueda.");
+                            }
+                        } catch (Exception ex) {
+                            mostrarError("Error al revisar alertas en segundo plano: " + ex.getMessage());
+                        }
+                    }
+                };
+
+        worker.execute(); 
+    }
+
     // =================== Métodos de apoyo ===================
 
     private AlmacenamientoDTO leerDesdeFormulario() throws ValidacionException {
         AlmacenamientoDTO dto = new AlmacenamientoDTO();
 
-        // ID (puede estar vacío en "guardar")
+        
         String idStr = vista.getTxtId().getText().trim();
         if (!idStr.isEmpty()) {
             try {
@@ -164,7 +193,6 @@ public class AlmacenamientoControlador {
             }
         }
 
-        // ID Producción leído desde el combo
         Object selProd = vista.getCmbIdProduccion().getSelectedItem();
         if (selProd == null) {
             throw new ValidacionException("Debe seleccionar una producción.");
@@ -178,7 +206,6 @@ public class AlmacenamientoControlador {
             throw new ValidacionException("El ID de producción seleccionado no es válido.");
         }
 
-        // Cantidad
         String cantStr = vista.getTxtCantidad().getText().trim();
         if (cantStr.isEmpty()) {
             throw new ValidacionException("Debe indicar la cantidad almacenada.");
@@ -189,18 +216,16 @@ public class AlmacenamientoControlador {
             throw new ValidacionException("La cantidad debe ser un número entero.");
         }
 
-        // Fecha ingreso
         String ingresoStr = vista.getTxtFechaIngreso().getText().trim();
         if (ingresoStr.isEmpty()) {
             throw new ValidacionException("Debe indicar la fecha de ingreso.");
         }
         try {
-            dto.setIngreso(LocalDate.parse(ingresoStr)); // yyyy-MM-dd
+            dto.setIngreso(LocalDate.parse(ingresoStr));
         } catch (DateTimeParseException ex) {
             throw new ValidacionException("Formato de fecha de ingreso inválido. Use yyyy-MM-dd.");
         }
 
-        // Fecha egreso (opcional)
         String egresoStr = vista.getTxtFechaEgreso().getText().trim();
         if (!egresoStr.isEmpty()) {
             try {

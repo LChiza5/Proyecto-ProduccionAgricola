@@ -38,6 +38,7 @@ public class FrmAlmacenamiento extends javax.swing.JInternalFrame {
         btnEliminar = new javax.swing.JButton();
         btnBuscar = new javax.swing.JButton();
         btnLimpiar = new javax.swing.JButton();
+        btnRevisarAlertas = new javax.swing.JButton();
         cmbIdProduccion = new javax.swing.JComboBox<>();
         txtId = new javax.swing.JTextField();
         jLabel1 = new javax.swing.JLabel();
@@ -66,12 +67,14 @@ public class FrmAlmacenamiento extends javax.swing.JInternalFrame {
 
         btnLimpiar.setText("Limpiar");
 
+        btnRevisarAlertas.setText("Alerta Rapida");
+
         javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
         jPanel1.setLayout(jPanel1Layout);
         jPanel1Layout.setHorizontalGroup(
             jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel1Layout.createSequentialGroup()
-                .addGap(75, 75, 75)
+            .addGroup(jPanel1Layout.createSequentialGroup()
+                .addGap(104, 104, 104)
                 .addComponent(btnGuardar)
                 .addGap(14, 14, 14)
                 .addComponent(btnActualizar)
@@ -80,8 +83,10 @@ public class FrmAlmacenamiento extends javax.swing.JInternalFrame {
                 .addGap(18, 18, 18)
                 .addComponent(btnBuscar)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                .addComponent(btnLimpiar)
-                .addContainerGap(82, Short.MAX_VALUE))
+                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(btnRevisarAlertas)
+                    .addComponent(btnLimpiar))
+                .addContainerGap(21, Short.MAX_VALUE))
         );
         jPanel1Layout.setVerticalGroup(
             jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -93,7 +98,9 @@ public class FrmAlmacenamiento extends javax.swing.JInternalFrame {
                     .addComponent(btnBuscar)
                     .addComponent(btnActualizar)
                     .addComponent(btnEliminar))
-                .addContainerGap(59, Short.MAX_VALUE))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(btnRevisarAlertas)
+                .addContainerGap(25, Short.MAX_VALUE))
         );
 
         jLabel1.setText("ID");
@@ -179,6 +186,7 @@ public class FrmAlmacenamiento extends javax.swing.JInternalFrame {
     private javax.swing.JButton btnEliminar;
     private javax.swing.JButton btnGuardar;
     private javax.swing.JButton btnLimpiar;
+    private javax.swing.JButton btnRevisarAlertas;
     private javax.swing.JComboBox<String> cmbIdProduccion;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel2;
@@ -216,6 +224,10 @@ public class FrmAlmacenamiento extends javax.swing.JInternalFrame {
         return cmbIdProduccion;
     }
 
+    public JButton getBtnRevisarAlertas() {
+        return btnRevisarAlertas;
+    }
+    
    
     public JTextField getTxtCantidad() {
         return txtCantidad;
