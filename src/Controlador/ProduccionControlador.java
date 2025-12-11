@@ -56,7 +56,7 @@ public class ProduccionControlador {
         try {
             List<CultivoDTO> cultivos = cultivoServicio.listarTodos();
             for (CultivoDTO c : cultivos) {
-                combo.addItem(c.getId());  // asumiendo que el id del cultivo es String
+                combo.addItem(c.getId());  
             }
             if (cultivos.isEmpty()) {
                 combo.setSelectedIndex(-1);
@@ -148,9 +148,7 @@ public class ProduccionControlador {
         ctrlBusqueda.mostrar();
     }
 
-    /**
-     * Método llamado desde el diálogo de búsqueda cuando el usuario selecciona una fila.
-     */
+    
     public void cargarDesdeSeleccion(ProduccionDTO dto) {
         if (dto == null) return;
 
@@ -192,7 +190,7 @@ public class ProduccionControlador {
         dto.setIdCultivo(idCultivo);
 
         if (!fechaTexto.isEmpty()) {
-            dto.setFecha(LocalDate.parse(fechaTexto)); // yyyy-MM-dd
+            dto.setFecha(LocalDate.parse(fechaTexto)); 
         }
         if (!cantidadTexto.isEmpty()) {
             dto.setCantProducto(Integer.parseInt(cantidadTexto));

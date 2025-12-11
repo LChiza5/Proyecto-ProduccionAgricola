@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Servidor: mariadb
--- Tiempo de generación: 11-12-2025 a las 03:09:51
+-- Tiempo de generación: 11-12-2025 a las 11:03:34
 -- Versión del servidor: 10.5.29-MariaDB-ubu2004
 -- Versión de PHP: 8.3.27
 
@@ -56,7 +56,8 @@ CREATE TABLE `cultivo` (
 --
 
 INSERT INTO `cultivo` (`id`, `nombre`, `tipo`, `area_sembrada`, `estado`, `fecha_siembra`, `fecha_cosecha`) VALUES
-('10', 'melon', 'fruta', 12, 'preparando', '2025-12-12', '2026-10-10');
+('1', 'Maiz', 'Trigo', 30, 'Preparando', '2026-10-20', '2026-10-30'),
+('10', 'melon', 'Trigo', 12, 'Listo', '2025-12-12', '2026-10-11');
 
 -- --------------------------------------------------------
 
@@ -77,7 +78,8 @@ CREATE TABLE `persona` (
 --
 
 INSERT INTO `persona` (`id`, `nombre`, `telefono`, `correo`, `rol`) VALUES
-('1111', 'Admin Prin', '7000-0000', 'admiin@agricola.com', 'ADMIN');
+('1', 'Admin', '12341234', 'ad@gmail.com', 'ADMIN'),
+('3', 'Sebas', '1234-5678', 'Seb@gmail.com', 'TRABAJADOR');
 
 -- --------------------------------------------------------
 
@@ -93,13 +95,6 @@ CREATE TABLE `produccion` (
   `destino` varchar(20) NOT NULL,
   `id_cultivo` varchar(20) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
-
---
--- Volcado de datos para la tabla `produccion`
---
-
-INSERT INTO `produccion` (`id`, `fecha`, `cant_producto`, `calidad`, `destino`, `id_cultivo`) VALUES
-(7, '2025-02-02', 1, 1, 'Venta', '10');
 
 -- --------------------------------------------------------
 
@@ -130,7 +125,8 @@ CREATE TABLE `usuario` (
 --
 
 INSERT INTO `usuario` (`id`, `contrasena_hash`) VALUES
-('1111', 'e04507b6c94d72d45887a9722bc944664484fe71f73b7f3e0b489e7351d6ad4d');
+('1', 'c1c224b03cd9bc7b6a86d77f5dace40191766c485cd55dc48caf9ac873335d6f'),
+('3', '17952c3827e16ecb3cedcc7cdf877d82989f0085cff66d2241a56d776f86d4e4');
 
 --
 -- Índices para tablas volcadas
@@ -189,7 +185,7 @@ ALTER TABLE `almacenamiento`
 -- AUTO_INCREMENT de la tabla `produccion`
 --
 ALTER TABLE `produccion`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=8;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=9;
 
 --
 -- Restricciones para tablas volcadas

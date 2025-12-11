@@ -156,7 +156,7 @@ public class ProduccionBusquedaControlador {
 
     JTable tabla = vista.getTblResultados();
 
-    // Armar el DTO a partir de la fila seleccionada
+    
     ProduccionDTO dto = new ProduccionDTO();
     dto.setId((int) tabla.getValueAt(fila, 0));
     dto.setIdCultivo(tabla.getValueAt(fila, 1).toString());
@@ -175,12 +175,12 @@ public class ProduccionBusquedaControlador {
         dto.setProductividad((int) Double.parseDouble(prod.toString()));
     }
 
-    // Selector de archivo para PDF
+    
     JFileChooser chooser = new JFileChooser();
     chooser.setDialogTitle("Guardar reporte PDF de producción");
     chooser.setSelectedFile(new File("reporte_produccion_" + dto.getId() + ".pdf"));
 
-    // (Opcional) filtrar solo PDF
+    
     javax.swing.filechooser.FileNameExtensionFilter filtroPdf =
             new javax.swing.filechooser.FileNameExtensionFilter("Archivos PDF (*.pdf)", "pdf");
     chooser.setFileFilter(filtroPdf);
@@ -189,13 +189,13 @@ public class ProduccionBusquedaControlador {
     if (opcion == JFileChooser.APPROVE_OPTION) {
         File archivo = chooser.getSelectedFile();
 
-        // Asegurar extensión .pdf
+        
         if (!archivo.getName().toLowerCase().endsWith(".pdf")) {
             archivo = new File(archivo.getAbsolutePath() + ".pdf");
         }
 
         try {
-            // Llamada a tu generador de PDF
+            
             ReporteProduccionPDF.generar(dto, archivo);
 
             JOptionPane.showMessageDialog(
@@ -223,7 +223,7 @@ public class ProduccionBusquedaControlador {
         return;
     }
 
-    // Construir lista de DTOs a partir de TODAS las filas de la tabla
+    
     java.util.List<ProduccionDTO> lista = new java.util.ArrayList<>();
 
     for (int i = 0; i < filas; i++) {
@@ -249,7 +249,7 @@ public class ProduccionBusquedaControlador {
         lista.add(dto);
     }
 
-    // Selector de archivo PDF
+    
     javax.swing.JFileChooser chooser = new javax.swing.JFileChooser();
     chooser.setDialogTitle("Guardar reporte general de producción (PDF)");
     chooser.setSelectedFile(new java.io.File("reporte_produccion_listado.pdf"));

@@ -54,7 +54,6 @@ public class AlmacenamientoBusquedaControlador {
         vista.getBtnSeleccionar().addActionListener(e -> seleccionar());
         vista.getBtnCerrar().addActionListener(e -> vista.dispose());
 
-        // ALERTAS (solo si agregaste el botón)
         if (vista.getBtnVerAlertas() != null) {
             vista.getBtnVerAlertas().addActionListener(e -> verAlertas());
         }
@@ -100,7 +99,7 @@ public class AlmacenamientoBusquedaControlador {
                 hasta = LocalDate.parse(fechaHastaTxt);
             }
 
-            // idProduccion NO está en el diálogo actualmente
+            
             List<AlmacenamientoDTO> lista =
                     servicio.buscarConFiltros(desde, hasta, null);
 
@@ -128,19 +127,19 @@ public class AlmacenamientoBusquedaControlador {
         dto.setIdProduccion((int) tabla.getValueAt(fila, 1));
         dto.setCantidad((int) tabla.getValueAt(fila, 2));
 
-        // Ingreso
+        
         String ingresoStr = tabla.getValueAt(fila, 3).toString();
         if (!ingresoStr.isBlank()) {
             dto.setIngreso(LocalDate.parse(ingresoStr));
         }
 
-        // Egreso
+        
         String egresoStr = tabla.getValueAt(fila, 4).toString();
         if (!egresoStr.isBlank()) {
             dto.setEgreso(LocalDate.parse(egresoStr));
         }
 
-        controladorPrincipal.cargarDesdeSeleccion(dto);
+        controladorPrincipal.cargarDesdeBusqueda(dto);
         vista.dispose();
     }
 

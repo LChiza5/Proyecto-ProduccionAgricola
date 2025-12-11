@@ -90,7 +90,8 @@ public class TrabajadorDAOImpl implements TrabajadorDAO {
                    
                 }
             }
-            throw new DAOException("Error al crear trabajador.", ex);
+            throw new DAOException("Error al crear trabajador: " + ex.getMessage(), ex);
+
         } finally {
             cerrar(psTrabajador);
             cerrar(psPersona);

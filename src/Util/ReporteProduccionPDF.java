@@ -51,7 +51,7 @@ public class ReporteProduccionPDF {
             logoCell.setHorizontalAlignment(Element.ALIGN_LEFT);
             headerTable.addCell(logoCell);
         } catch (Exception e) {
-            // Si no hay logo o hay problema al cargarlo, solo dejamos la celda vacía
+            
             PdfPCell emptyLogoCell = new PdfPCell(new Phrase(""));
             emptyLogoCell.setBorder(Rectangle.NO_BORDER);
             headerTable.addCell(emptyLogoCell);
@@ -101,7 +101,7 @@ public class ReporteProduccionPDF {
         datosTable.setSpacingAfter(10f);
         datosTable.setWidths(new float[]{2f, 4f});
 
-        // Helper para agregar fila "label: valor"
+        
         agregarFila(datosTable, "ID de Producción:", String.valueOf(dto.getId()), labelFont, valueFont);
         agregarFila(datosTable, "Cultivo:", dto.getIdCultivo(), labelFont, valueFont);
         agregarFila(datosTable, "Fecha de cosecha:", dto.getFecha() != null ? dto.getFecha().toString() : "", labelFont, valueFont);
@@ -121,17 +121,17 @@ public class ReporteProduccionPDF {
         PdfPTable prodTable = new PdfPTable(1);
         prodTable.setWidthPercentage(100);
 
-        // Celda con fondo suave para destacar
+        
         PdfPCell prodCell = new PdfPCell();
         prodCell.setPadding(10f);
-        prodCell.setBackgroundColor(new BaseColor(230, 240, 255)); // Azul muy suave
+        prodCell.setBackgroundColor(new BaseColor(230, 240, 255)); 
 
         Font prodValorFont = new Font(Font.FontFamily.HELVETICA, 14, Font.BOLD);
         Phrase pProdValor = new Phrase("Productividad: " + dto.getProductividad() + " %", prodValorFont);
 
         prodCell.addElement(pProdValor);
 
-        // Explicación corta
+        
         Font prodExpFont = new Font(Font.FontFamily.HELVETICA, 10, Font.NORMAL);
         String explicacion = "La productividad representa el porcentaje del producto recolectado que "
                 + "resulta apto para la comercialización (producto final de calidad) en relación con la "
@@ -140,7 +140,7 @@ public class ReporteProduccionPDF {
         pExplicacion.setSpacingBefore(5f);
         prodCell.addElement(pExplicacion);
 
-        // Clasificación simple de productividad
+        
         String categoria;
         int prod = dto.getProductividad();
         if (prod >= 85) {
@@ -176,9 +176,7 @@ public class ReporteProduccionPDF {
         document.close();
     }
 
-    /**
-     * Agrega una fila de "etiqueta : valor" a la tabla de datos.
-     */
+    
     private static void agregarFila(PdfPTable tabla,
                                     String label,
                                     String value,
@@ -188,7 +186,7 @@ public class ReporteProduccionPDF {
         PdfPCell labelCell = new PdfPCell(new Phrase(label, labelFont));
         labelCell.setBorder(Rectangle.BOX);
         labelCell.setPadding(6f);
-        labelCell.setBackgroundColor(new BaseColor(245, 245, 245)); // gris muy suave
+        labelCell.setBackgroundColor(new BaseColor(245, 245, 245)); 
         tabla.addCell(labelCell);
 
         PdfPCell valueCell = new PdfPCell(new Phrase(value != null ? value : "", valueFont));
@@ -217,7 +215,7 @@ public class ReporteProduccionPDF {
     headerTable.setWidthPercentage(100);
     headerTable.setWidths(new float[]{1.2f, 3.8f});
 
-    // Logo (si existe)
+    
     try {
         Image logo = Image.getInstance(RUTA_LOGO);
         logo.scaleToFit(70, 70);
@@ -253,7 +251,7 @@ public class ReporteProduccionPDF {
 
     document.add(headerTable);
 
-    // Línea separadora (igual que en el reporte individual)
+    
     LineSeparator ls = new LineSeparator();
     ls.setLineWidth(1f);
     document.add(new Chunk(ls));
@@ -269,7 +267,7 @@ public class ReporteProduccionPDF {
     tabla.setSpacingAfter(10f);
     tabla.setWidths(new float[]{1f, 2f, 2f, 2f, 2f, 2f, 2f});
 
-    // Cabeceras (usa el mismo helper agregarHeaderTabla)
+   
     agregarHeaderTabla(tabla, "ID", headerFont);
     agregarHeaderTabla(tabla, "Cultivo", headerFont);
     agregarHeaderTabla(tabla, "Fecha", headerFont);

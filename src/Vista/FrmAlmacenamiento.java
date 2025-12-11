@@ -92,6 +92,7 @@ public class FrmAlmacenamiento extends javax.swing.JInternalFrame {
 
         jLabel2.setBackground(new java.awt.Color(35, 35, 35));
         jLabel2.setFont(new java.awt.Font("Segoe UI", 0, 24)); // NOI18N
+        jLabel2.setForeground(new java.awt.Color(255, 255, 255));
         jLabel2.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Imagenes/horticultura.png"))); // NOI18N
         jLabel2.setText("ID de Produccion");
         jLabel2.setOpaque(true);
@@ -160,7 +161,10 @@ public class FrmAlmacenamiento extends javax.swing.JInternalFrame {
         btnLimpiar.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Imagenes/escoba.png"))); // NOI18N
         btnLimpiar.setText("Limpiar");
 
-        btnRevisarAlertas.setText("jButton1");
+        btnRevisarAlertas.setBackground(new java.awt.Color(190, 0, 0));
+        btnRevisarAlertas.setFont(new java.awt.Font("sansserif", 0, 18)); // NOI18N
+        btnRevisarAlertas.setForeground(new java.awt.Color(0, 0, 0));
+        btnRevisarAlertas.setText("Alerta General");
 
         javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
         jPanel1.setLayout(jPanel1Layout);
@@ -195,7 +199,7 @@ public class FrmAlmacenamiento extends javax.swing.JInternalFrame {
                     .addGroup(jPanel1Layout.createSequentialGroup()
                         .addGap(82, 82, 82)
                         .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addComponent(btnRevisarAlertas, javax.swing.GroupLayout.PREFERRED_SIZE, 118, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(btnRevisarAlertas)
                             .addGroup(jPanel1Layout.createSequentialGroup()
                                 .addComponent(btnGuardar)
                                 .addGap(18, 18, 18)

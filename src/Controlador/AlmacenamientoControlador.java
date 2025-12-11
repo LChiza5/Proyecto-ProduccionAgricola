@@ -8,12 +8,14 @@ import Excepciones.ValidacionException;
 import Vista.DlgAlmacenamientoBusqueda;
 import Vista.FrmAlmacenamiento;
 import dto.AlmacenamientoDTO;
+import dto.ProduccionDTO;
 import servicio.AlmacenamientoServicio;
 import javax.swing.*;
 import javax.swing.table.DefaultTableModel;
 import java.time.LocalDate;
 import java.time.format.DateTimeParseException;
 import java.util.List;
+import servicio.ProduccionServicio;
 /**
  *
  * @author ilope
@@ -21,14 +23,18 @@ import java.util.List;
 public class AlmacenamientoControlador {
 
     private final AlmacenamientoServicio servicio;
+    private final ProduccionServicio produccionServicio;   
     private final FrmAlmacenamiento vista;
 
     public AlmacenamientoControlador(AlmacenamientoServicio servicio,
+                                     ProduccionServicio produccionServicio,
                                      FrmAlmacenamiento vista) {
         this.servicio = servicio;
+        this.produccionServicio = produccionServicio;
         this.vista = vista;
 
         inicializarEventos();
+        cargarProduccionesEnCombo();   
     }
 
     private void inicializarEventos() {
@@ -98,7 +104,26 @@ public class AlmacenamientoControlador {
             }
         }
     }
+    private void cargarProduccionesEnCombo() {
+    JComboBox<String> combo = vista.getCmbIdProduccion();
+    combo.removeAllItems();
 
+    try {
+        List<ProduccionDTO> producciones = produccionServicio.listarTodos();
+
+        for (ProduccionDTO p : producciones) {
+            
+            combo.addItem(String.valueOf(p.getId()));
+        }
+
+        if (combo.getItemCount() > 0) {
+            combo.setSelectedIndex(0);
+        }
+
+    } catch (DAOException ex) {
+        mostrarError("Error al cargar las producciones en el combo: " + ex.getMessage());
+    }
+}
     private void limpiar() {
         vista.getTxtId().setText("");
         vista.getTxtCantidad().setText("");
@@ -124,31 +149,23 @@ public class AlmacenamientoControlador {
         ctrlBusqueda.mostrar();
     }
 
-    public void cargarDesdeSeleccion(AlmacenamientoDTO dto) {
-        vista.getTxtId().setText(String.valueOf(dto.getId()));
-        vista.getCmbIdProduccion().setSelectedItem(dto.getIdProduccion());
-        vista.getTxtCantidad().setText(String.valueOf(dto.getCantidad()));
-
-        if (dto.getIngreso() != null) {
-            vista.getTxtFechaIngreso().setText(dto.getIngreso().toString());
-        } else {
-            vista.getTxtFechaIngreso().setText("");
-        }
-
-        if (dto.getEgreso() != null) {
-            vista.getTxtFechaEgreso().setText(dto.getEgreso().toString());
-        } else {
-            vista.getTxtFechaEgreso().setText("");
-        }
+    public void cargarDesdeBusqueda(AlmacenamientoDTO dto) {
+    vista.getTxtId().setText(String.valueOf(dto.getId()));
+    vista.getTxtCantidad().setText(String.valueOf(dto.getCantidad()));
+    vista.getTxtFechaIngreso().setText(dto.getIngreso().toString());
+    if (dto.getEgreso() != null) {
+        vista.getTxtFechaEgreso().setText(dto.getEgreso().toString());
+    } else {
+        vista.getTxtFechaEgreso().setText("");
     }
 
+    
+    vista.getCmbIdProduccion().setSelectedItem(String.valueOf(dto.getIdProduccion()));
+}
 
-    /**
-     * Revisa las alertas de almacenamiento en un hilo separado usando SwingWorker,
-     * para no bloquear la interfaz gráfica.
-     */
+
+    
     private void revisarAlertasAsync() {
-        // Puedes ajustar los días de alerta según lo que te pida el profe
         final int DIAS_ALERTA = 30;
 
         SwingWorker<List<AlmacenamientoDTO>, Void> worker =
@@ -181,64 +198,60 @@ public class AlmacenamientoControlador {
     // =================== Métodos de apoyo ===================
 
     private AlmacenamientoDTO leerDesdeFormulario() throws ValidacionException {
-        AlmacenamientoDTO dto = new AlmacenamientoDTO();
+    AlmacenamientoDTO dto = new AlmacenamientoDTO();
 
-        
-        String idStr = vista.getTxtId().getText().trim();
-        if (!idStr.isEmpty()) {
-            try {
-                dto.setId(Integer.parseInt(idStr));
-            } catch (NumberFormatException ex) {
-                throw new ValidacionException("El ID debe ser un número entero.");
-            }
-        }
-
-        Object selProd = vista.getCmbIdProduccion().getSelectedItem();
-        if (selProd == null) {
-            throw new ValidacionException("Debe seleccionar una producción.");
-        }
+    String idStr = vista.getTxtId().getText().trim();
+    if (!idStr.isBlank()) {
         try {
-            int idProduccion = (selProd instanceof Integer)
-                    ? (Integer) selProd
-                    : Integer.parseInt(selProd.toString());
-            dto.setIdProduccion(idProduccion);
+            dto.setId(Integer.parseInt(idStr));
         } catch (NumberFormatException ex) {
-            throw new ValidacionException("El ID de producción seleccionado no es válido.");
+            throw new ValidacionException("El ID de almacenamiento debe ser numérico.");
         }
-
-        String cantStr = vista.getTxtCantidad().getText().trim();
-        if (cantStr.isEmpty()) {
-            throw new ValidacionException("Debe indicar la cantidad almacenada.");
-        }
-        try {
-            dto.setCantidad(Integer.parseInt(cantStr));
-        } catch (NumberFormatException ex) {
-            throw new ValidacionException("La cantidad debe ser un número entero.");
-        }
-
-        String ingresoStr = vista.getTxtFechaIngreso().getText().trim();
-        if (ingresoStr.isEmpty()) {
-            throw new ValidacionException("Debe indicar la fecha de ingreso.");
-        }
-        try {
-            dto.setIngreso(LocalDate.parse(ingresoStr));
-        } catch (DateTimeParseException ex) {
-            throw new ValidacionException("Formato de fecha de ingreso inválido. Use yyyy-MM-dd.");
-        }
-
-        String egresoStr = vista.getTxtFechaEgreso().getText().trim();
-        if (!egresoStr.isEmpty()) {
-            try {
-                dto.setEgreso(LocalDate.parse(egresoStr));
-            } catch (DateTimeParseException ex) {
-                throw new ValidacionException("Formato de fecha de egreso inválido. Use yyyy-MM-dd.");
-            }
-        } else {
-            dto.setEgreso(null);
-        }
-
-        return dto;
     }
+
+    String idProdStr = (String) vista.getCmbIdProduccion().getSelectedItem();
+    if (idProdStr == null || idProdStr.isBlank()) {
+        throw new ValidacionException("Debe seleccionar una producción.");
+    }
+    try {
+        int idProduccion = Integer.parseInt(idProdStr);
+        dto.setIdProduccion(idProduccion);
+    } catch (NumberFormatException ex) {
+        throw new ValidacionException("El ID de producción seleccionado no es válido.");
+    }
+
+    String cantStr = vista.getTxtCantidad().getText().trim();
+    if (cantStr.isBlank()) {
+        throw new ValidacionException("Debe indicar la cantidad almacenada.");
+    }
+    try {
+        dto.setCantidad(Integer.parseInt(cantStr));
+    } catch (NumberFormatException ex) {
+        throw new ValidacionException("La cantidad debe ser un número entero.");
+    }
+
+    // Fechas (ajusta según tu diseño)
+    String ingresoStr = vista.getTxtFechaIngreso().getText().trim();
+    if (ingresoStr.isBlank()) {
+        throw new ValidacionException("Debe indicar la fecha de ingreso.");
+    }
+    try {
+        dto.setIngreso(LocalDate.parse(ingresoStr));
+    } catch (DateTimeParseException ex) {
+        throw new ValidacionException("La fecha de ingreso debe tener el formato yyyy-MM-dd.");
+    }
+
+    String egresoStr = vista.getTxtFechaEgreso().getText().trim();
+    if (!egresoStr.isBlank()) {
+        try {
+            dto.setEgreso(LocalDate.parse(egresoStr));
+        } catch (DateTimeParseException ex) {
+            throw new ValidacionException("La fecha de egreso debe tener el formato yyyy-MM-dd.");
+        }
+    }
+
+    return dto;
+}
 
     private void mostrarMensaje(String mensaje) {
         JOptionPane.showMessageDialog(vista, mensaje, "Información", JOptionPane.INFORMATION_MESSAGE);

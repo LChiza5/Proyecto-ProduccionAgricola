@@ -83,7 +83,7 @@ public class DlgUsuariosBusqueda extends javax.swing.JDialog {
         cmbFiltroRol.setBackground(new java.awt.Color(250, 255, 252));
         cmbFiltroRol.setFont(new java.awt.Font("Segoe UI", 0, 18)); // NOI18N
         cmbFiltroRol.setForeground(new java.awt.Color(35, 78, 59));
-        cmbFiltroRol.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Trabajador", "Administrador", "Todos" }));
+        cmbFiltroRol.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Trabajador", "Admin", "Todos" }));
 
         javax.swing.GroupLayout jPanel2Layout = new javax.swing.GroupLayout(jPanel2);
         jPanel2.setLayout(jPanel2Layout);

@@ -127,7 +127,6 @@ public class UsuarioControlador {
         vista.getTxtTelefono().setText(dto.getTelefono());
         vista.getTxtCorreo().setText(dto.getCorreo());
         vista.getCmbRol().setSelectedItem(dto.getRol());
-        // Nunca mostramos la contraseña, solo limpiamos
         vista.getTxtContrasena().setText("");
     }
 

@@ -15,12 +15,7 @@ public interface TrabajadorDAO {
 
     Trabajador buscarPorId(String id) throws DAOException;
 
-    /**
-     * Búsqueda con filtros:
-     *  - nombre (parcial)
-     *  - puesto
-     *  - horarios
-     */
+    
     List<Trabajador> buscarConFiltros(
             String nombreParcial,
             String puesto,

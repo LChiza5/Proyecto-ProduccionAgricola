@@ -36,7 +36,7 @@ public class UsuarioBusquedaControlador {
         DefaultTableModel modelo = new DefaultTableModel(null, columnas) {
             @Override
             public boolean isCellEditable(int row, int column) {
-                return false; // solo lectura
+                return false; 
             }
         };
         vista.getTblUsuarios().setModel(modelo);
@@ -104,8 +104,7 @@ public class UsuarioBusquedaControlador {
                                      .getValueAt(fila, 0).toString();
 
         try {
-            // Podrías crear un método en el servicio para buscar por ID,
-            // pero con pocos datos podemos reutilizar listarTodos()
+            
             List<UsuarioDTO> lista = servicio.listarTodos();
             UsuarioDTO seleccionado = lista.stream()
                     .filter(u -> idSeleccionado.equals(u.getId()))

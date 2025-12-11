@@ -44,21 +44,19 @@ public class TrabajadorControlador {
     }
 
     private void guardarTrabajador() {
-        try {
-            TrabajadorDTO dto = leerTrabajadorDesdeFormulario();
-            servicio.crearTrabajador(dto);
+    try {
+        TrabajadorDTO dto = leerTrabajadorDesdeFormulario();
+        servicio.crearTrabajador(dto);
 
-            
-
-            mostrarMensaje("Trabajador registrado correctamente.");
-            listarTodos();
-            limpiarFormulario();
-        } catch (ValidacionException | DAOException ex) {
-            mostrarError("Error al guardar el trabajador: " + ex.getMessage());
-        } catch (NumberFormatException ex) {
-            mostrarError("Formato de salario inválido: " + ex.getMessage());
-        }
+        mostrarMensaje("Trabajador registrado correctamente.");
+        listarTodos();       
+        limpiarFormulario();
+    } catch (ValidacionException | DAOException ex) {
+        mostrarError("Error al guardar el trabajador: " + ex.getMessage());
+    } catch (NumberFormatException ex) {
+        mostrarError("Formato de salario inválido: " + ex.getMessage());
     }
+}
 
     private void actualizarTrabajador() {
         try {
@@ -104,7 +102,7 @@ public class TrabajadorControlador {
     }
 
     private void abrirDialogoBusqueda() {
-    // Obtener el Frame padre a partir del JInternalFrame
+   
     java.awt.Frame parent = (java.awt.Frame) SwingUtilities.getWindowAncestor(vista);
 
     DlgTrabajadoresBusqueda dialogo = new DlgTrabajadoresBusqueda(parent, true);
@@ -131,44 +129,56 @@ public class TrabajadorControlador {
         vista.getTxtCorreo().setText("");
         vista.getCmbPuesto().setSelectedIndex(-1);
         vista.getTxtHorarios().setText("");
-        vista.getFtxtSalario().setValue(-1);
+        vista.getFtxtSalario().setValue(null);
         
        
     }
 
     // ======================= Métodos de apoyo =======================
 
-    private TrabajadorDTO leerTrabajadorDesdeFormulario() {
-        String id = vista.getTxtId().getText().trim();
-        String nombre = vista.getTxtNombre().getText().trim();
-        String telefono = vista.getTxtTelefono().getText().trim();
-        String correo = vista.getTxtCorreo().getText().trim();
+    private TrabajadorDTO leerTrabajadorDesdeFormulario() throws ValidacionException {
+    String id = vista.getTxtId().getText().trim();
+    String nombre = vista.getTxtNombre().getText().trim();
+    String telefono = vista.getTxtTelefono().getText().trim();
+    String correo = vista.getTxtCorreo().getText().trim();
 
-        String puesto = null;
-        if (vista.getCmbPuesto().getSelectedItem() != null) {
-            puesto = vista.getCmbPuesto().getSelectedItem().toString().trim();
-        }
-
-        String horarios = vista.getTxtHorarios().getText().trim();
-
-        String salarioStr = vista.getFtxtSalario().getText().trim();
-        double salario = 0;
-        if (!salarioStr.isBlank()) {
-            salarioStr = salarioStr.replace(",", ".");
-            salario = Double.parseDouble(salarioStr);
-        }
-
-        TrabajadorDTO dto = new TrabajadorDTO();
-        dto.setId(id);
-        dto.setNombre(nombre);
-        dto.setTelefono(telefono);
-        dto.setCorreo(correo);
-        dto.setPuesto(puesto);
-        dto.setHorarios(horarios);
-        dto.setSalario(salario);
-
-        return dto;
+    String puesto = null;
+    if (vista.getCmbPuesto().getSelectedItem() != null) {
+        puesto = vista.getCmbPuesto().getSelectedItem().toString().trim();
     }
+
+    String horarios = vista.getTxtHorarios().getText().trim();
+
+    String salarioStr = vista.getFtxtSalario().getText().trim();
+    double salario;
+
+    if (salarioStr.isBlank()) {
+        throw new ValidacionException("Debe indicar el salario del trabajador.");
+    }
+
+    salarioStr = salarioStr
+            .replace("₡", "")
+            .replace("₡", "")
+            .replace(" ", "")
+            .replace(",", "."); 
+
+    try {
+        salario = Double.parseDouble(salarioStr);
+    } catch (NumberFormatException ex) {
+        throw new ValidacionException("El formato del salario no es válido.");
+    }
+
+    TrabajadorDTO dto = new TrabajadorDTO();
+    dto.setId(id);
+    dto.setNombre(nombre);
+    dto.setTelefono(telefono);
+    dto.setCorreo(correo);
+    dto.setPuesto(puesto);
+    dto.setHorarios(horarios);
+    dto.setSalario(salario);
+
+    return dto;
+}
 
     public void cargarTrabajadorEnFormulario(TrabajadorDTO dto) {
         vista.getTxtId().setText(dto.getId());
@@ -183,10 +193,7 @@ public class TrabajadorControlador {
     }
 
     
-    /**
-     * Carga en el combo de filtro todos los puestos únicos de BD.
-     * Primer item: "Todos".
-     */
+   
     
 
     private void mostrarMensaje(String mensaje) {

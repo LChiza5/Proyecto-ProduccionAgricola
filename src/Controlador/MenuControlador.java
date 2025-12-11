@@ -65,8 +65,8 @@ public class MenuControlador {
                 return;
             }
 
-            FrmCultivos frm = new FrmCultivos();              // vista
-            new CultivoControlador(cultivoServicio, frm);     // controlador
+            FrmCultivos frm = new FrmCultivos();              
+            new CultivoControlador(cultivoServicio, frm);     
             abrirEnDesktop(frm);                              
         });
 
@@ -83,10 +83,6 @@ public class MenuControlador {
             abrirEnDesktop(frm);
         });
 
-
-        // === Producción, Almacenamiento para después ===
-        
-        
         // === USUARIOS ===
         vista.getBtnUsuarios().addActionListener(e -> {
         JInternalFrame abierto = buscarFrameAbierto(FrmUsuarios.class);
@@ -118,7 +114,7 @@ public class MenuControlador {
     if (frmAlmacenamiento == null || frmAlmacenamiento.isClosed()) {
         frmAlmacenamiento = new FrmAlmacenamiento();
         AlmacenamientoControlador ctrl =
-                new AlmacenamientoControlador(almacenamientoServicio, frmAlmacenamiento);
+                new AlmacenamientoControlador(almacenamientoServicio,produccionServicio, frmAlmacenamiento);
 
         vista.getjDesktopPane1().add(frmAlmacenamiento); 
         ctrl.iniciar();
