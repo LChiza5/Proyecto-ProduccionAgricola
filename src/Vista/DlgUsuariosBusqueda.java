@@ -255,6 +255,12 @@ public class DlgUsuariosBusqueda extends javax.swing.JDialog {
     public JFormattedTextField getTxtFiltroNombre() {
         return txtFiltroNombre;
     }
+
+    public JButton getBtnFiltrar() {
+        return btnFiltrar;
+    }
+
+    
     
     
 

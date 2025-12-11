@@ -39,7 +39,7 @@ public class AlmacenamientoBusquedaControlador {
     }
 
     private void configurarTabla() {
-        String[] columnas = { "ID", "ID Producción", "Cantidad", "Ingreso", "Egreso" };
+        String[] columnas = {"ID", "ID Producción", "Cantidad", "Ingreso", "Egreso"};
         DefaultTableModel modelo = new DefaultTableModel(columnas, 0) {
             @Override
             public boolean isCellEditable(int row, int column) {
@@ -53,6 +53,11 @@ public class AlmacenamientoBusquedaControlador {
         vista.getBtnFiltrar().addActionListener(e -> buscar());
         vista.getBtnSeleccionar().addActionListener(e -> seleccionar());
         vista.getBtnCerrar().addActionListener(e -> vista.dispose());
+
+        // ALERTAS (solo si agregaste el botón)
+        if (vista.getBtnVerAlertas() != null) {
+            vista.getBtnVerAlertas().addActionListener(e -> verAlertas());
+        }
     }
 
     private void cargarTodos() {
@@ -69,41 +74,40 @@ public class AlmacenamientoBusquedaControlador {
         modelo.setRowCount(0);
 
         for (AlmacenamientoDTO dto : lista) {
-            modelo.addRow(new Object[] {
+            modelo.addRow(new Object[]{
                     dto.getId(),
                     dto.getIdProduccion(),
                     dto.getCantidad(),
-                    dto.getIngreso(),
-                    dto.getEgreso()
+                    dto.getIngreso() != null ? dto.getIngreso().toString() : "",
+                    dto.getEgreso() != null ? dto.getEgreso().toString() : ""
             });
         }
     }
 
     private void buscar() {
+
         String fechaDesdeTxt = vista.getTxtFechaDesde().getText().trim();
         String fechaHastaTxt = vista.getTxtFechaHasta().getText().trim();
-        
 
-        LocalDate fechaDesde = null;
-        LocalDate fechaHasta = null;
-        Integer idProduccion = null;
+        LocalDate desde = null;
+        LocalDate hasta = null;
 
         try {
             if (!fechaDesdeTxt.isEmpty()) {
-                fechaDesde = LocalDate.parse(fechaDesdeTxt);
+                desde = LocalDate.parse(fechaDesdeTxt);
             }
             if (!fechaHastaTxt.isEmpty()) {
-                fechaHasta = LocalDate.parse(fechaHastaTxt);
+                hasta = LocalDate.parse(fechaHastaTxt);
             }
 
+            // idProduccion NO está en el diálogo actualmente
             List<AlmacenamientoDTO> lista =
-                    servicio.buscarConFiltros(fechaDesde, fechaHasta, idProduccion);
+                    servicio.buscarConFiltros(desde, hasta, null);
+
             cargarTabla(lista);
 
         } catch (DateTimeParseException ex) {
-            mostrarError("Formato de fecha inválido. Use yyyy-MM-dd.");
-        } catch (NumberFormatException ex) {
-            mostrarError("El ID de producción debe ser numérico.");
+            mostrarError("Formato de fecha incorrecto. Use: yyyy-MM-dd");
         } catch (DAOException ex) {
             mostrarError("Error al buscar almacenamiento: " + ex.getMessage());
         }
@@ -112,29 +116,71 @@ public class AlmacenamientoBusquedaControlador {
     private void seleccionar() {
         int fila = vista.getTblResultados().getSelectedRow();
         if (fila == -1) {
-            mostrarError("Seleccione un registro de la tabla.");
+            mostrarError("Debe seleccionar un registro de la tabla.");
             return;
         }
 
         JTable tabla = vista.getTblResultados();
 
         AlmacenamientoDTO dto = new AlmacenamientoDTO();
+
         dto.setId((int) tabla.getValueAt(fila, 0));
         dto.setIdProduccion((int) tabla.getValueAt(fila, 1));
         dto.setCantidad((int) tabla.getValueAt(fila, 2));
 
-        Object ingreso = tabla.getValueAt(fila, 3);
-        Object egreso = tabla.getValueAt(fila, 4);
-
-        if (ingreso != null) {
-            dto.setIngreso(LocalDate.parse(ingreso.toString()));
+        // Ingreso
+        String ingresoStr = tabla.getValueAt(fila, 3).toString();
+        if (!ingresoStr.isBlank()) {
+            dto.setIngreso(LocalDate.parse(ingresoStr));
         }
-        if (egreso != null) {
-            dto.setEgreso(LocalDate.parse(egreso.toString()));
+
+        // Egreso
+        String egresoStr = tabla.getValueAt(fila, 4).toString();
+        if (!egresoStr.isBlank()) {
+            dto.setEgreso(LocalDate.parse(egresoStr));
         }
 
         controladorPrincipal.cargarDesdeSeleccion(dto);
         vista.dispose();
+    }
+
+    // ========================= ALERTAS =========================
+    private void verAlertas() {
+        String diasStr = JOptionPane.showInputDialog(
+                vista,
+                "Ingrese el número de días para alerta:",
+                "30"
+        );
+
+        if (diasStr == null) return;
+
+        int dias;
+        try {
+            dias = Integer.parseInt(diasStr);
+            if (dias <= 0) throw new NumberFormatException();
+        } catch (NumberFormatException ex) {
+            mostrarError("Debe ingresar un número entero positivo.");
+            return;
+        }
+
+        try {
+            List<AlmacenamientoDTO> alertas = servicio.obtenerAlertasPorEstadiaMayorA(dias);
+
+            if (alertas.isEmpty()) {
+                mostrarError("No hay productos con más de " + dias + " días almacenados.");
+            } else {
+                cargarTabla(alertas);
+                JOptionPane.showMessageDialog(
+                        vista,
+                        "Se encontraron " + alertas.size() + " registros en alerta.",
+                        "Alertas",
+                        JOptionPane.INFORMATION_MESSAGE
+                );
+            }
+
+        } catch (DAOException ex) {
+            mostrarError("Error al obtener alertas: " + ex.getMessage());
+        }
     }
 
     private void mostrarError(String mensaje) {

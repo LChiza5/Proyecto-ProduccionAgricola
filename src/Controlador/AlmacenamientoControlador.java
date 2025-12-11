@@ -5,6 +5,7 @@
 package Controlador;
 import Excepciones.DAOException;
 import Excepciones.ValidacionException;
+import Vista.DlgAlmacenamientoBusqueda;
 import Vista.FrmAlmacenamiento;
 import dto.AlmacenamientoDTO;
 import servicio.AlmacenamientoServicio;
@@ -26,208 +27,199 @@ public class AlmacenamientoControlador {
                                      FrmAlmacenamiento vista) {
         this.servicio = servicio;
         this.vista = vista;
+
         inicializarEventos();
-        
     }
-
-    // Se llamará desde el MenuControlador
-    public void iniciar() {
-        vista.setVisible(true);
-        
-        // Más adelante cargaremos combo de idProduccion
-    }
-
-    // ================== Inicialización ==================
 
     private void inicializarEventos() {
-        vista.getBtnGuardar().addActionListener(e -> guardarAlmacenamiento());
-        vista.getBtnActualizar().addActionListener(e -> actualizarAlmacenamiento());
-        vista.getBtnEliminar().addActionListener(e -> eliminarAlmacenamiento());
+        vista.getBtnGuardar().addActionListener(e -> guardar());
+        vista.getBtnActualizar().addActionListener(e -> actualizar());
+        vista.getBtnEliminar().addActionListener(e -> eliminar());
         vista.getBtnBuscar().addActionListener(e -> abrirDialogoBusqueda());
-        vista.getBtnLimpiar().addActionListener(e -> limpiarFormulario());
-
+        vista.getBtnLimpiar().addActionListener(e -> limpiar());
     }
 
-    private void configurarTabla() {
-        String[] columnas = { "ID", "ID Producción", "Cantidad", "Ingreso", "Egreso" };
-        DefaultTableModel modelo = new DefaultTableModel(columnas, 0) {
-            @Override
-            public boolean isCellEditable(int row, int column) {
-                return false;
-            }
-        };
-        vista.getTblAlmacenamientos().setModel(modelo);
-    }
+    // =================== Acciones CRUD ===================
 
-    // ================== Acciones principales ==================
-
-    private void listarTodos() {
+    private void guardar() {
         try {
-            List<AlmacenamientoDTO> lista = servicio.listarTodos();
-            cargarTabla(lista);
-        } catch (DAOException ex) {
-            mostrarError("Error al listar almacenamiento: " + ex.getMessage());
-        }
-    }
-
-    private void cargarTabla(List<AlmacenamientoDTO> lista) {
-        DefaultTableModel modelo = (DefaultTableModel) vista.getTblAlmacenamientos().getModel();
-        modelo.setRowCount(0);
-
-        for (AlmacenamientoDTO dto : lista) {
-            modelo.addRow(new Object[] {
-                    dto.getId(),
-                    dto.getIdProduccion(),
-                    dto.getCantidad(),
-                    dto.getIngreso(),
-                    dto.getEgreso()
-            });
-        }
-    }
-
-    private void cargarDesdeSeleccionTabla() {
-        int fila = vista.getTblAlmacenamientos().getSelectedRow();
-        if (fila == -1) return;
-
-        JTable tabla = vista.getTblAlmacenamientos();
-        vista.getTxtId().setText(String.valueOf(tabla.getValueAt(fila, 0)));
-        vista.getCmbIdProduccion().setSelectedItem(tabla.getValueAt(fila, 1));
-        vista.getTxtCantidad().setText(String.valueOf(tabla.getValueAt(fila, 2)));
-
-        Object ingreso = tabla.getValueAt(fila, 3);
-        Object egreso = tabla.getValueAt(fila, 4);
-
-        vista.getTxtFechaIngreso().setText(ingreso != null ? ingreso.toString() : "");
-        vista.getTxtFechaEgreso().setText(egreso != null ? egreso.toString() : "");
-    }
-
-    private void guardarAlmacenamiento() {
-        try {
-            AlmacenamientoDTO dto = leerFormulario(true);
+            AlmacenamientoDTO dto = leerDesdeFormulario();
             servicio.registrarAlmacenamiento(dto);
-            mostrarInfo("Almacenamiento registrado correctamente. ID generado: " + dto.getId());
-            listarTodos();
-            limpiarFormulario();
+
+            mostrarMensaje("Registro de almacenamiento guardado correctamente.");
+            limpiar();
         } catch (ValidacionException | DAOException ex) {
-            mostrarError(ex.getMessage());
-        } catch (DateTimeParseException ex) {
-            mostrarError("Formato de fecha inválido. Use yyyy-MM-dd.");
+            mostrarError("Error al guardar el registro de almacenamiento: " + ex.getMessage());
         }
     }
 
-    private void actualizarAlmacenamiento() {
+    private void actualizar() {
         try {
-            AlmacenamientoDTO dto = leerFormulario(false);
+            AlmacenamientoDTO dto = leerDesdeFormulario();
             servicio.actualizarAlmacenamiento(dto);
-            mostrarInfo("Almacenamiento actualizado correctamente.");
-            listarTodos();
-            limpiarFormulario();
+
+            mostrarMensaje("Registro de almacenamiento actualizado correctamente.");
+            limpiar();
         } catch (ValidacionException | DAOException ex) {
-            mostrarError(ex.getMessage());
-        } catch (DateTimeParseException ex) {
-            mostrarError("Formato de fecha inválido. Use yyyy-MM-dd.");
+            mostrarError("Error al actualizar el registro de almacenamiento: " + ex.getMessage());
         }
     }
 
-    private void eliminarAlmacenamiento() {
-        String idTexto = vista.getTxtId().getText().trim();
-
-        if (idTexto.isEmpty()) {
-            mostrarError("Seleccione un registro de almacenamiento para eliminar.");
+    private void eliminar() {
+        String idStr = vista.getTxtId().getText().trim();
+        if (idStr.isEmpty()) {
+            mostrarError("Debe indicar el ID del registro de almacenamiento a eliminar.");
             return;
         }
 
-        int confirm = JOptionPane.showConfirmDialog(
+        int id;
+        try {
+            id = Integer.parseInt(idStr);
+        } catch (NumberFormatException ex) {
+            mostrarError("El ID debe ser un número entero.");
+            return;
+        }
+
+        int opcion = JOptionPane.showConfirmDialog(
                 vista,
-                "¿Está seguro de eliminar este registro?",
-                "Confirmación",
+                "¿Está seguro de eliminar el registro de almacenamiento con ID: " + id + " ?",
+                "Confirmar eliminación",
                 JOptionPane.YES_NO_OPTION
         );
-        if (confirm != JOptionPane.YES_OPTION) return;
 
-        try {
-            int id = Integer.parseInt(idTexto);
-            servicio.eliminarAlmacenamiento(id);
-            mostrarInfo("Registro eliminado correctamente.");
-            listarTodos();
-            limpiarFormulario();
-        } catch (NumberFormatException ex) {
-            mostrarError("ID de almacenamiento inválido.");
-        } catch (ValidacionException | DAOException ex) {
-            mostrarError(ex.getMessage());
+        if (opcion == JOptionPane.YES_OPTION) {
+            try {
+                servicio.eliminarAlmacenamiento(id);
+                mostrarMensaje("Registro de almacenamiento eliminado correctamente.");
+                limpiar();
+            } catch (ValidacionException | DAOException ex) {
+                mostrarError("Error al eliminar el registro de almacenamiento: " + ex.getMessage());
+            }
         }
     }
 
-    private void abrirDialogoBusqueda() {
-        java.awt.Window parent = SwingUtilities.getWindowAncestor(vista);
-
-    Vista.DlgAlmacenamientoBusqueda dlg =
-            new Vista.DlgAlmacenamientoBusqueda(parent, true);
-
-    AlmacenamientoBusquedaControlador ctrlBusqueda =
-            new AlmacenamientoBusquedaControlador(servicio, dlg, this);
-    ctrlBusqueda.mostrar();
-}
-
-    public void cargarDesdeSeleccion(AlmacenamientoDTO dto) {
-        // Método llamado desde el dialogo de búsqueda.
-        if (dto == null) return;
-
-        vista.getTxtId().setText(String.valueOf(dto.getId()));
-        vista.getCmbIdProduccion().setSelectedItem(dto.getIdProduccion());
-        vista.getTxtCantidad().setText(String.valueOf(dto.getCantidad()));
-        vista.getTxtFechaIngreso().setText(dto.getIngreso() != null ? dto.getIngreso().toString() : "");
-        vista.getTxtFechaEgreso().setText(dto.getEgreso() != null ? dto.getEgreso().toString() : "");
-    }
-
-    private void limpiarFormulario() {
+    private void limpiar() {
         vista.getTxtId().setText("");
-        vista.getCmbIdProduccion().setSelectedIndex(-1);
         vista.getTxtCantidad().setText("");
         vista.getTxtFechaIngreso().setText("");
         vista.getTxtFechaEgreso().setText("");
-        
+
+        // Limpiar combo de producción (elige la convención que uses)
+        JComboBox<?> combo = vista.getCmbIdProduccion();
+        if (combo.getItemCount() > 0) {
+            combo.setSelectedIndex(0); // por ejemplo, "Seleccione..." o el primero
+        }
     }
 
-    // ================== Utilidades internas ==================
+    public void iniciar() {
+        vista.setVisible(true);
+    }
 
-    private AlmacenamientoDTO leerFormulario(boolean esNuevo) {
+    // =================== Búsqueda con diálogo ===================
+
+    private void abrirDialogoBusqueda() {
+        DlgAlmacenamientoBusqueda dialogo = new DlgAlmacenamientoBusqueda(vista, true);
+        AlmacenamientoBusquedaControlador ctrlBusqueda =
+                new AlmacenamientoBusquedaControlador(servicio, dialogo, this);
+        ctrlBusqueda.mostrar();
+    }
+
+    /**
+     * Método llamado desde AlmacenamientoBusquedaControlador
+     * cuando el usuario selecciona un registro en el diálogo.
+     */
+    public void cargarDesdeSeleccion(AlmacenamientoDTO dto) {
+        vista.getTxtId().setText(String.valueOf(dto.getId()));
+        vista.getTxtCantidad().setText(String.valueOf(dto.getCantidad()));
+
+        // Seleccionar el idProduccion en el combo
+        // Esto funcionará si llenas el combo con Integer o String que corresponda al ID
+        vista.getCmbIdProduccion().setSelectedItem(dto.getIdProduccion());
+
+        if (dto.getIngreso() != null) {
+            vista.getTxtFechaIngreso().setText(dto.getIngreso().toString()); // yyyy-MM-dd
+        } else {
+            vista.getTxtFechaIngreso().setText("");
+        }
+
+        if (dto.getEgreso() != null) {
+            vista.getTxtFechaEgreso().setText(dto.getEgreso().toString());
+        } else {
+            vista.getTxtFechaEgreso().setText("");
+        }
+    }
+
+    // =================== Métodos de apoyo ===================
+
+    private AlmacenamientoDTO leerDesdeFormulario() throws ValidacionException {
         AlmacenamientoDTO dto = new AlmacenamientoDTO();
 
-        if (!esNuevo) {
-            String idTexto = vista.getTxtId().getText().trim();
-            dto.setId(idTexto.isEmpty() ? 0 : Integer.parseInt(idTexto));
+        // ID (puede estar vacío en "guardar")
+        String idStr = vista.getTxtId().getText().trim();
+        if (!idStr.isEmpty()) {
+            try {
+                dto.setId(Integer.parseInt(idStr));
+            } catch (NumberFormatException ex) {
+                throw new ValidacionException("El ID debe ser un número entero.");
+            }
         }
 
-        Integer idProd = (Integer) vista.getCmbIdProduccion().getSelectedItem();
-        String cantidadTexto = vista.getTxtCantidad().getText().trim();
-        String fechaIngresoTexto = vista.getTxtFechaIngreso().getText().trim();
-        String fechaEgresoTexto = vista.getTxtFechaEgreso().getText().trim();
-
-        if (idProd != null) {
-            dto.setIdProduccion(idProd);
+        // ID Producción leído desde el combo
+        Object selProd = vista.getCmbIdProduccion().getSelectedItem();
+        if (selProd == null) {
+            throw new ValidacionException("Debe seleccionar una producción.");
+        }
+        try {
+            int idProduccion = (selProd instanceof Integer)
+                    ? (Integer) selProd
+                    : Integer.parseInt(selProd.toString());
+            dto.setIdProduccion(idProduccion);
+        } catch (NumberFormatException ex) {
+            throw new ValidacionException("El ID de producción seleccionado no es válido.");
         }
 
-        if (!cantidadTexto.isEmpty()) {
-            dto.setCantidad(Integer.parseInt(cantidadTexto));
+        // Cantidad
+        String cantStr = vista.getTxtCantidad().getText().trim();
+        if (cantStr.isEmpty()) {
+            throw new ValidacionException("Debe indicar la cantidad almacenada.");
+        }
+        try {
+            dto.setCantidad(Integer.parseInt(cantStr));
+        } catch (NumberFormatException ex) {
+            throw new ValidacionException("La cantidad debe ser un número entero.");
         }
 
-        if (!fechaIngresoTexto.isEmpty()) {
-            dto.setIngreso(LocalDate.parse(fechaIngresoTexto)); // yyyy-MM-dd
+        // Fecha ingreso
+        String ingresoStr = vista.getTxtFechaIngreso().getText().trim();
+        if (ingresoStr.isEmpty()) {
+            throw new ValidacionException("Debe indicar la fecha de ingreso.");
+        }
+        try {
+            dto.setIngreso(LocalDate.parse(ingresoStr)); // yyyy-MM-dd
+        } catch (DateTimeParseException ex) {
+            throw new ValidacionException("Formato de fecha de ingreso inválido. Use yyyy-MM-dd.");
         }
 
-        if (!fechaEgresoTexto.isEmpty()) {
-            dto.setEgreso(LocalDate.parse(fechaEgresoTexto));
+        // Fecha egreso (opcional)
+        String egresoStr = vista.getTxtFechaEgreso().getText().trim();
+        if (!egresoStr.isEmpty()) {
+            try {
+                dto.setEgreso(LocalDate.parse(egresoStr));
+            } catch (DateTimeParseException ex) {
+                throw new ValidacionException("Formato de fecha de egreso inválido. Use yyyy-MM-dd.");
+            }
+        } else {
+            dto.setEgreso(null);
         }
 
         return dto;
     }
 
-    private void mostrarError(String mensaje) {
-        JOptionPane.showMessageDialog(vista, mensaje, "Error", JOptionPane.ERROR_MESSAGE);
+    private void mostrarMensaje(String mensaje) {
+        JOptionPane.showMessageDialog(vista, mensaje, "Información", JOptionPane.INFORMATION_MESSAGE);
     }
 
-    private void mostrarInfo(String mensaje) {
-        JOptionPane.showMessageDialog(vista, mensaje, "Información", JOptionPane.INFORMATION_MESSAGE);
+    private void mostrarError(String mensaje) {
+        JOptionPane.showMessageDialog(vista, mensaje, "Error", JOptionPane.ERROR_MESSAGE);
     }
 }
