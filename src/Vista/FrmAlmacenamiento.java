@@ -49,26 +49,10 @@ public class FrmAlmacenamiento extends javax.swing.JInternalFrame {
         btnEliminar = new javax.swing.JButton();
         btnBuscar = new javax.swing.JButton();
         btnLimpiar = new javax.swing.JButton();
-<<<<<<< Updated upstream
-        btnRevisarAlertas = new javax.swing.JButton();
-        cmbIdProduccion = new javax.swing.JComboBox<>();
-        txtId = new javax.swing.JTextField();
-        jLabel1 = new javax.swing.JLabel();
-        jLabel2 = new javax.swing.JLabel();
-        txtCantidad = new javax.swing.JTextField();
-        txtFechaIngreso = new javax.swing.JFormattedTextField();
-        txtFechaEgreso = new javax.swing.JFormattedTextField();
-        jLabel3 = new javax.swing.JLabel();
-        jLabel4 = new javax.swing.JLabel();
-        jLabel5 = new javax.swing.JLabel();
-=======
->>>>>>> Stashed changes
 
         setBackground(new java.awt.Color(27, 67, 50));
         setClosable(true);
         setIconifiable(true);
-        setMaximizable(true);
-        setResizable(true);
 
         jPanel1.setBackground(new java.awt.Color(27, 67, 50));
         jPanel1.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(0, 0, 0)));
@@ -87,53 +71,9 @@ public class FrmAlmacenamiento extends javax.swing.JInternalFrame {
         txtCantidad.setForeground(new java.awt.Color(35, 78, 59));
         txtCantidad.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(149, 213, 178)));
 
-<<<<<<< Updated upstream
-        btnEliminar.setText("Eliminar");
-
-        btnBuscar.setText("Buscar");
-
-        btnLimpiar.setText("Limpiar");
-
-        btnRevisarAlertas.setText("Alerta Rapida");
-
-        javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
-        jPanel1.setLayout(jPanel1Layout);
-        jPanel1Layout.setHorizontalGroup(
-            jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(jPanel1Layout.createSequentialGroup()
-                .addGap(104, 104, 104)
-                .addComponent(btnGuardar)
-                .addGap(14, 14, 14)
-                .addComponent(btnActualizar)
-                .addGap(18, 18, 18)
-                .addComponent(btnEliminar)
-                .addGap(18, 18, 18)
-                .addComponent(btnBuscar)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(btnRevisarAlertas)
-                    .addComponent(btnLimpiar))
-                .addContainerGap(21, Short.MAX_VALUE))
-        );
-        jPanel1Layout.setVerticalGroup(
-            jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(jPanel1Layout.createSequentialGroup()
-                .addGap(40, 40, 40)
-                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(btnGuardar)
-                    .addComponent(btnLimpiar)
-                    .addComponent(btnBuscar)
-                    .addComponent(btnActualizar)
-                    .addComponent(btnEliminar))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(btnRevisarAlertas)
-                .addContainerGap(25, Short.MAX_VALUE))
-        );
-=======
         txtId.setBackground(new java.awt.Color(250, 255, 252));
         txtId.setForeground(new java.awt.Color(35, 78, 59));
         txtId.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(149, 213, 178)));
->>>>>>> Stashed changes
 
         jLabel1.setBackground(new java.awt.Color(35, 35, 35));
         jLabel1.setFont(new java.awt.Font("Segoe UI", 0, 24)); // NOI18N
@@ -321,7 +261,6 @@ public class FrmAlmacenamiento extends javax.swing.JInternalFrame {
     private javax.swing.JButton btnEliminar;
     private javax.swing.JButton btnGuardar;
     private javax.swing.JButton btnLimpiar;
-    private javax.swing.JButton btnRevisarAlertas;
     private javax.swing.JComboBox<String> cmbIdProduccion;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel2;
@@ -360,10 +299,6 @@ public class FrmAlmacenamiento extends javax.swing.JInternalFrame {
         return cmbIdProduccion;
     }
 
-    public JButton getBtnRevisarAlertas() {
-        return btnRevisarAlertas;
-    }
-    
    
     public JTextField getTxtCantidad() {
         return txtCantidad;
