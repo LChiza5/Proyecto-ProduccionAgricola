@@ -113,7 +113,7 @@ public class FrmUsuarios extends javax.swing.JInternalFrame {
         txtCorreo.setFont(new java.awt.Font("Segoe UI", 0, 18)); // NOI18N
         txtCorreo.setForeground(new java.awt.Color(35, 78, 59));
         txtCorreo.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(149, 213, 178)));
-        jPanel1.add(txtCorreo, new org.netbeans.lib.awtextra.AbsoluteConstraints(480, 150, 150, 30));
+        jPanel1.add(txtCorreo, new org.netbeans.lib.awtextra.AbsoluteConstraints(480, 250, 150, 30));
 
         jLabel8.setBackground(new java.awt.Color(35, 35, 35));
         jLabel8.setFont(new java.awt.Font("sansserif", 0, 24)); // NOI18N
@@ -129,13 +129,13 @@ public class FrmUsuarios extends javax.swing.JInternalFrame {
         txtContrasena.setFont(new java.awt.Font("Segoe UI", 0, 18)); // NOI18N
         txtContrasena.setForeground(new java.awt.Color(35, 78, 59));
         txtContrasena.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(149, 213, 178)));
-        jPanel1.add(txtContrasena, new org.netbeans.lib.awtextra.AbsoluteConstraints(480, 200, 150, 30));
+        jPanel1.add(txtContrasena, new org.netbeans.lib.awtextra.AbsoluteConstraints(480, 300, 150, 30));
 
         txtTelefono.setBackground(new java.awt.Color(250, 255, 252));
         txtTelefono.setFont(new java.awt.Font("Segoe UI", 0, 18)); // NOI18N
         txtTelefono.setForeground(new java.awt.Color(35, 78, 59));
         txtTelefono.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(149, 213, 178)));
-        jPanel1.add(txtTelefono, new org.netbeans.lib.awtextra.AbsoluteConstraints(480, 100, 150, 30));
+        jPanel1.add(txtTelefono, new org.netbeans.lib.awtextra.AbsoluteConstraints(480, 200, 150, 30));
 
         jLabel2.setBackground(new java.awt.Color(35, 35, 35));
         jLabel2.setFont(new java.awt.Font("sansserif", 0, 24)); // NOI18N
@@ -156,7 +156,7 @@ public class FrmUsuarios extends javax.swing.JInternalFrame {
                 txtNombreActionPerformed(evt);
             }
         });
-        jPanel1.add(txtNombre, new org.netbeans.lib.awtextra.AbsoluteConstraints(480, 300, 150, -1));
+        jPanel1.add(txtNombre, new org.netbeans.lib.awtextra.AbsoluteConstraints(480, 150, 150, -1));
 
         jLabel4.setBackground(new java.awt.Color(35, 35, 35));
         jLabel4.setFont(new java.awt.Font("sansserif", 0, 24)); // NOI18N
@@ -192,7 +192,7 @@ public class FrmUsuarios extends javax.swing.JInternalFrame {
         txtId.setFont(new java.awt.Font("Segoe UI", 0, 18)); // NOI18N
         txtId.setForeground(new java.awt.Color(35, 78, 59));
         txtId.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(149, 213, 178)));
-        jPanel1.add(txtId, new org.netbeans.lib.awtextra.AbsoluteConstraints(480, 250, 150, 30));
+        jPanel1.add(txtId, new org.netbeans.lib.awtextra.AbsoluteConstraints(480, 100, 150, 30));
 
         jLabel6.setBackground(new java.awt.Color(35, 35, 35));
         jLabel6.setFont(new java.awt.Font("sansserif", 0, 24)); // NOI18N
@@ -205,10 +205,9 @@ public class FrmUsuarios extends javax.swing.JInternalFrame {
         jPanel1.add(jLabel6, new org.netbeans.lib.awtextra.AbsoluteConstraints(280, 50, 170, -1));
 
         cmbRol.setBackground(new java.awt.Color(250, 255, 252));
-        cmbRol.setEditable(true);
         cmbRol.setFont(new java.awt.Font("Segoe UI", 0, 18)); // NOI18N
         cmbRol.setForeground(new java.awt.Color(0, 0, 0));
-        cmbRol.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "USUARIO", "ADMIN" }));
+        cmbRol.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "TRABAJADOR", "ADMIN" }));
         cmbRol.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(149, 213, 178)));
         cmbRol.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
