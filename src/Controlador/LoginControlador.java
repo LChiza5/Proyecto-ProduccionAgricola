@@ -37,7 +37,7 @@ public class LoginControlador {
 
     private void intentarLogin() {
         String id = vista.getTxtId().getText().trim();
-        String password = new String(vista.getTxtPassword().getText());
+        String password = new String(vista.getTxtPassword().getPassword());
 
         try {
             Usuario usuario = servicio.iniciarSesion(id, password);
@@ -46,6 +46,7 @@ public class LoginControlador {
                     "Bienvenido " + usuario.getNombre() + " (" + usuario.getRol() + ")");
 
             FrmPrincipal menu = new FrmPrincipal(usuario);
+            menu.setLocationRelativeTo(null);
             menu.setVisible(true);
             vista.dispose();
 
@@ -56,6 +57,4 @@ public class LoginControlador {
                     JOptionPane.ERROR_MESSAGE);
         }
     }
-
-    
 }

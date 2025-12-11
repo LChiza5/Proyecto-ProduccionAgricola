@@ -41,9 +41,10 @@ public class UsuarioServicio {
     }
           
     public void actualizarUsuario(UsuarioDTO dto) throws ValidacionException, DAOException {
-         validarUsuario(dto);
-         Usuario entidad = UsuarioMapper.toEntity(dto);
-         DAO.actualizar(entidad);
+         Usuario actual = DAO.buscarPorId(dto.getId());
+         if (dto.getContrasenaHash() == null || dto.getContrasenaHash().isBlank()) {
+    dto.setContrasenaHash(actual.getContrasenaHash());
+}
     }
     
         public List<UsuarioDTO> listarTodos() throws DAOException {

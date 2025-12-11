@@ -21,30 +21,23 @@ import servicio.ValidarLoginServicio;
  * @author sebas
  */
 public class FrmLogin extends javax.swing.JFrame {
-       private final ValidarLoginServicio servicioLogin;
-       private final LoginControlador controlador;
+       
+       
     /**
      * Creates new form FrmLogin
      */
     public FrmLogin() {
-         try {
-        ConexionBD.getInstancia().obtenerConexion();
-    } catch (DAOException ex) {
-        JOptionPane.showMessageDialog(this,
-                "Error al iniciar la conexión con la base de datos:\n" + ex.getMessage(),
-                "Error crítico",
-                JOptionPane.ERROR_MESSAGE);
-        System.exit(1); 
-    }
+        try {
+            ConexionBD.getInstancia().obtenerConexion();
+        } catch (DAOException ex) {
+            JOptionPane.showMessageDialog(this,
+                    "Error al iniciar la conexión con la base de datos:\n" + ex.getMessage(),
+                    "Error crítico",
+                    JOptionPane.ERROR_MESSAGE);
+            System.exit(1);
+        }
         initComponents();
-        UsuarioDAO usuarioDAO = new UsuarioDAOImpl();
-        this.servicioLogin = new ValidarLoginServicio(usuarioDAO);
-        
-        this.controlador = new LoginControlador(servicioLogin, this);
-
-        
-        
-        
+        setLocationRelativeTo(null);
     }
     /**
      * This method is called from within the constructor to initialize the form.
@@ -149,16 +142,7 @@ public class FrmLogin extends javax.swing.JFrame {
     /**
      * @param args the command line arguments
      */
-    private void abrirPrincipal(Usuario usuarioLogueado) {
-    FrmPrincipal frm = new FrmPrincipal(usuarioLogueado);
-    frm.setLocationRelativeTo(null);
-    frm.setVisible(true);
-    this.dispose(); // CIERRA LOGIN
-}
-    private void limpiarCampos(){
-        txtId.setText("");
-        TxtPassword.setText("");
-    }
+  
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JPasswordField TxtPassword;
     private javax.swing.JButton btnIngresar;
